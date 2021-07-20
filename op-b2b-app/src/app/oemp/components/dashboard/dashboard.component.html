@@ -7,7 +7,7 @@
             
             <div class="newLabel po-text-center po-font-subtitle"><span class="po-icon po-icon-plus-circle"></span>Novas</div>
             <div class="newCounter po-font-subtitle po-text-center">{{newCounter}}</div>
-            <div class="po-font-text-small po-text-center">Atualizado em: {{lastUpdate}}</div>
+            <div class="newUpdate po-font-text-small po-text-center">Atualizado em: {{lastUpdate}}</div>
            
            
         </po-widget>
@@ -18,16 +18,16 @@
             (p-click)="openExec()">
             <div class="executionLabel po-text-center po-font-subtitle"><span class="po-icon po-icon-change"></span>Em Execução</div>
             <div class="executionCounter po-font-subtitle po-text-center"> {{executionCounter}}</div>
-            <div class="po-font-text-small po-text-center">Atualizado em: {{lastUpdate}}</div>
+            <div class="executionUpdate po-font-text-small po-text-center">Atualizado em: {{lastUpdate}}</div>
             
     
         </po-widget>
         <po-widget
         class ="po-sm-12 po-md-3 po-lg-3 po-xl-4"
         [p-primary]="false">
-        <div class="totalLabel po-text-center po-font-subtitle"><span class="po-icon po-icon-basket"></span>Total no Posto</div>
+        <div class="totalLabel po-text-center po-font-subtitle"><span class="po-icon po-icon-basket"></span>Total</div>
         <div class="totalCounter po-font-subtitle po-text-center"> {{totalCounter}}</div>
-        <div class="po-font-text-small po-text-center">Atualizado em: {{lastUpdate}}</div>
+        <div class="totalUpdate po-font-text-small po-text-center">Atualizado em: {{lastUpdate}}</div>
         </po-widget>
 
         <po-widget
@@ -36,12 +36,12 @@
         (p-click)="openCompleted()">
         <div class="completedLabel po-text-center po-font-subtitle"><span class="po-icon po-icon-ok"></span>Concluídas</div>
         <div class="completedCounter po-font-subtitle po-text-center"> {{completedCounter}}</div>
-        <div class="po-font-text-small po-text-center">Atualizado em: {{lastUpdateCompleted}}</div>
+        <div class="completedUpdate po-font-text-small po-text-center">Atualizado em: {{lastUpdateCompleted}}</div>
         </po-widget>
         </div>
         <div class="po-row">
-        <div class="po-md-12 po-lg-12 po-xl-12">
-                <po-page-dynamic-search
+        
+                <po-page-dynamic-search class="dynamic"
                         (p-quick-search)="onQuickSearch($event)"
                         (p-change-disclaimers)="onChangeDisclaimers($event)"
                         [p-filters]="filters"
@@ -75,7 +75,7 @@
                         [p-loading-show-more]="isLoading">
                 </po-table>
                 </po-page-dynamic-search>
-        </div>
+       
 
      
        

@@ -19,6 +19,7 @@
  
  .totalLabel{
      color: rgb(57, 41, 146);
+     justify-content:space-around
  }
  
  .totalCounter{
@@ -40,8 +41,8 @@
     
   }
 
-  .dynamicSearch{
-     height: 70px;
+  .dynamic{
+     height: 60px;
      
   }
 
@@ -50,53 +51,105 @@
   }
  
 
-
-
-  /* Smaller than standard 960 (devices and browsers) */
-@media only screen and (max-width: 959px) {
-    .totalCounter{
-        font-size: 16px;
-    }
+@media only screen and (min-width: 744px) and (max-width: 844px) {
     .totalLabel{
-        font-size: 16px;
-    }
-}
-
-/* Tablet Portrait size to standard 960 (devices and browsers) */
-@media only screen and (min-width: 768px) and (max-width: 959px) {
-    p{
-        font-size: 12px;
-    }
-}
-
-/* All Mobile Sizes (devices and browser) */
-@media only screen and (max-width: 767px) {
-    p{
-        font-size: 10px;
-    }
-}
-
-/* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
-@media only screen and (min-width: 480px) and (max-width: 767px) {
-    .totalLabel{
-        font-size: 10px;
+        font-size: 20px;
+        font-weight: bold;
     }
     .newLabel{
-        font-size: 10px;
+        font-size: 20px;
+        font-weight: bold;
     }
     .executionLabel{
-        font-size: 10px;
+        font-size: 20px;
+        font-weight: bold;
     }
     .completedLabel{
-        font-size: 10px;
+        font-size: 20px;
+        font-weight: bold;
     }
+    .totalUpdate{
+        font-size: 9px;
+        
+    }
+    .newUpdate{
+        font-size: 9px;
+    }
+    .executionUpdate{
+        font-size: 9px;
+    }
+    .completedUpdate{
+        font-size: 9px;
+    }
+
+    .totalCounter{
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .newCounter{
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .executionCounter{
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .completedCounter{
+        font-size: 16px;
+        font-weight: bold;
+    }
+    
 }
 
-/* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
-@media only screen and (max-width: 479px) {
-    p{
-        font-size: 7px;
+
+@media only screen and (min-width: 480px) and (max-width: 743px) {
+    .totalLabel{
+        font-size: 16px;
+        font-weight: bold;
     }
+    .newLabel{
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .executionLabel{
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .completedLabel{
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .totalUpdate{
+        font-size: 8px;
+    }
+    .newUpdate{
+        font-size: 8px;
+    }
+    .executionUpdate{
+        font-size: 8px;
+    }
+    .completedUpdate{
+        font-size: 8px;
+    }
+
+    .totalCounter{
+        font-size: 12px;
+        font-weight: bold;
+    }
+    .newCounter{
+        font-size: 12px;
+        font-weight: bold;
+    }
+    .executionCounter{
+        font-size: 12px;
+        font-weight: bold;
+    }
+    .completedCounter{
+        font-size: 12px;
+        font-weight: bold;
+    }
+    
 }
-  
+
  
