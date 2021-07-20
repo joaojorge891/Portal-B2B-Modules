@@ -1,0 +1,22 @@
+<po-page-default 
+    [p-actions]="actionsPage" 
+    class="po-sm-12 po-md-12 po-lg-12 po-xl-4">
+
+    <po-page-dynamic-search 
+        p-title="Dashboard Usuários" 
+        (p-quick-search)="onQuickSearch($event)"
+        [p-literals]="customLiterals">
+
+        <po-table 
+            [p-items]="items" 
+            [p-columns]="columns" 
+            [p-actions]="actions"
+            [p-sort]="true"
+            [p-show-more-disabled]="showMoreDisabled" 
+            [p-loading-show-more]="isLoading" 
+            (p-show-more)="onShowMore()">
+        </po-table>
+
+    </po-page-dynamic-search>
+
+</po-page-default>

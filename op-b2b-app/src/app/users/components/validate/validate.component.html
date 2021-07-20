@@ -1,0 +1,153 @@
+<po-page-default 
+        p-title="Validação de Usuário" 
+        [p-actions]="actions">
+
+        <div class="po-row">
+                <po-input
+                p-disabled="true"
+                name="field_name" 
+                p-label="Nome Completo" 
+                p-clean="true"
+                p-icon="po-icon-user"
+                [(ngModel)]="user.name"
+                class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+                
+                </po-input>
+
+                <po-input 
+                        p-disabled="true"
+                        p-label="Matrícula" 
+                        p-clean="true"
+                        p-icon="po-icon-image-align-left"
+                        [(ngModel)]="user.user"
+                        class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+                </po-input>
+        </div>
+
+        <div class="po-row">
+                <po-select 
+                        p-disabled="true"
+                        p-label="Empresa"
+                        [p-options]="[
+                                {label: 'Oi', value: 'Oi'},
+                                {label: 'MamInfo', value: 'MamInfo'},
+                                {label: 'Serede', value: 'Serede'},
+                                {label: 'Stein', value: 'Stein'},
+                                {label: 'Telemont', value: 'Telemont'}
+                        ]"
+                        [(ngModel)]="user.company" 
+                        class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+                </po-select>
+
+                <po-select
+                        p-disabled="true" 
+                        p-label="Área" 
+                        p-placeholder="Selecione" 
+                        p-required="true"
+                        [p-options]="[
+                        {label: 'CGS', value: 'CGS'},
+                        {label: 'COR', value: 'COR'},
+                        {label: 'Engenharia', value: 'Engenharia'},
+                        {label: 'GAS', value: 'GAS'},
+                        {label: 'Logística', value: 'Logística'},
+                        {label: 'NATA', value: 'NATA'},
+                        {label: 'Operações de Campo ', value: 'Campo'},
+                        {label: 'Rede Básica', value: 'RedeBasica'},
+                        {label: 'Rede de Acesso', value: 'RedeAcesso'},
+                        {label: 'Unidade de Negócios', value: 'Comercial'},
+                        {label: 'Outras', value: 'Outras'},
+                        ]"
+                        [(ngModel)]="user.department"
+                        class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+
+                </po-select>
+
+        </div>
+        
+        <div class="po-row">
+                <po-select
+                        p-disabled="true" 
+                        p-label="Filial" 
+                        p-placeholder="Selecione" 
+                        p-required="true"
+                        [p-options]="[
+                                {label: 'Acre', value: 'AC'},
+                                {label: 'Alagoas', value: 'AL'},
+                                {label: 'Amapá', value: 'AP'},
+                                {label: 'Amazonas', value: 'AM'},
+                                {label: 'Bahia', value: 'BA'},
+                                {label: 'Ceará', value: 'CE'},
+                                {label: 'Distrito Federal', value: 'DF'},
+                                {label: 'Espirito Santo', value: 'ES'},
+                                {label: 'Goiás', value: 'GO'},
+                                {label: 'Maranhão', value: 'MA'},
+                                {label: 'Mato Grosso', value: 'MT'},
+                                {label: 'Mato Grosso do Sul', value: 'MS'},
+                                {label: 'Minas Gerais', value: 'MG'},
+                                {label: 'Pará', value: 'PA'},
+                                {label: 'Paraíba', value: 'PB'},
+                                {label: 'Pernambuco', value: 'PE'},
+                                {label: 'Piauí', value: 'PI'},
+                                {label: 'Paraná', value: 'PR'},
+                                {label: 'Rio de Janeiro', value: 'RJ'},
+                                {label: 'Rio Grande do Norte', value: 'RN'},
+                                {label: 'Rio Grande do Sul', value: 'RS'},
+                                {label: 'Rondônia', value: 'RO'},
+                                {label: 'Roraima', value: 'RR'},
+                                {label: 'Santa Catarina', value: 'SC'},
+                                {label: 'São Paulo', value: 'SP'},
+                                {label: 'Sergipe', value: 'SE'},
+                                {label: 'Tocantins', value: 'TO'}
+                        ]"
+                        [(ngModel)]="user.uf"
+                        class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+
+                </po-select>
+
+                <po-email
+                        p-disabled="true" 
+                        name="field_mail" 
+                        p-label="Email" 
+                        p-clean="true" 
+                        p-required="true" 
+                        [(ngModel)]="user.email"
+                        class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+                </po-email>
+                
+        </div>
+        <div class="po-row">
+                <po-radio-group 
+                name="radioGroupBasic" 
+                p-label="Validar Usuário?" 
+                [p-options]="[
+                        { label: 'Sim', value: 'active' },
+                        { label: 'Não', value: 'inactive' },
+                       ]" 
+                [(ngModel)]="user.validate"
+                [p-columns]="2"
+                (p-change)="onChooseValidate()"
+                class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+        </po-radio-group>
+        </div>
+
+        <div class="po-row">
+        
+                <po-textarea 
+                    name="textarea"
+                    [p-disabled]="isDisabled"
+                    [p-maxlength]="maxLength"
+                    p-label="* Justificativa da Rejeição"
+                    class="po-sm-12 po-md-12 po-lg-8 po-xl-8"
+                    [(ngModel)]="user.rejectReason"
+                    >
+                </po-textarea>
+                <div class="po-row">
+                    (*) Preenchimento Obrigatório em caso de Rejeição
+                </div>
+            </div>
+        
+       
+
+        
+
+</po-page-default>

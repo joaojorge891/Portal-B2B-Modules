@@ -1,0 +1,164 @@
+<po-page-default
+    p-title="Novas Solicitações Tramitadas para Posto OEMP"
+    [p-actions]="actionsPage">
+
+        <po-table
+            [p-height]="400"
+            class="po-sm-12 po-md-12 po-lg-12 po-xl-4"
+            [p-items]="items" 
+            [p-columns]="columns" 
+            [p-actions]="actions"
+            [p-striped]="true"
+            [p-sort]="true"
+            [p-auto-collapse]="true"
+            [p-loading]="loading"
+            p-container="shadow"
+            [p-hide-text-overflow]="true"
+            [p-infinite-scroll]="true"
+            [p-infinite-scroll-distance]="90">
+        </po-table>
+
+</po-page-default>
+
+
+<po-modal 
+        p-title="Editar Solicitação"
+        [p-primary-action]="confirm"
+        [p-secondary-action]="close"
+        p-size="auto">
+                 <div class="po-row">
+                        <po-input 
+                                name="circuito"
+                                p-label="Circuito" 
+                                p-clean="true"
+                                p-readonly="true"
+                                [(ngModel)]="editItems.circuito"
+                                class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                        </po-input>
+
+                        <po-select #status
+                                name="status"
+                                p-label="Status"
+                                [p-required]="true"
+                                [p-options]="statusOptions"
+                                [(ngModel)]="editItems.status" 
+                                class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                        </po-select>
+
+                        <po-input 
+                                name="obs"
+                                p-label="Observações" 
+                                p-clean="true"
+                                [(ngModel)]="editItems.obsStatus"
+                                [p-minlength]="1"
+                                class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                        </po-input>
+                </div>
+
+                <div class="po-row">
+               
+                        <po-datepicker #date
+                                name="contractDate" 
+                                p-label="Data Contratação"
+                                [(ngModel)]="editItems.contractDate"
+                                (p-change)="delivPredCalc()"
+                                class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                        </po-datepicker>
+
+                        <po-select
+                                name="oempDeadLine"
+                                p-label="Prazo Operadora"
+                                [p-options]="oempDeadLineOptions"
+                                [(ngModel)]="editItems.oempDeadLine"
+                                (p-change)="delivPredCalc()"
+                                class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                        </po-select>
+                        
+                        <po-datepicker
+                                name="deliveryPredicition"
+                                p-label="Previsão de Entrega"
+                                [(ngModel)]="editItems.deliveryPrediction"
+                                class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                        </po-datepicker>
+                        
+                        
+                </div>
+                
+                <div class="po-row">
+                        
+                        <po-datepicker
+                                name="installationDate"
+                                p-label="Data de Instalação"
+                                [(ngModel)]="editItems.installationDate"
+                                class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                        </po-datepicker>
+                        
+                        <po-input 
+                                name="txInst"
+                                p-label="Taxa de Instalação" 
+                                p-clean="true"
+                                [(ngModel)]="editItems.installationFee"
+                                class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                        </po-input>
+
+                        <po-input 
+                                name="mensalidade"
+                                p-label="Taxa Mensal" 
+                                p-clean="true"
+                                [(ngModel)]="editItems.monthlyPayment"
+                                class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                        </po-input>
+                       
+                </div>
+
+                <div class="po-row">
+                        
+                        <po-select 
+                                name="contractTime"
+                                p-label="Tempo de Contrato"
+                                [p-required]="true"
+                                [p-options]="contractTimeOptions"
+                                        [(ngModel)]="editItems.contractTime" 
+                                        class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                        </po-select>
+
+                        <po-input 
+                                name="feasibilityCode"
+                                p-label="Código Viabilidade" 
+                                p-clean="true"
+                                [(ngModel)]="editItems.feasibilityCode"
+                                class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                        </po-input>
+
+                        <po-select
+                                name="oempCompany"
+                                p-label="Operadora"
+                                [p-options]="oempCompanyOptions"
+                                [(ngModel)]="editItems.oempCompany"
+                                class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+
+                        </po-select>
+
+                       
+                </div>
+
+                <div class="po-row">
+                        <po-input 
+                        name="oempDesignation"
+                        p-label="Designação Operadora" 
+                        p-clean="true"
+                        [(ngModel)]="editItems.oempDesignation"
+                        class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                </po-input>
+
+                <po-select 
+                name="responsavel"
+                p-label="Responsável"
+                [p-options]="accountableOptions"
+                [(ngModel)]="editItems.accountable"
+                class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+        </po-select>
+
+                </div>
+
+</po-modal>

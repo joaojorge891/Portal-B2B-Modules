@@ -1,0 +1,27 @@
+{
+  "name": "server-op-b2b",
+  "version": "1.0.0",
+  "description": "Servidor Nova Aplicação Portal Oi B2b",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon"
+  },
+  "author": "Joao Jorge",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jwt-simple": "^0.5.6",
+    "latest-version": "^5.1.0",
+    "moment": "^2.29.1",
+    "mongodb": "^3.6.6",
+    "mongoose": "^5.12.5",
+    "mysql": "^2.18.1",
+    "node-cron": "^3.0.0",
+    "nodemailer": "^6.6.1",
+    "pm2": "^4.5.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}

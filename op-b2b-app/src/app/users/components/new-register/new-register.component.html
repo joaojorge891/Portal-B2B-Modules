@@ -1,0 +1,190 @@
+<po-page-default 
+    p-title="Solicitação de Novo Usuário" 
+    [p-actions]="actions">
+
+    <div class="po-row">
+        <po-input
+            class="po-sm-12 po-md-6 po-lg-4 po-xl-4" 
+            name="field_name"
+            [p-auto-focus]="autoFocus"
+            p-icon="po-icon-user" 
+            p-label="* Nome Completo"
+            p-clean="true"
+            p-required="true"
+            [(ngModel)]="model.name"
+            (p-change-model)="onDisable()">
+        </po-input>
+        
+        <po-input 
+            p-label="* Matrícula"
+            name="field_user"
+            p-icon="po-icon-image-align-left"
+            [p-pattern]="inputUserPattern"
+            [p-error-pattern]="inputUserErrorPattern"
+            (p-blur)="userVerify()"
+            #user
+            p-clean="true" 
+            p-required="true"
+            [p-maxlength]="maxLengthInputMatricula"
+            [p-minlength]="maxLengthInputMatricula" 
+            [(ngModel)]="model.user"
+            (p-change-model)="onDisable()" 
+            class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+        </po-input>
+    </div>
+    <div class="po-row">
+        
+        <po-select 
+            p-label="* Empresa"
+            p-placeholder="Selecione" 
+            p-required="true"
+            [p-options]="[
+                {label: 'Oi', value: 'Oi'},
+                {label: 'MamInfo', value: 'MamInfo'},
+                {label: 'Serede', value: 'Serede'},
+                {label: 'Stein', value: 'Stein'},
+                {label: 'Telemont', value: 'Telemont'}
+            ]"
+            [(ngModel)]="model.company"
+            (p-change)="onDisable()" 
+            class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+        </po-select>
+        
+        <po-select 
+            p-label="* Área" 
+            p-placeholder="Selecione" 
+            p-required="true"
+            [p-options]="[
+            {label: 'CGS', value: 'CGS'},
+            {label: 'COR', value: 'COR'},
+            {label: 'Engenharia', value: 'Engenharia'},
+            {label: 'GAS', value: 'GAS'},
+            {label: 'Logística', value: 'Logística'},
+            {label: 'NATA', value: 'NATA'},
+            {label: 'Operações de Campo ', value: 'Campo'},
+            {label: 'Rede Básica', value: 'RedeBasica'},
+            {label: 'Rede de Acesso', value: 'RedeAcesso'},
+            {label: 'Unidade de Negócios', value: 'Comercial'},
+            {label: 'Outras', value: 'Outras'},
+            ]"
+            [(ngModel)]="model.department"
+            (p-change)="onDisable()"
+            class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+
+        </po-select>
+
+    </div>
+    
+    <div class="po-row">
+        
+        <po-select 
+            p-label="* Filial" 
+            p-placeholder="Selecione" 
+            p-required="true"
+            [p-options]="[
+                {label: 'Acre', value: 'AC'},
+                {label: 'Alagoas', value: 'AL'},
+                {label: 'Amapá', value: 'AP'},
+                {label: 'Amazonas', value: 'AM'},
+                {label: 'Bahia', value: 'BA'},
+                {label: 'Ceará', value: 'CE'},
+                {label: 'Distrito Federal', value: 'DF'},
+                {label: 'Espirito Santo', value: 'ES'},
+                {label: 'Goiás', value: 'GO'},
+                {label: 'Maranhão', value: 'MA'},
+                {label: 'Mato Grosso', value: 'MT'},
+                {label: 'Mato Grosso do Sul', value: 'MS'},
+                {label: 'Minas Gerais', value: 'MG'},
+                {label: 'Pará', value: 'PA'},
+                {label: 'Paraíba', value: 'PB'},
+                {label: 'Pernambuco', value: 'PE'},
+                {label: 'Piauí', value: 'PI'},
+                {label: 'Paraná', value: 'PR'},
+                {label: 'Rio de Janeiro', value: 'RJ'},
+                {label: 'Rio Grande do Norte', value: 'RN'},
+                {label: 'Rio Grande do Sul', value: 'RS'},
+                {label: 'Rondônia', value: 'RO'},
+                {label: 'Roraima', value: 'RR'},
+                {label: 'Santa Catarina', value: 'SC'},
+                {label: 'São Paulo', value: 'SP'},
+                {label: 'Sergipe', value: 'SE'},
+                {label: 'Tocantins', value: 'TO'}
+            ]"
+            [(ngModel)]="model.uf"
+            (p-change)="onDisable()"
+            class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+
+        </po-select>
+        
+        <po-email 
+            name="field_mail" 
+            p-label="* Email" 
+            p-clean="true"
+            #mail
+            p-required="true" 
+            p-pattern="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"
+            [p-error-pattern]="inputMailErrorPattern"
+            [(ngModel)]="model.email"
+            (p-change-model)="onDisable()"
+            (p-blur)="verifyEmail()"
+            class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+        </po-email>
+           
+    </div>
+
+    <div class="po-row">
+        
+        <po-password 
+            p-label="* Senha"
+            p-pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,8}$"
+            [p-error-pattern]="inputPwdErrorPattern"
+            [p-maxlength]="maxLengthInputMatricula"
+            [p-minlength]="maxLengthInputMatricula" 
+            p-clean="true" 
+            p-required="true" 
+            [(ngModel)]="model.password"
+            (p-change-model)="onDisable()"
+            class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+        </po-password>
+
+        
+        <po-password 
+            p-label="* Confirmar Senha" 
+            p-clean="true" 
+            [(ngModel)]="model.confirmPassword"
+            (p-change-model)="onDisable()"
+            class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+        </po-password>
+    </div>
+
+    <div class="po-row">
+        
+        <po-textarea 
+            name="textarea"
+            [p-maxlength]="maxLengthTextArea"
+            p-label="* Justificativa"
+            class="po-sm-12 po-md-12 po-lg-8 po-xl-8"
+            [(ngModel)]="model.reason"
+            (p-change-model)="onDisable()">
+        </po-textarea>
+        <div class="po-row">
+            (*) Preenchimento Obrigatório
+        </div>
+    </div>
+    <div class="po-row">
+
+        <po-button 
+            p-label="Cancelar"
+            class="po-sm-12 po-md-4 po-lg-2 po-xl-2 po-offset-lg-4"
+            (p-click)="cancelar()">
+        </po-button>
+    
+        <po-button  
+            p-label="Enviar"
+            [p-disabled]="isDisabled"
+            class="po-sm-12 po-md-4 po-lg-2 po-xl-2 po-offset-lg-0" (p-click)="enviar()">
+        </po-button>
+
+    </div>
+
+</po-page-default>

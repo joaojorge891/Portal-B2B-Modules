@@ -1,0 +1,7 @@
+.flex{
+    display: flex;
+}
+
+.container{
+    max-width: 400px;
+}

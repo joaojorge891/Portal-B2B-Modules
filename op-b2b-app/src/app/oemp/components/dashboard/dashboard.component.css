@@ -1,0 +1,102 @@
+.executionLabel{
+    color:rgb(158, 40, 32);
+ }
+ 
+ .executionCounter{
+     color:rgb(158, 40, 32);
+     font-weight: bold;
+  }
+ 
+ .newLabel{
+     color: rgb(124, 124, 27)
+ }
+ 
+ .newCounter{
+     color: rgb(124, 124, 27);
+     font-weight: bold;
+     
+ }
+ 
+ .totalLabel{
+     color: rgb(57, 41, 146);
+ }
+ 
+ .totalCounter{
+     color: rgb(57, 41, 146);
+     font-weight: bold;
+ }
+ 
+ .completedLabel{
+     color:rgb(32, 158, 32);
+  }
+ 
+  .completedCounter{
+     color:rgb(32, 158, 32);
+     font-weight: bold;
+  }
+ 
+  .excelButton{
+      margin-bottom: 10px;
+    
+  }
+
+  .dynamicSearch{
+     height: 70px;
+     
+  }
+
+  .po-wrapper{
+      margin: 0 auto;
+  }
+ 
+
+
+
+  /* Smaller than standard 960 (devices and browsers) */
+@media only screen and (max-width: 959px) {
+    .totalCounter{
+        font-size: 16px;
+    }
+    .totalLabel{
+        font-size: 16px;
+    }
+}
+
+/* Tablet Portrait size to standard 960 (devices and browsers) */
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+    p{
+        font-size: 12px;
+    }
+}
+
+/* All Mobile Sizes (devices and browser) */
+@media only screen and (max-width: 767px) {
+    p{
+        font-size: 10px;
+    }
+}
+
+/* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+    .totalLabel{
+        font-size: 10px;
+    }
+    .newLabel{
+        font-size: 10px;
+    }
+    .executionLabel{
+        font-size: 10px;
+    }
+    .completedLabel{
+        font-size: 10px;
+    }
+}
+
+/* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
+@media only screen and (max-width: 479px) {
+    p{
+        font-size: 7px;
+    }
+}
+  
+ 
