@@ -50,12 +50,12 @@
                         [p-literals]="customLiterals"
                         (p-advanced-search)="onAdvancedSearch($event)"
                         >
-                        <div>
-                                <div class="excelButton">
-                                        <po-button p-icon="fas fa-file-excel" p-label="Exportar" (p-click)="exportToXlsx()" ></po-button>
-                                </div>
-                                
+                        
+                        <div class="excelButton">
+                                <po-button p-icon="fas fa-file-excel" p-label="Exportar" (p-click)="exportToXlsx()" ></po-button>
                         </div>
+                                
+                        
                         <po-table
                         [p-height]="400"
                         [p-actions]="actions"

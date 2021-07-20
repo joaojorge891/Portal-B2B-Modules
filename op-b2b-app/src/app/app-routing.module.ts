@@ -19,6 +19,7 @@ import { ValidateComponent } from './users/components/validate/validate.componen
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
+  // { path: '', component: HomeComponent },
   { path: 'users/reset-pwd/:id/:token', component: ResetPwdComponent },
   { path: 'users/new-register', component: NewRegisterComponent },
  

@@ -4,6 +4,7 @@ const closedModel = require('../schemas/closedOemp.schema')
 const oempSchema = mongoose.model('os_abertas', model.OempSchema, 'os_abertas')
 const closedOempSchema = mongoose.model('os_fechadas', closedModel.closedOempSchema, 'os_fechadas')
 const fs = require('fs')
+const { error } = require('console')
 
 
 exports.save = async function (order) {
@@ -24,33 +25,59 @@ exports.save = async function (order) {
 exports.advancedFilter = async function (filters) {
     try {
         let doc = await oempSchema.find(filters)
-        object = doc
+        if (doc !== null && doc !== undefined) {
+            object = doc
+        } else {
+            object = { status: 'fail', error: 'Erro: ' + err.message }
+        }
     } catch (err) {
-        object = { status: 'fail', error: 'Erro: ' + err.message }
+        throw new Error(err)
     }
     return object
 }
 
 exports.fullFilter = async function () {
-    let totalOrders = await oempSchema.find({ status: 'Em execução' })
-    let counter = (totalOrders.length).toString()
-    return counter
-
+    try {
+        let doc = await oempSchema.find({ status: 'Em execução' })
+        if (doc !== null && doc !== undefined) {
+            object = (totalOrders.length).toString()
+        } else {
+            object = { status: 'fail', error: 'Erro: ' + err.message }
+        }
+    } catch (err) {
+        throw new Error(err)
+    }
+    return object
 }
 
 exports.newFilter = async function () {
-    let newOrders = await oempSchema.find({ status: 'Novo' })
-    let counter = (newOrders.length).toString()
-    return counter
-
+    try {
+        let doc = await oempSchema.find({ status: 'Novo' })
+        if (doc !== null && doc !== undefined) {
+            object = (doc.length).toString()
+        } else {
+            object = { status: 'fail', error: 'Erro: ' + err.message }
+        }
+    } catch (err) {
+        throw new Error(err)
+    }
+    return object
 }
 
 exports.geralFilter = async function () {
-    let newOrders = await oempSchema.find({})
-    let counter = (newOrders.length).toString()
-    return counter
-
+    try {
+        let doc = await oempSchema.find({})
+        if (doc !== null && doc !== undefined) {
+            object = (doc.length).toString()
+        } else {
+            object = { status: 'fail', error: 'Erro: ' + err.message }
+        }
+    } catch (err) {
+        throw new Error(err)
+    }
+    return object
 }
+
 
 exports.filter = async function (parameters) {
 
@@ -85,96 +112,111 @@ exports.filter = async function (parameters) {
 
 
 exports.findById = async function (id) {
-
-    let object = null
-    let doc = await oempSchema.findById(id)
-    if (doc != null) {
-        object = doc
-    } else {
-        object = { status: 'not_found' }
-
-
+    try {
+        let doc = await oempSchema.findById(id)
+        if (doc != null) {
+            object = doc
+        } else {
+            object = { status: 'not_found' }
+        }
+    } catch (err) {
+        throw new Error(err)
     }
     return object
-
-
 }
 
 exports.findByCircuit = async function (circuito) {
-    let filter = {}
-    filter['circuito'] = { '$eq': circuito }
-    let serviceOrder = await oempSchema.find(filter)
-    return (serviceOrder)
+    try {
+        let filter = {}
+        filter['circuito'] = { '$eq': circuito }
+        let doc = await oempSchema.find(filter)
+        if (doc !== null && doc !== undefined) {
+            object = doc
+        } else {
+            object = { status: 'fail', error: 'Erro: ' + err.message }
+        }
+    } catch (err) {
+        throw new Error(err)
+    }
+    return object
 
 }
 
-exports.totalFilter = async function () {
-    let serviceOrder = await oempSchema.find({}).select(
-        {
-            '_id': 0,
-            'TempoVida': 1,
-            'TempoPosto': 1,
-            'geo': 1,
-            'uf': 1,
-            'protocolo': 1,
-            'osCrm': 1,
-            'circuito': 1,
-            'localidade': 1,
-            'produto': 1,
-            'velocidade': 1,
-            'servico': 1,
-            'oempCompany': 1,
-            'pove': 1,
-            'pend': 1,
-            'descricao': 1,
-            'gerencia': 1,
-            'atividade': 1,
-            'conglomerado': 1,
-            'projeto': 1,
-            'NomedoCliente': 1,
-            'segm': 1,
-            'obsAbertura': 1,
-            'obsPend': 1,
-            'status': 1,
-            'obsStatus': 1,
-            'contractDate': 1,
-            'deliveryPrediction': 1,
-            'accountable': 1
-        }
-    )
-        .sort({ tempoPosto: -1 })
-    return (serviceOrder)
+exports.totalFilter = function () {
+    let promise = new Promise(function (resolve, reject) {
+        oempSchema.find({}).select(
+            {
+                '_id': 0,
+                'TempoVida': 1,
+                'TempoPosto': 1,
+                'geo': 1,
+                'uf': 1,
+                'protocolo': 1,
+                'osCrm': 1,
+                'circuito': 1,
+                'localidade': 1,
+                'produto': 1,
+                'velocidade': 1,
+                'servico': 1,
+                'oempCompany': 1,
+                'pove': 1,
+                'pend': 1,
+                'descricao': 1,
+                'gerencia': 1,
+                'atividade': 1,
+                'conglomerado': 1,
+                'projeto': 1,
+                'NomedoCliente': 1,
+                'segm': 1,
+                'obsAbertura': 1,
+                'obsPend': 1,
+                'status': 1,
+                'obsStatus': 1,
+                'contractDate': 1,
+                'deliveryPrediction': 1,
+                'accountable': 1
+            }
+        )
+            .sort({ tempoPosto: -1 })
+            .then(doc => {
+                object = doc
+                resolve(object)
+            }
+            ).catch(error)
+    })
+    return promise
 }
 
 exports.getClosedByDate = async function (req) {
-    let serviceOrder = await closedOempSchema.find({
-        DatadeFechamento: { $gte: req.start, $lte: req.end }
+    let promise = new Promise(function (resolve, reject) {
+        closedOempSchema.find({
+            DatadeFechamento: { $gte: req.start, $lte: req.end }
+        }).sort({ DatadeFechamento: -1 })
+            .then(doc => {
+                object = doc
+                resolve(object)
+            }).catch(error)
+
     })
-        .sort({ DatadeFechamento: -1 })
-    if (serviceOrder != null) {
-        object = serviceOrder
-    } else {
-        object = { status: 'not_found' }
-        return (object)
-    }
+    return promise
 }
+
 exports.findById = async function (id) {
+    try {
+        let doc = await oempSchema.findById(id)
+        if (doc !== null && doc !== undefined) {
+            object = doc
+        } else {
+            object = { status: 'not_found' }
+        }
 
-    let object = null
-    let doc = await oempSchema.findById(id)
-    if (doc != null) {
-        object = doc
-    } else {
-        object = { status: 'not_found' }
-
-
+    } catch (err) {
+        throw new Error(err)
     }
     return object
 
 
 }
-
-
 
 exports.filterAll = function (req) {
     let promise = new Promise(function (resolve, reject) {
@@ -211,7 +253,7 @@ exports.filterAll = function (req) {
                 object.items = doc
                 resolve(object)
             }
-            )
+            ).catch(error)
     })
 
     return promise
@@ -252,7 +294,7 @@ exports.findAllbyPage = function (req) {
                 object.items = doc
                 resolve(object)
             }
-            )
+            ).catch(error)
     })
 
     return promise
@@ -295,7 +337,7 @@ exports.loadOrdersByStatus = function (req) {
                 object.items = doc
                 resolve(object)
             }
-            )
+            ).catch(error)
 
     })
 
@@ -338,7 +380,7 @@ exports.findByStatus = function (req) {
                     object.items = doc
                     resolve(object)
                 }
-                )
+                ).catch(error)
         }
 
     })
