@@ -19,20 +19,13 @@ module.exports = {
 
     },
 
-    delete: controller.delete,
-
-    findById: function (req, res) {
-        let document = controller.findById(req.params.id)
-        document.then(result => res.send(result))
-    },
-
     findByCircuit: function (req, res) {
         let document = controller.findByCircuit(req.query.circuito)
         document.then(result => res.send(result))
     },
 
     findByStatus: function (req, res) {
-        let document = controller.findByStatus(req.query.status)
+        let document = controller.findByStatus(req.query)
         document.then(result => res.send(result))
     },
 
@@ -57,8 +50,12 @@ module.exports = {
         document.then(result => res.send(result))
     },
 
-    totalFilter: function (req, res) {
-        let document = controller.totalFilter(req)
+    getTotalOpen: function (req, res) {
+        let document = controller.getTotalOpen(req)
+        document.then(result => res.send(result))
+    },
+    getCounters: function (req, res) {
+        let document = controller.getCounters(req)
         document.then(result => res.send(result))
     },
 
@@ -94,13 +91,10 @@ module.exports = {
 
     loadOrdersByStatus: function (req, res) {
         let document = controller.loadOrdersByStatus(req)
-
         document.then(result => {
             res.send(result)
-
-
         });
-    },
+    }
 
 }
 

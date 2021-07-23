@@ -142,7 +142,7 @@ exports.findByCircuit = async function (circuito) {
 
 }
 
-exports.totalFilter = function () {
+exports.getTotalOpen = function () {
     let promise = new Promise(function (resolve, reject) {
         oempSchema.find({}).select(
             {
@@ -187,11 +187,76 @@ exports.totalFilter = function () {
     return promise
 }
 
+exports.getCounters = async function () {
+
+    try {
+        object = await oempSchema.aggregate([
+            {
+                "$group": {
+                    _id: "$status",
+                    count: {
+                        $sum: 1,
+                    }
+                }
+            }
+        ])
+
+    } catch (e) {
+        throw new Error('Erro na atualização dos contadores!')
+    } 
+    return object
+}
+
 exports.getClosedByDate = async function (req) {
     let promise = new Promise(function (resolve, reject) {
         closedOempSchema.find({
             DatadeFechamento: { $gte: req.start, $lte: req.end }
-        }).sort({ DatadeFechamento: -1 })
+        }).select(
+            {
+                'fonte': 1,
+                'status': 1,
+                'geo': 1,
+                'protocolo': 1,
+                'osCrm': 1,
+                'uf': 1,
+                'uf_b': 1,
+                'gra_b': 1,
+                'estacao_b': 1,
+                'loc_b': 1,
+                'localidade': 1,
+                'circuito': 1,
+                'acesso': 1,
+                'circuitoAssociado': 1,
+                'produto': 1,
+                'tipoOS': 1,
+                'tipoR1': 1,
+                'servico': 1,
+                'velocidade': 1,
+                'vel': 1,
+                'NomedoCliente': 1,
+                'Conglomerado': 1,
+                'endereco': 1,
+                'DatadeAbertura': 1,
+                'DatadeFechamento': 1,
+                'TMI_Exp': 1,
+                'TMI_Op': 1,
+                'TMI_Ger': 1,
+                'segm': 1,
+                'estacao': 1,
+                'linha': 1,
+                'atendimento': 1,
+                'TecnologiaAcesso': 1,
+                'ModelodoRoteador': 1,
+                'ItxIsento': 1,
+                'pove': 1,
+                'cnpj': 1,
+                'cnpjRaiz': 1,
+                'ExecutivoAtencao': 1,
+                'GerentedeEntrega': 1,
+                'GestordeEntrega': 1,
+                'obsAbertura': 1,
+                'obsFechamento': 1
+            }).sort({ DatadeFechamento: -1 })
             .then(doc => {
                 object = doc
                 resolve(object)
@@ -301,7 +366,6 @@ exports.findAllbyPage = function (req) {
 }
 
 exports.loadOrdersByStatus = function (req) {
-
     let promise = new Promise(function (resolve, reject) {
         let page = 0
         let object = {
@@ -347,17 +411,22 @@ exports.loadOrdersByStatus = function (req) {
 
 exports.findByStatus = function (req) {
     let promise = new Promise(function (resolve, reject) {
+        let page = 0
         let object = {
             items: [],
             hasNext: false
         }
-        if (req === 'completedCounter') {
+
+        if (req.page != null) {
+            page = Number(req.page) || 0
+        }
+        if (req.status === 'completedCounter') {
 
             const completedLastUpdate = fs.readFileSync('completedLastUpdate.txt', 'utf8')
             object = { completedLastUpdate }
             resolve(object)
         } else {
-            oempSchema.find({ status: req })
+            oempSchema.find({ status: req.status })
                 .select(
                     {
                         '_id': 1,
@@ -376,6 +445,8 @@ exports.findByStatus = function (req) {
                     }
                 )
                 .sort({ tempoPosto: -1 })
+                .limit(30)
+                .skip(page * 30)
                 .then(doc => {
                     object.items = doc
                     resolve(object)

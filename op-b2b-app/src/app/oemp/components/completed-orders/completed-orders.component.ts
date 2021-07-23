@@ -88,7 +88,7 @@ export class CompletedOrdersComponent implements OnInit {
     try {
 
       let status = 'completed'
-      this.service.filterByStatus(status).subscribe(
+      this.service.filterByStatus(status, this.page).subscribe(
         (results: any) => {
           this.items = results.items
           this.loading = !this.loading
@@ -108,20 +108,20 @@ export class CompletedOrdersComponent implements OnInit {
     this.showMoreDisabled = false
     setTimeout(() => {
       this.page++
-      this.loadCompletedOrders(this.page, 'novo')
+      this.loadNewServiceOrders(this.page, 'completed')
       this.isLoading = false
     }, 1000)
 
   }
 
-  private loadCompletedOrders(page: number, status: string) {
+  private loadNewServiceOrders(page: number, status: string) {
     this.subscriptions$.push(this.service.loadOrdersByStatus(page, status).subscribe(
       result => this.items = this.items.concat(result.items)
     ))
   }
 
   onBack() {
-    this.router.navigate(['/home/oemp'])
+    this.router.navigate(['/oemp'])
   }
 
   exportClosedToXlsx(): void {
@@ -129,8 +129,8 @@ export class CompletedOrdersComponent implements OnInit {
     try {
       this.service.getClosedByDate(this.dates).subscribe(
         (result: any) => {
-          if (result !== null) {
-            this.closedOrdersByPeriod = result 
+          if (result !== null && result !== undefined && result.length !== 0) {
+            this.closedOrdersByPeriod = result
             this.excelService.exportAsExcelFile(this.closedOrdersByPeriod, 'fechadas')
           } else {
             this.poDatePicker.focus()
@@ -148,8 +148,8 @@ export class CompletedOrdersComponent implements OnInit {
   }
 
   onChangeDate(dates: any) {
-   this.dates = dates
-   
+    this.dates = dates
+
   }
 
 }

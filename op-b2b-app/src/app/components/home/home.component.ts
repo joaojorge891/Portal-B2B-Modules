@@ -8,11 +8,11 @@ import { PoToolbarAction, PoToolbarProfile } from '@po-ui/ng-components';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  menuArr = [
-    // { label: 'Home', link: '/home' },
-    { label: 'OEMP', link: '/home/oemp', icon: 'po-icon po-icon-company', shortLabel: 'OEMP' },
-    { label: 'Logout', action: this.logout.bind(this), icon: 'po-icon-exit', shortLabel: 'Logout' }
-  ];
+  // menuArr = [
+  //   // { label: 'Home', link: '/home' },
+  //   { label: 'OEMP', link: '/home/oemp', icon: 'po-icon po-icon-company', shortLabel: 'OEMP' },
+  //   { label: 'Logout', action: this.logout.bind(this), icon: 'po-icon-exit', shortLabel: 'Logout' }
+  // ];
 
   profile: PoToolbarProfile = {
     avatar: './assets/user-icon.png',
@@ -33,15 +33,15 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.router.navigate(['/home/oemp'])
     // if (this.validateUser() === 'user') {
     //   this.router.navigateByUrl('')
     // }
   }
 
   public logout() {
-    localStorage.setItem('current_user', '')
-    this.router.navigateByUrl('')
+    // localStorage.setItem('current_user', '')
+    // this.router.navigateByUrl('')
 
   }
 

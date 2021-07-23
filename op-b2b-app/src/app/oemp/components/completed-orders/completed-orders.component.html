@@ -28,7 +28,7 @@
     </div>
     
         <po-table
-            [p-height]="400"
+            [p-height]="500"
             class="po-sm-12 po-md-12 po-lg-12 po-xl-4"
             [p-items]="items" 
             [p-columns]="columns" 
@@ -38,6 +38,7 @@
             [p-loading]="loading"
             p-container="shadow"
             [p-hide-text-overflow]="true"
+            (p-show-more)="onShowMore()"
             [p-infinite-scroll]="true"
             [p-infinite-scroll-distance]="90">
         </po-table>

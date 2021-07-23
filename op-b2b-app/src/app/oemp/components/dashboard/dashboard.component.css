@@ -1,5 +1,6 @@
 .executionLabel{
     color:rgb(158, 40, 32);
+    
  }
  
  .executionCounter{
@@ -41,10 +42,10 @@
     
   }
 
-  .dynamic{
+  /* .dynamic{
      height: 60px;
      
-  }
+  } */
 
   .po-wrapper{
       margin: 0 auto;

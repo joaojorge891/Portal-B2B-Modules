@@ -1,4 +1,4 @@
-<po-page-default p-title="Dashboard OEMP">
+<po-page-default p-title="DashBoard OEMP">
     <div class="po-row">
         <po-widget
             class ="po-sm-12 po-md-3 po-lg-3 po-xl-4"
@@ -44,35 +44,33 @@
                 <po-page-dynamic-search class="dynamic"
                         (p-quick-search)="onQuickSearch($event)"
                         (p-change-disclaimers)="onChangeDisclaimers($event)"
-                        [p-filters]="filters"
                         p-title="Todas as Solicitações" 
                         [p-quick-search-width]="400"
                         [p-literals]="customLiterals"
+                        [p-load]="loadSearchOptions.bind(this)"
                         (p-advanced-search)="onAdvancedSearch($event)"
                         >
                         
                         <div class="excelButton">
                                 <po-button p-icon="fas fa-file-excel" p-label="Exportar" (p-click)="exportToXlsx()" ></po-button>
                         </div>
-                                
-                        
                         <po-table
-                        [p-height]="400"
-                        [p-actions]="actions"
-                        [p-items]="items" 
-                        [p-columns]="columns" 
-                        [p-striped]="true"
-                        [p-sort]="true"
-                        [p-auto-collapse]="true"
-                        [p-hide-detail]="true"
-                        p-container="shadow"
-                        [p-loading]="loading"
-                        [p-infinite-scroll]="true"
-                        [p-infinite-scroll-distance]="90"
-                        (p-show-more)="onShowMore()"
-                        [p-hide-text-overflow]="true"
-                        [p-show-more-disabled]="showMoreDisabled" 
-                        [p-loading-show-more]="isLoading">
+                                [p-height]="400"
+                                [p-actions]="actions"
+                                [p-items]="items" 
+                                [p-columns]="columns" 
+                                [p-striped]="true"
+                                [p-sort]="true"
+                                [p-auto-collapse]="true"
+                                [p-hide-detail]="true"
+                                p-container="shadow"
+                                [p-loading]="loading"
+                                [p-infinite-scroll]="true"
+                                [p-infinite-scroll-distance]="90"
+                                (p-show-more)="onShowMore()"
+                                [p-hide-text-overflow]="true"
+                                [p-show-more-disabled]="showMoreDisabled" 
+                                [p-loading-show-more]="isLoading">
                 </po-table>
                 </po-page-dynamic-search>
        

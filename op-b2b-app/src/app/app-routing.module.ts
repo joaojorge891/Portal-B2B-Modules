@@ -18,33 +18,46 @@ import { ValidateComponent } from './users/components/validate/validate.componen
 
 
 const routes: Routes = [
-  { path: '', component: LoginComponent },
-  // { path: '', component: HomeComponent },
-  { path: 'users/reset-pwd/:id/:token', component: ResetPwdComponent },
-  { path: 'users/new-register', component: NewRegisterComponent },
- 
-  {
-    path: 'home', component: HomeComponent, children: [
-      { path: 'oemp', component: DashboardComponent },
-      { path: 'oemp/new-orders', component: NewOrdersComponent },
-      { path: 'oemp/new-orders/:id', component: NewOrdersComponent },
-      { path: 'oemp/exec-orders', component: ExecOrdersComponent },
-      { path: 'oemp/exec-orders/:id', component: ExecOrdersComponent },
-      { path: 'oemp/completed-orders', component: CompletedOrdersComponent },
-    ]
-  },
-  {
-    path: 'home-admin', component: HomeAdminComponent, children: [
-      { path: 'users', component: UserDashboardComponent },
-      { path: 'users/new', component: NewUserComponent },
-      { path: 'users/update/:id', component: UpdateUserComponent },
-      { path: 'users/no-validate/:id', component: ValidateComponent },
-    ]
-  }
+  // { path: '', component: LoginComponent },
+
+  // { path: 'users/reset-pwd/:id/:token', component: ResetPwdComponent },
+  // { path: 'users/new-register', component: NewRegisterComponent },
+
+
+
+  { path: '', component: DashboardComponent },
+  { path: 'oemp', component: DashboardComponent },
+  { path: 'oemp/new-orders', component: NewOrdersComponent },
+  { path: 'oemp/new-orders/:id', component: NewOrdersComponent },
+  { path: 'oemp/exec-orders', component: ExecOrdersComponent },
+  { path: 'oemp/exec-orders/:id', component: ExecOrdersComponent },
+  { path: 'oemp/completed-orders', component: CompletedOrdersComponent },
+
+
+
+
+  // {
+  //   path: 'home', component: HomeComponent, children: [
+  //     { path: 'oemp', component: DashboardComponent },
+  //     { path: 'oemp/new-orders', component: NewOrdersComponent },
+  //     { path: 'oemp/new-orders/:id', component: NewOrdersComponent },
+  //     { path: 'oemp/exec-orders', component: ExecOrdersComponent },
+  //     { path: 'oemp/exec-orders/:id', component: ExecOrdersComponent },
+  //     { path: 'oemp/completed-orders', component: CompletedOrdersComponent },
+  //   ]
+  // },
+  // {
+  //   path: 'home-admin', component: HomeAdminComponent, children: [
+  //     { path: 'users', component: UserDashboardComponent },
+  //     { path: 'users/new', component: NewUserComponent },
+  //     { path: 'users/update/:id', component: UpdateUserComponent },
+  //     { path: 'users/no-validate/:id', component: ValidateComponent },
+  //   ]
+  // }
 ]
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

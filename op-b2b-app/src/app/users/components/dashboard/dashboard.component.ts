@@ -94,7 +94,6 @@ export class UserDashboardComponent extends AccessValidate implements OnInit {
 
     },
       (error) => {
-        console.log(error)
         this.notification.error(error)
       })
   }

@@ -63,10 +63,10 @@ function MysqlImportOsAbertas() {
 
   const mysqlCon = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: '89118642',
+    user: 'icduser',
+    password: '102030',
     port: 3306,
-    database: 'os_abertas'
+    database: 'opb2b'
   })
 
   mysqlCon.connect()

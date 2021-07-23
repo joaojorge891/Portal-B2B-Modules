@@ -21,7 +21,7 @@ app.use(cors())
 
 appRouter.appRouter(app)
 
-// app.use(express.static('static'))
+app.use(express.static('static'))
 
 app.listen(port, () => {
   console.log(`OP-B2B Server is running at http://localhost:${port}...`)

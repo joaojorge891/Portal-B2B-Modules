@@ -175,7 +175,7 @@ export class NewOrdersComponent implements OnInit {
     try {
 
       let status = 'new'
-      this.service.filterByStatus(status).subscribe(
+      this.service.filterByStatus(status, this.page).subscribe(
         (results: any) => {
           this.items = results.items
           this.loading = !this.loading
@@ -345,7 +345,7 @@ export class NewOrdersComponent implements OnInit {
   }
 
   onBack() {
-    this.router.navigate(['/home/oemp'])
+    this.router.navigate(['/oemp'])
   }
 
 }

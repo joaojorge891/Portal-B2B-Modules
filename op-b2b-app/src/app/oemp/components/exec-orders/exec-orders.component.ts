@@ -179,7 +179,7 @@ export class ExecOrdersComponent implements OnInit {
     try {
 
       let status = 'execution'
-      this.service.filterByStatus(status).subscribe(
+      this.service.filterByStatus(status, this.page).subscribe(
         (results: any) => {
           this.items = results.items
           this.loading = !this.loading
@@ -319,7 +319,7 @@ export class ExecOrdersComponent implements OnInit {
     this.showMoreDisabled = false
     setTimeout(() => {
       this.page++
-      this.loadNewServiceOrders(this.page, 'new')
+      this.loadNewServiceOrders(this.page, 'execution')
       this.isLoading = false
     }, 1000)
 
@@ -343,7 +343,7 @@ export class ExecOrdersComponent implements OnInit {
   }
 
   onBack() {
-    this.router.navigate(['/home/oemp'])
+    this.router.navigate(['/oemp'])
   }
 
 }

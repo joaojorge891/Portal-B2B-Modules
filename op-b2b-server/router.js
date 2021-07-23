@@ -54,36 +54,37 @@ exports.appRouter = function (app) {
     //########reservado rotas do oemp module########
 
     router.route('/oemp')
-        .get(jwtValidate, oempRoute.filter)
-        .post(jwtValidate, oempRoute.save)
+        .get(oempRoute.filter)
+        .post(oempRoute.save)
 
-    router.route('/oemp/all')
-        .get(jwtValidate, oempRoute.findAllbyPage)
-        .post(jwtValidate, oempRoute.save)
+    router.route('/oemp/allbypage')
+        .get(oempRoute.findAllbyPage)
+        .post(oempRoute.save)
 
     router.route('/oemp/filter')
-        .get(jwtValidate, oempRoute.findByStatus)
+        .get(oempRoute.findByStatus)
 
-    router.route('/oemp/load')
-        .get(jwtValidate, oempRoute.loadOrdersByStatus)
+    router.route('/oemp/bystatus')
+        .get(oempRoute.loadOrdersByStatus)
 
     router.route('/oemp/byid/:id')
-        .get(jwtValidate, oempRoute.findById)
+        .get(oempRoute.findById)
 
     router.route('/oemp/search')
-        .get(jwtValidate, oempRoute.findByCircuit)
+        .get(oempRoute.findByCircuit)
 
-        router.route('/oemp/exportclosed')
-        .post(jwtValidate, oempRoute.getClosedByDate)
+    router.route('/oemp/exportclosed')
+        .post(oempRoute.getClosedByDate)
 
     router.route('/oemp/new')
-        .get(jwtValidate, oempRoute.newFilter)
+        .get(oempRoute.newFilter)
 
     router.route('/oemp/advancedsearch')
-        .post(jwtValidate, oempRoute.advancedFilter)
+        .post(oempRoute.advancedFilter)
 
-    router.route('/oemp/total-counter')
-        .get(jwtValidate, oempRoute.totalFilter)
+    router.route('/oemp/exportopen')
+        .get(oempRoute.getTotalOpen)
 
-
+    router.route('/oemp/counters')
+        .get(oempRoute.getCounters)
 }

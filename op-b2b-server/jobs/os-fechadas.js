@@ -23,7 +23,6 @@ function removeCompleted() {
   function removeMongo(results, openMongoCollection, closedMongoCollection) {
     const promises = []
     const mainPromise = new Promise((resolve, reject) => {
-
       results.forEach(function (item) {
         const secondaryPromise = new Promise((resolve, reject) => {
           openMongoCollection.find({ protocolo: item.protocolo, status: 'completed' }).toArray(async function (error, data) {
@@ -62,11 +61,18 @@ function removeCompleted() {
   db.on('error', console.error.bind(console, 'Mongo DB Connection error:'))
 
   const mysqlCon = mysql.createConnection({
+
+    // host: 'localhost',
+    // user: 'root',
+    // password: '89118642',
+    // port: 3306,
+    // database: 'os_fechadas'
+
     host: 'localhost',
-    user: 'root',
-    password: '89118642',
+    user: 'icduser',
+    password: '102030',
     port: 3306,
-    database: 'os_fechadas'
+    database: 'opb2b'
   })
 
   mysqlCon.connect()
