@@ -37,16 +37,19 @@ function MysqlImportOsAbertas() {
               item.status = 'new'
               item.lastUpdate = new Date()
               await mongoCollection.insertOne(item)
-              resolve(true)
+              
             }
+            
             else {
               const date = new Date()
               const formatedDate = ((date.getDate() )) + "/" + ((date.getMonth() + 1)) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes(); 
               await mongoCollection.updateOne({cod:item.cod}, {$set: {lastUpdate: formatedDate}})
               // const lastUpdate = formatedDate
               // fs.writeFileSync('lastUpdate.txt', lastUpdate);
-              resolve(true)
+              
             }
+
+            resolve(true)
 
           })
         })
@@ -67,6 +70,12 @@ function MysqlImportOsAbertas() {
     password: '102030',
     port: 3306,
     database: 'opb2b'
+
+    // host: 'localhost',
+    // user: 'root',
+    // password: '89118642',
+    // port: 3306,
+    // database: 'os_abertas'
   })
 
   mysqlCon.connect()
