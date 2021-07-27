@@ -15,26 +15,17 @@ function handleClosedOrders() {
           mysqlConnection.query(sql, async function (error, data) {
             if (error) throw new Error('Erro na coleta de OS fechadas no Mysql...')
             if (data !== undefined && data !== null && data.length > 0) {
-              data.forEach(async function (content) {
-                await openMongoCollection.deleteOne({ protocolo: item.protocolo })
-                await closedMongoCollection.insertOne(content)
-                const date = new Date()
-                const formatedDate = ((date.getDate())) + "/" + ((date.getMonth() + 1)) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
-                fs.writeFileSync('completedLastUpdate.txt', formatedDate)
-              })
-
-            } else {
-              const date = new Date()
-              const formatedDate = ((date.getDate())) + "/" + ((date.getMonth() + 1)) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
-              fs.writeFileSync('completedLastUpdate.txt', formatedDate)
-
+              await openMongoCollection.deleteOne({ protocolo: item.protocolo })
+              await closedMongoCollection.insertMany(data)
             }
             resolve(true)
           })
         })
         promises.push(secondaryPromise)
-
       })
+      const date = new Date()
+      const formatedDate = ((date.getDate())) + "/" + ((date.getMonth() + 1)) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
+      fs.writeFileSync('completedLastUpdate.txt', formatedDate)
       Promise.all(promises).then(success => resolve('closed base updated successfully!'))
     })
     return mainPromise
@@ -47,17 +38,17 @@ function handleClosedOrders() {
 
   const mysqlCon = mysql.createConnection({
 
-    // host: 'localhost',
-    // user: 'root',
-    // password: '89118642',
-    // port: 3306,
-    // database: 'os_fechadas'
-
     host: 'localhost',
-    user: 'icduser',
-    password: '102030',
+    user: 'root',
+    password: '89118642',
     port: 3306,
-    database: 'opb2b'
+    database: 'os_fechadas'
+
+    // host: 'localhost',
+    // user: 'icduser',
+    // password: '102030',
+    // port: 3306,
+    // database: 'opb2b'
   })
 
   mysqlCon.connect()
