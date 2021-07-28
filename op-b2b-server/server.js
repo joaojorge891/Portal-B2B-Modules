@@ -6,7 +6,7 @@ const appRouter = require('./router')
 const port = 8081
 const ManagerCron = require('./manager-cron')
 
-mongoose.connect('mongodb://localhost/op-b2b-db', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost/op-b2b-db', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
 
 const db = mongoose.connection
 
