@@ -4,7 +4,8 @@ const execUpdateOpenedBase = require("./jobs/updateOpenedBase")
 
 class ManagerCron {
   constructor() {
-    this.jobs = [MysqlImportOsAbertas, handleClosedOrders, execUpdateOpenedBase]
+    // this.jobs = [MysqlImportOsAbertas, handleClosedOrders, execUpdateOpenedBase]
+    this.jobs = [MysqlImportOsAbertas, handleClosedOrders]
     
   }
 

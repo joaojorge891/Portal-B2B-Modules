@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { PoDialogService, PoModalAction, PoModalComponent, PoNotificationService, PoSelectOption, PoTableAction, PoTableColumn, PoTableComponent } from '@po-ui/ng-components';
+import { PoDialogService, PoModalAction, PoModalComponent, PoMultiselectOption, PoNotificationService, PoSelectOption, PoTableAction, PoTableColumn, PoTableComponent } from '@po-ui/ng-components';
 import { PoPageDynamicSearchLiterals, PoPageDynamicSearchOptions } from '@po-ui/ng-templates';
 import * as moment from 'moment';
 
@@ -57,6 +57,8 @@ export class DashboardComponent implements OnInit {
 
   accountableOptions: Array<any> = this.service.getAccountableOptions()
 
+  managementOptions: Array<any> = this.service.getManagementOptions()
+
   confirm: PoModalAction = {
     action: () => {
       this.proccessOrder()
@@ -77,9 +79,13 @@ export class DashboardComponent implements OnInit {
     searchPlaceholder: 'Pesquisa por circuito'
   }
 
-  private statusFilterOptions: Array<PoSelectOption> = []
+  private statusFilterOptions: Array<PoMultiselectOption> = []
 
-  private respOptions: Array<PoSelectOption> = []
+  private respOptions: Array<PoMultiselectOption> = []
+
+  private AdvSearchOempCompanyOptions: Array<PoMultiselectOption> = []
+
+  private AdvSearchManagementOptions: Array<PoMultiselectOption> = []
 
   private subscriptions$: Array<Subscription> = []
 
@@ -88,6 +94,7 @@ export class DashboardComponent implements OnInit {
   actions: Array<PoTableAction> = [
     { action: this.onForm.bind(this), icon: 'po-icon-edit', label: '' }
   ]
+
 
   @ViewChild(PoModalComponent, { static: true }) poModal!: PoModalComponent
   @ViewChild(PoTableComponent, { static: true }) poTable!: PoTableComponent
@@ -178,7 +185,6 @@ export class DashboardComponent implements OnInit {
 
 
   private onForm(order: any) {
-
     this.openModal()
     this.service.filterById(order._id).subscribe(
       (result: any) => {
@@ -190,6 +196,7 @@ export class DashboardComponent implements OnInit {
           this.isReadOnly = false
           this.confirm.disabled = false
         }
+
       }
 
     ), (error: any) => this.notification.error(error)
@@ -387,6 +394,7 @@ export class DashboardComponent implements OnInit {
     this.poModal.open()
 
 
+
   }
 
   openNew() {
@@ -408,15 +416,95 @@ export class DashboardComponent implements OnInit {
 
   loadSearchOptions(): PoPageDynamicSearchOptions {
     this.statusFilterOptions = this.service.getStatus()
-    this.respOptions = this.service.getResp()
+    this.respOptions = this.service.getAccountableOptions()
+    this.AdvSearchOempCompanyOptions = this.service.getOempCompanyOptions()
+    this.AdvSearchManagementOptions = this.service.getManagementOptions()
     return {
       filters: [
-        { property: 'status', label: 'Status', options: this.statusFilterOptions, gridColumns: 6 },
+        { property: 'status', label: 'Status', options: this.statusFilterOptions, gridColumns: 6, optionsMulti: true },
         { property: 'protocolo', label: 'Protocolo', gridColumns: 6 },
-        { property: 'accountable', label: 'Responsável', options: this.respOptions, gridColumns: 6 },
+        { property: 'accountable', label: 'Responsável', options: this.respOptions, gridColumns: 6, optionsMulti: true },
+        { property: 'oempCompany', label: 'Operadora', options: this.AdvSearchOempCompanyOptions, gridColumns: 6, optionsMulti: true },
+        { property: 'management', label: 'Gestão', options: this.AdvSearchManagementOptions, gridColumns: 6, optionsMulti: true },
 
       ]
     }
+  }
+
+  installationFeeMask() {
+    let value = this.editItems.installationFee
+    value = value + ''
+    value = parseInt(value.replace(/[\D]+/g, ''))
+    value = value + ''
+    value = value.replace(/([0-9]{2})$/g, ",$1")
+
+    if (value.length > 6) {
+      value = value.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2")
+    }
+
+    this.editItems.installationFee = value
+    if (value == 'NaN') this.editItems.installationFee = ''
+  }
+
+  monthlyPaymentMask() {
+    let value = this.editItems.monthlyPayment
+    value = value + ''
+    value = parseInt(value.replace(/[\D]+/g, ''))
+    value = value + ''
+    value = value.replace(/([0-9]{2})$/g, ",$1")
+
+    if (value.length > 6) {
+      value = value.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2")
+    }
+
+    this.editItems.monthlyPayment = value
+    if (value == 'NaN') this.editItems.monthlyPayment = ''
+  }
+
+  onChangeOempCompany(e: any) {
+    const searchOemp = this.service.getOempOempCompanyOptions().find((companyName, index, array) => companyName.value === e)
+    const searchInter = this.service.getIntercompanyOempCompanyOptions().find((companyName, index, array) => companyName.value === e)
+    const searchUN = this.service.getUNOempCompanyOptions().find((companyName, index, array) => companyName.value === e)
+    const searchNA = this.service.getNAOempCompanyOptions().find((companyName, index, array) => companyName.value === e)
+    if (searchOemp) {
+      this.editItems.management = 'OEMP'
+    } else if (searchInter) {
+      this.editItems.management = 'Intercompany'
+    } else if (searchUN) {
+      this.editItems.management = 'UN'
+    } else if (searchNA) {
+      this.editItems.management = 'NA'
+    }
+    else {
+      this.editItems.management = undefined
+      this.editItems.oempCompany = undefined
+      this.oempcompanyOptions = this.service.getOempCompanyOptions()
+      this.managementOptions = this.service.getManagementOptions()
+    }
+  }
+
+
+  onChangeManagement(e: any) {
+    if (e === 'OEMP') {
+      this.accountableOptions = this.service.getOempAccountableOptions()
+      this.oempcompanyOptions = this.service.getOempOempCompanyOptions()
+    } else if (e === 'Intercompany') {
+      this.accountableOptions = this.service.getIntercompanyAccountableOptions()
+      this.oempcompanyOptions = this.service.getIntercompanyOempCompanyOptions()
+    } else if (e === 'UN') {
+      this.accountableOptions = this.service.getUnAccountableOptions()
+      this.oempcompanyOptions = this.service.getUNOempCompanyOptions()
+    } else if (e === 'NA') {
+      this.oempcompanyOptions = this.service.getNAOempCompanyOptions()
+    }
+    else {
+      this.editItems.oempCompany = undefined
+      this.editItems.management = undefined
+      this.editItems.accountable = undefined
+      this.accountableOptions = this.service.getAccountableOptions()
+
+    }
+
   }
 
 }

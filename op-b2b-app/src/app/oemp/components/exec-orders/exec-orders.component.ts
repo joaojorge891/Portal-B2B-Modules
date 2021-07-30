@@ -346,4 +346,34 @@ export class ExecOrdersComponent implements OnInit {
     this.router.navigate(['/oemp'])
   }
 
+  installationFeeMask() {
+    let value = this.editItems.installationFee
+    value = value + ''
+    value = parseInt(value.replace(/[\D]+/g, ''))
+    value = value + ''
+    value = value.replace(/([0-9]{2})$/g, ",$1")
+
+    if (value.length > 6) {
+      value = value.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2")
+    }
+
+    this.editItems.installationFee = value
+    if (value == 'NaN') this.editItems.installationFee = ''
+  }
+
+  monthlyPaymentMask() {
+    let value = this.editItems.monthlyPayment
+    value = value + ''
+    value = parseInt(value.replace(/[\D]+/g, ''))
+    value = value + ''
+    value = value.replace(/([0-9]{2})$/g, ",$1")
+
+    if (value.length > 6) {
+      value = value.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2")
+    }
+
+    this.editItems.monthlyPayment = value
+    if (value == 'NaN') this.editItems.monthlyPayment = ''
+  }
+
 }

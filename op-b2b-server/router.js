@@ -67,7 +67,7 @@ exports.appRouter = function (app) {
     router.route('/oemp/bystatus')
         .get(oempRoute.loadOrdersByStatus)
 
-    router.route('/oemp/byid/:id')
+    router.route('/oemp/byId/:id')
         .get(oempRoute.findById)
 
     router.route('/oemp/search')

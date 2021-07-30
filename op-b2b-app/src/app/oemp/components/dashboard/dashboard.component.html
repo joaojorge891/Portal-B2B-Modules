@@ -94,7 +94,7 @@
                                     p-clean="true"
                                     [p-readonly]="isReadOnly"
                                     [(ngModel)]="editItems.circuito"
-                                    class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                                    class="po-sm-12 po-md-6 po-lg-3 po-xlg-3">
                             </po-input>
     
                             <po-select #status
@@ -113,7 +113,7 @@
                                     p-clean="true"
                                     [p-minlength]="1"
                                     [(ngModel)]="editItems.obsStatus"
-                                    class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                                    class="po-sm-12 po-md-6 po-lg-5 po-xlg-5">
                             </po-input>
                     </div>
     
@@ -164,6 +164,8 @@
                                     p-label="Taxa de Instalação" 
                                     [p-readonly]="isReadOnly"
                                     p-clean="true"
+                                    p-icon="po-icon po-icon-finance"
+                                    (p-change-model)="installationFeeMask()"
                                     [(ngModel)]="editItems.installationFee"
                                     class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
                             </po-input>
@@ -173,6 +175,8 @@
                                     p-label="Taxa Mensal" 
                                     [p-readonly]="isReadOnly"
                                     p-clean="true"
+                                    p-icon="po-icon po-icon-finance"
+                                    (p-change-model)="monthlyPaymentMask()"
                                     [(ngModel)]="editItems.monthlyPayment"
                                     class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
                             </po-input>
@@ -199,15 +203,17 @@
                                     class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
                             </po-input>
     
-                            <po-select
+                            <po-combo
                                     name="oempCompany"
                                     p-label="Operadora"
-                                    [p-readonly]="isReadOnly"
+                                    [p-disabled]="isReadOnly"
+                                    [p-clean]="true"
                                     [p-options]="oempcompanyOptions"
+                                    (p-change)="onChangeOempCompany($event)"
                                     [(ngModel)]="editItems.oempCompany"
                                     class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
     
-                            </po-select>
+                            </po-combo>
     
                     </div>
     
@@ -220,14 +226,26 @@
                                     [(ngModel)]="editItems.oempDesignation"
                                     class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
                             </po-input>
-                            <po-select 
+                            <po-combo 
+                                    name="gestao"
+                                    p-label="Gestão"
+                                    [p-clean]="true"
+                                    [p-disabled]="isReadOnly"
+                                    [p-options]="managementOptions"
+                                    (p-change)="onChangeManagement($event)"
+                                    [(ngModel)]="editItems.management"
+                                    class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                            </po-combo>
+
+                            <po-combo 
                                     name="responsavel"
                                     p-label="Responsável"
-                                    [p-readonly]="isReadOnly"
+                                    [p-disabled]="isReadOnly"
+                                    [p-clean]="true"
                                     [p-options]="accountableOptions"
                                     [(ngModel)]="editItems.accountable"
                                     class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
-                            </po-select>
+                            </po-combo>
     
     
                     </div>

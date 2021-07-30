@@ -12,7 +12,7 @@ exports.save = async function (order) {
 
         let result = await oempSchema.findByIdAndUpdate(order._id, order)
         object = { status: 'ok' }
-        console.log(`[LOG] [Ordem ${result.cod} ATUALIZADA COM SUCESSO!]`)
+        console.log(`[LOG] [Ordem protocolo: ${result.protocolo} ATUALIZADA COM SUCESSO!]`)
 
     }
     catch (err) {
@@ -110,21 +110,6 @@ exports.filter = async function (parameters) {
     return object
 }
 
-
-exports.findById = async function (id) {
-    try {
-        let doc = await oempSchema.findById(id)
-        if (doc != null) {
-            object = doc
-        } else {
-            object = { status: 'not_found' }
-        }
-    } catch (err) {
-        throw new Error(err)
-    }
-    return object
-}
-
 exports.findByCircuit = async function (circuito) {
     try {
         let filter = {}
@@ -203,7 +188,7 @@ exports.getCounters = async function () {
 
     } catch (e) {
         throw new Error('Erro na atualização dos contadores!')
-    } 
+    }
     return object
 }
 
@@ -266,8 +251,9 @@ exports.getClosedByDate = async function (req) {
     return promise
 }
 
-exports.findById = async function (id) {
+exports.findCaseById = async function (id) {
     try {
+
         let doc = await oempSchema.findById(id)
         if (doc !== null && doc !== undefined) {
             object = doc
@@ -294,24 +280,24 @@ exports.filterAll = function (req) {
             page = Number(req.query.page) || 0
         }
         oempSchema.find({})
-            .select(
-                {
-                    'TempoVida': 1,
-                    'TempoPosto': 1,
-                    'geo': 1,
-                    'uf': 1,
-                    'circuito': 1,
-                    'protocolo': 1,
-                    'projeto': 1,
-                    'pove': 1,
-                    'servico': 1,
-                    'oempCompany': 1,
-                    'status': 1,
-                    'deliveryPrediction': 1,
-                    'lastUpdate': 1
-                }
-            )
-            .sort({ tempoPosto: -1 })
+            // .select(
+            //     {
+            //         'TempoVida': 1,
+            //         'TempoPosto': 1,
+            //         'geo': 1,
+            //         'uf': 1,
+            //         'circuito': 1,
+            //         'protocolo': 1,
+            //         'projeto': 1,
+            //         'pove': 1,
+            //         'servico': 1,
+            //         'oempCompany': 1,
+            //         'status': 1,
+            //         'deliveryPrediction': 1,
+            //         'lastUpdate': 1
+            //     }
+            // )
+            .sort({ TempoPosto: -1 })
             .limit(30)
             .skip(page * 30)
             .then(doc => {

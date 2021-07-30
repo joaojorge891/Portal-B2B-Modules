@@ -60,7 +60,7 @@ export class OempService extends Service {
   filterById(id: any): Observable<any> {
     // const url = `${this.host}/api/oemp/byid/${id}`
     // return this.http.get(url, this.getOptionsReq())
-    const url = `${this.host}/api/oemp/byid/${id}`
+    const url = `${this.host}/api/oemp/byId/${id}`
     return this.http.get(url)
   }
 
@@ -106,60 +106,158 @@ export class OempService extends Service {
     ]
   }
 
-  getResp() {
-    return [
-
-      { value: 'oi88813', label: 'Alexandre Rodrigues Pereira' },
-      { value: 'oi309953', label: 'Marcio Rodrigo Funatsu' },
-      { value: 'oi328091', label: 'David Marques Pires' },
-      { value: 'oi320541', label: 'Camilo Edison Fracetti Da Silveira' }
-    ]
-  }
-
   getOempCompanyOptions() {
     return [
       { label: 'Algar', value: 'Algar' },
       { label: 'AltaRede', value: 'AltaRede' },
       { label: 'American Tower', value: 'American Tower' },
+      { label: 'AmericaNet', value: 'AmericaNet' },
       { label: 'Arion', value: 'Arion' },
+      { label: 'Ascenty', value: 'Ascenty' },
       { label: 'Ativa', value: 'Ativa' },
       { label: 'Avato', value: 'Avato' },
+      { label: 'Boingo', value: 'Boingo' },
+      { label: 'BR Digital', value: 'BR Digital' },
       { label: 'Brasil Telecom', value: 'Brasil Telecom' },
       { label: 'CenturyLink', value: 'CenturyLink' },
-      { label: 'Claro', value: 'Claro' },
       { label: 'Conecta', value: 'Conecta' },
       { label: 'Copel', value: 'Copel' },
+      { label: 'CPE', value: 'CPE' },
+      { label: 'Embratel', value: 'Embratel' },
+      { label: 'Equinix', value: 'Equinix' },
+      { label: 'Escolas Conectadas', value: 'Escolas Conectadas' },
+      { label: 'G8', value: 'G8' },
       { label: 'Gilat', value: 'Gilat' },
       { label: 'Hispamar', value: 'Hispamar' },
       { label: 'Hostfiber', value: 'Hostfiber' },
       { label: 'Hughes', value: 'Hughes' },
       { label: 'Internexa', value: 'Internexa' },
+      { label: 'IT Tecnologia', value: 'IT Tecnologia' },
       { label: 'MicroTell', value: 'MicroTell' },
       { label: 'Mob Telecom', value: 'Mob Telecom' },
+      { label: 'MTel', value: 'MTel' },
       { label: 'Nava', value: 'Nava' },
+      { label: 'Nava (OEMP)', value: 'Nava(OEMP)' },
       { label: 'Neovia', value: 'Neovia' },
-      { label: 'Net', value: 'Net' },
       { label: 'Net Turbo', value: 'Net Turbo' },
+      { label: 'Netell', value: 'Netell' },
       { label: 'NetFacil', value: 'NetFacil' },
-      { label: 'Oi', value: 'Oi' },
+      { label: 'NewMaster', value: 'NewMaster' },
       { label: 'OnNeT', value: 'OnNeT' },
+      { label: 'OSI Telecom', value: 'OSI Telecom' },
+      { label: 'Rede Própria', value: 'Rede Propria' },
       { label: 'RIXBR27', value: 'RIXBR27' },
+      { label: 'SAMM', value: 'SAMM' },
       { label: 'Sercomtel', value: 'Sercomtel' },
+      { label: 'Siteltra', value: 'Siteltra' },
       { label: 'SpeedCast', value: 'SpeedCast' },
       { label: 'STIW', value: 'STIW' },
       { label: 'SumiCity', value: 'SumiCity' },
       { label: 'Telemar', value: 'Telemar' },
       { label: 'Telespazio', value: 'Telespazio' },
-      { label: 'Telmex', value: 'Telmex' },
-      { label: 'Tim', value: 'Tim' },
+      { label: 'TIM', value: 'TIM' },
+      { label: 'TIVIT', value: 'TIVIT' },
+      { label: 'TIWS', value: 'TIWS' },
       { label: 'TUDDO', value: 'TUDDO' },
+      { label: 'UMTelecom', value: 'UMTelecom' },
+      { label: 'UOLDiveo', value: 'UOLDiveo' },
       { label: 'Velox R2', value: 'Velox R2' },
       { label: 'Vivax', value: 'Vivax' },
       { label: 'Vivo', value: 'Vivo' },
       { label: 'Vogel', value: 'Vogel' },
       { label: 'WCS Telecom', value: 'WCS Telecom' },
+      { label: 'WebNet', value: 'WebNet' },
+      { label: 'WireLink', value: 'WireLink' },
       { label: 'WKVE', value: 'WKVE' },
+      { label: 'WT Tecnologia', value: 'WT Tecnologia' },
       { label: 'WT Telecom', value: 'WT Telecom' }
+
+    ]
+  }
+
+  getOempOempCompanyOptions() {
+    return [
+      { label: 'Algar', value: 'Algar' },
+      { label: 'AltaRede', value: 'AltaRede' },
+      { label: 'American Tower', value: 'American Tower' },
+      { label: 'AmericaNet', value: 'AmericaNet' },
+      { label: 'Arion', value: 'Arion' },
+      { label: 'Ascenty', value: 'Ascenty' },
+      { label: 'Ativa', value: 'Ativa' },
+      { label: 'Avato', value: 'Avato' },
+      { label: 'Boingo', value: 'Boingo' },
+      { label: 'BR Digital', value: 'BR Digital' },
+      { label: 'CenturyLink', value: 'CenturyLink' },
+      { label: 'Conecta', value: 'Conecta' },
+      { label: 'Copel', value: 'Copel' },
+      { label: 'Embratel', value: 'Embratel' },
+      { label: 'Equinix', value: 'Equinix' },
+      { label: 'G8', value: 'G8' },
+      { label: 'Gilat', value: 'Gilat' },
+      { label: 'Hostfiber', value: 'Hostfiber' },
+      { label: 'Internexa', value: 'Internexa' },
+      { label: 'IT Tecnologia', value: 'IT Tecnologia' },
+      { label: 'MicroTell', value: 'MicroTell' },
+      { label: 'Mob Telecom', value: 'Mob Telecom' },
+      { label: 'MTel', value: 'MTel' },
+      { label: 'Nava (OEMP)', value: 'Nava(OEMP)' },
+      { label: 'Neovia', value: 'Neovia' },
+      { label: 'Net Turbo', value: 'Net Turbo' },
+      { label: 'Netell', value: 'Netell' },
+      { label: 'NetFacil', value: 'NetFacil' },
+      { label: 'NewMaster', value: 'NewMaster' },
+      { label: 'OnNeT', value: 'OnNeT' },
+      { label: 'OSI Telecom', value: 'OSI Telecom' },
+      { label: 'RIXBR27', value: 'RIXBR27' },
+      { label: 'SAMM', value: 'SAMM' },
+      { label: 'Sercomtel', value: 'Sercomtel' },
+      { label: 'Siteltra', value: 'Siteltra' },
+      { label: 'STIW', value: 'STIW' },
+      { label: 'SumiCity', value: 'SumiCity' },
+      { label: 'TIM', value: 'TIM' },
+      { label: 'TIVIT', value: 'TIVIT' },
+      { label: 'TIWS', value: 'TIWS' },
+      { label: 'TUDDO', value: 'TUDDO' },
+      { label: 'UMTelecom', value: 'UMTelecom' },
+      { label: 'UOLDiveo', value: 'UOLDiveo' },
+      { label: 'Vivax', value: 'Vivax' },
+      { label: 'Vivo', value: 'Vivo' },
+      { label: 'Vogel', value: 'Vogel' },
+      { label: 'WCS Telecom', value: 'WCS Telecom' },
+      { label: 'WebNet', value: 'WebNet' },
+      { label: 'WireLink', value: 'WireLink' },
+      { label: 'WKVE', value: 'WKVE' },
+      { label: 'WT Tecnologia', value: 'WT Tecnologia' },
+      { label: 'WT Telecom', value: 'WT Telecom' }
+
+    ]
+  }
+
+  getUNOempCompanyOptions() {
+    return [
+      { label: 'Escolas Conectadas', value: 'Escolas Conectadas' },
+      { label: 'Gilat', value: 'Gilat' },
+      { label: 'Hispamar', value: 'Hispamar' },
+      { label: 'Hughes', value: 'Hughes' },
+      { label: 'Nava', value: 'Nava' },
+      { label: 'SpeedCast', value: 'SpeedCast' },
+      { label: 'Telespazio', value: 'Telespazio' },
+    ]
+  }
+
+  getIntercompanyOempCompanyOptions() {
+    return [
+      { label: 'Brasil Telecom', value: 'Brasil Telecom' },
+      { label: 'Telemar', value: 'Telemar' },
+      { label: 'Velox R2', value: 'Velox R2' },
+    ]
+  }
+
+  getNAOempCompanyOptions() {
+    return [
+      { label: 'CPE', value: 'CPE' },
+      { label: 'Rede Própria', value: 'Rede Propria' },
+
     ]
   }
 
@@ -206,11 +304,43 @@ export class OempService extends Service {
 
   getAccountableOptions() {
     return [
+      { label: 'Alexandre Rodrigues Pereira', value: 'oi88813' },
+      { label: 'Camilo Edison Fracetti Da Silveira', value: 'oi320541' },
+      { label: 'David Marques Pires', value: 'oi328091' },
+      { label: 'Marcio Rodrigo Funatsu', value: 'oi309953' },
+      { label: 'Thiago Barbosa Ferreira Kirschner', value: 'oi36129' },
+      { label: 'Veronica Maria De Souza Leandro', value: 'oi147437' },
+      { label: 'Atacado', value: 'Atacado' },
+      { label: 'Intercompany', value: 'Intercompany' },
+      { label: 'Não Atribuído', value: 'NA' },
+
+    ]
+  }
+
+  getOempAccountableOptions() {
+    return [
 
       { label: 'Alexandre Rodrigues Pereira', value: 'oi88813' },
       { label: 'Camilo Edison Fracetti Da Silveira', value: 'oi320541' },
       { label: 'David Marques Pires', value: 'oi328091' },
       { label: 'Marcio Rodrigo Funatsu', value: 'oi309953' }
+
+    ]
+  }
+
+  getUnAccountableOptions() {
+    return [
+
+      { label: 'Thiago Barbosa Ferreira Kirschner', value: 'oi36129' },
+      { label: 'Veronica Maria De Souza Leandro', value: 'oi147437' },
+      { label: 'Atacado', value: 'Atacado' },
+    ]
+  }
+
+  getIntercompanyAccountableOptions() {
+    return [
+
+      { label: 'Intercompany', value: 'Intercompany' },
 
     ]
   }
@@ -243,10 +373,24 @@ export class OempService extends Service {
         ]
       },
       { property: 'oempCompany', label: 'Operadora' },
+      { property: 'management', label: 'Gestão' },
       { property: 'contractDate', label: 'Data Contratação', type: 'date', format: 'dd/MM/yyyy' },
       { property: 'deliveryPrediction', label: 'Prev. Entrega', type: 'date', format: 'dd/MM/yyyy' },
 
     ]
   }
+
+  getManagementOptions() {
+    return [
+
+      { label: 'OEMP', value: 'OEMP' },
+      { label: 'Intercompany', value: 'Intercompany' },
+      { label: 'Unidade de Negócios', value: 'UN' },
+      { label: 'N/A', value: 'NA' }
+
+    ]
+
+  }
+
 
 }

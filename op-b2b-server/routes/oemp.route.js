@@ -36,7 +36,7 @@ module.exports = {
     },
 
     findById: function (req, res) {
-        let document = controller.findById(req.params.id)
+        let document = controller.findCaseById(req.params.id)
         document.then(result => res.send(result))
     },
 

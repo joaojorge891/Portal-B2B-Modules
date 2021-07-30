@@ -92,17 +92,18 @@ const oempSchema = new mongoose.Schema(
         oempCompany: String,
         status: String,
         obsStatus: String,
-        contractDate: Date,
+        contractDate: String,
         oempDeadLine: Number,
-        deliveryPrediction: Date,
-        currentPrediction: Date,
-        installationDate: Date,
-        installationFee: Number,
-        monthlyPayment: Number,
+        deliveryPrediction: String,
+        currentPrediction: String,
+        installationDate: String,
+        installationFee: String,
+        monthlyPayment: String,
         contractTime: String,
         feasibilityCode: String,
         oempDesignation: String,
-        accountable: String
+        accountable: String,
+        management: String
     },
     {
         collection: 'os_abertas'

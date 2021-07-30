@@ -1,7 +1,7 @@
 const cron = require('node-cron')
 const mysql = require('mysql')
 const mongoose = require('mongoose')
-const fs = require('fs');
+
 
 
 
@@ -27,7 +27,7 @@ function MysqlImportOsAbertas() {
 
       results.forEach(function (item) {
         const secondaryPromise = new Promise((resolve, reject) => {
-          mongoCollection.find({ cod: item.cod }).toArray(async function (error, data) {
+          mongoCollection.find({ protocolo: item.protocolo }).toArray(async function (error, data) {
             if (error) {
               console.log(error)
               reject(err)
@@ -37,45 +37,43 @@ function MysqlImportOsAbertas() {
               item.status = 'new'
               item.lastUpdate = new Date()
               await mongoCollection.insertOne(item)
-              
+
             }
-            
+
             else {
               const date = new Date()
-              const formatedDate = ((date.getDate() )) + "/" + ((date.getMonth() + 1)) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes(); 
-              await mongoCollection.updateOne({cod:item.cod}, {$set: {lastUpdate: formatedDate}})
-              // const lastUpdate = formatedDate
-              // fs.writeFileSync('lastUpdate.txt', lastUpdate);
-              
+              const formatedDate = ((date.getDate())) + "/" + ((date.getMonth() + 1)) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
+              await mongoCollection.updateOne({ protocolo: item.protocolo }, { $set: { lastUpdate: formatedDate } })
+
             }
-
-            resolve(true)
-
           })
+          resolve(true)
         })
         promises.push(secondaryPromise)
       })
       Promise.all(promises).then(success => resolve('open base successfully updated!'))
     })
-    mongoCollection.off
+
     return mainPromise
   }
+
+
   mongoose.connect("mongodb://localhost/op-b2b-db", { useNewUrlParser: true, useUnifiedTopology: true })
   const db = mongoose.connection
   db.on('error', console.error.bind(console, 'Mongo DB Connection error:'))
 
   const mysqlCon = mysql.createConnection({
-    // host: 'localhost',
-    // user: 'icduser',
-    // password: '102030',
-    // port: 3306,
-    // database: 'opb2b'
-
     host: 'localhost',
-    user: 'root',
-    password: '89118642',
+    user: 'icduser',
+    password: '102030',
     port: 3306,
-    database: 'os_abertas'
+    database: 'opb2b'
+
+    // host: 'localhost',
+    // user: 'root',
+    // password: '89118642',
+    // port: 3306,
+    // database: 'os_abertas'
   })
 
   mysqlCon.connect()
@@ -84,7 +82,8 @@ function MysqlImportOsAbertas() {
   const collection = db.collection(table)
 
   sqlQuery(mysqlCon, table)
-    .then(result => insertToMongo(result, collection)).then(success => console.log(success)).catch(e => console.log(e))
+    .then(result => insertToMongo(result, collection))
+    .then(success => console.log(success)).catch(e => console.log(e))
 
 }
 

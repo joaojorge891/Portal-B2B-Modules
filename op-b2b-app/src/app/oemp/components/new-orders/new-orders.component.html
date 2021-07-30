@@ -98,6 +98,8 @@
                                 name="txInst"
                                 p-label="Taxa de Instalação" 
                                 p-clean="true"
+                                p-icon="po-icon po-icon-finance"
+                                (p-change-model)="installationFeeMask()"
                                 [(ngModel)]="editItems.installationFee"
                                 class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
                         </po-input>
@@ -106,6 +108,8 @@
                                 name="mensalidade"
                                 p-label="Taxa Mensal" 
                                 p-clean="true"
+                                p-icon="po-icon po-icon-finance"
+                                (p-change-model)="monthlyPaymentMask()"
                                 [(ngModel)]="editItems.monthlyPayment"
                                 class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
                         </po-input>
