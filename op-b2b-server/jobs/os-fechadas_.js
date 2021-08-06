@@ -9,7 +9,7 @@ function handleClosedOrders() {
   function removeCompletedInsertClosed(mysqlConnection, tableName, openMongoCollection, closedMongoCollection) {
     const promises = []
     const mainPromise = new Promise((resolve, reject) => {
-      openMongoCollection.find({ status: 'completed' }).forEach(function (item) {
+      openMongoCollection.find({}).forEach(function (item) {
         const secondaryPromise = new Promise((resolve, reject) => {
           let sql = 'select * from ' + tableName + ' where protocolo = ' + item.protocolo
           mysqlConnection.query(sql, async function (error, data) {
@@ -38,27 +38,27 @@ function handleClosedOrders() {
 
   const mysqlCon = mysql.createConnection({
 
-    host: 'localhost',
-    user: 'root',
-    password: '89118642',
-    port: 3306,
-    database: 'os_fechadas'
-
     // host: 'localhost',
-    // user: 'icduser',
-    // password: '102030',
+    // user: 'root',
+    // password: '89118642',
     // port: 3306,
-    // database: 'opb2b'
+    // database: 'os'
+
+    host: 'localhost',
+    user: 'icduser',
+    password: '102030',
+    port: 3306,
+    database: 'opb2b'
   })
 
   mysqlCon.connect()
 
-  const tableMongo = 'os_abertas'
-  const tableMysql = 'os_fechadas'
-  const openCollection = db.collection(tableMongo)
-  const closedCollection = db.collection(tableMysql)
+  const openTable = 'os_abertas'
+  const closedTable = 'os_fechadas'
+  const openCollection = db.collection(openTable)
+  const closedCollection = db.collection(closedTable)
 
-  removeCompletedInsertClosed(mysqlCon, tableMysql, openCollection, closedCollection)
+  removeCompletedInsertClosed(mysqlCon, closedTable, openCollection, closedCollection)
     .then(success => console.log(success)).catch(e => console.log(e))
 
 }

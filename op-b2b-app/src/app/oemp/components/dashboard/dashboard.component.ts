@@ -2,12 +2,15 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { PoDialogService, PoModalAction, PoModalComponent, PoMultiselectOption, PoNotificationService, PoSelectOption, PoTableAction, PoTableColumn, PoTableComponent } from '@po-ui/ng-components';
+import { PoDialogService, PoModalAction, PoModalComponent, PoMultiselectOption, PoNotificationService, PoRadioGroupOption, PoTableAction, PoTableColumn, PoTableComponent, PoTableRowTemplateArrowDirection } from '@po-ui/ng-components';
 import { PoPageDynamicSearchLiterals, PoPageDynamicSearchOptions } from '@po-ui/ng-templates';
 import * as moment from 'moment';
 
 import { ExcelService } from 'src/app/services/excel-export.service';
 import { OempService } from 'src/app/services/oemp.service';
+import { PoComboFilterService } from '@po-ui/ng-components/lib/components/po-field/po-combo/po-combo-filter.service';
+
+
 
 @Component({
   selector: 'app-dashboard',
@@ -20,6 +23,8 @@ export class DashboardComponent implements OnInit {
   editItems: any = {}
 
   page: number = 0
+
+  rowDirection: PoTableRowTemplateArrowDirection = PoTableRowTemplateArrowDirection.Right
 
   isLoading: boolean = false
 
@@ -47,7 +52,13 @@ export class DashboardComponent implements OnInit {
 
   temporaryCounter = 0
 
-  oempcompanyOptions: Array<any> = this.service.getOempCompanyOptions()
+  AdvSearchMark: boolean = false
+
+  getClients: any
+
+  AdvSearchFilterContent: any
+
+  oempCompanyOptions: Array<any> = this.service.getOempCompanyOptions()
 
   statusOptions: Array<any> = this.service.getStatusOptions()
 
@@ -87,6 +98,10 @@ export class DashboardComponent implements OnInit {
 
   private AdvSearchManagementOptions: Array<PoMultiselectOption> = []
 
+  private AdvClientOptions: any
+
+  private AdvSearchGrossOptions: Array<PoRadioGroupOption> = [{ label: 'Sim', value: 'SIM' }, { label: 'Não', value: 'NAO' }]
+
   private subscriptions$: Array<Subscription> = []
 
   columns: Array<PoTableColumn> = this.service.getColumns()
@@ -121,7 +136,6 @@ export class DashboardComponent implements OnInit {
     // if (this.validateUser() === 'user') {
     //   this.router.navigateByUrl('')
     // }
-
     this.loading = !this.loading
     try {
 
@@ -139,13 +153,13 @@ export class DashboardComponent implements OnInit {
           result.forEach(item => {
             this.temporaryCounter += item.count
             switch (item._id) {
-              case 'new':
+              case 'novo':
                 this.newCounter = item.count
                 break
-              case 'execution':
+              case 'execução':
                 this.executionCounter = item.count
                 break
-              case 'completed':
+              case 'concluído':
                 this.completedCounter = item.count
                 break
             }
@@ -156,7 +170,7 @@ export class DashboardComponent implements OnInit {
       ), (error: any) => this.notification.error(error)
 
       status = 'completedCounter'
-      this.service.filterByStatus(status, this.page++).subscribe(
+      this.service.filterByStatus(status, this.page).subscribe(
         (result: any) => {
           this.lastUpdateCompleted = (result.completedLastUpdate)
         }
@@ -166,6 +180,7 @@ export class DashboardComponent implements OnInit {
       this.notification.error(error)
 
     }
+
 
   }
 
@@ -185,11 +200,12 @@ export class DashboardComponent implements OnInit {
 
 
   private onForm(order: any) {
-    this.openModal()
+    this.restore()
     this.service.filterById(order._id).subscribe(
       (result: any) => {
         this.editItems = result
-        if (this.editItems.status === 'completed') {
+        this.openModal()
+        if (this.editItems.status === 'concluído') {
           this.isReadOnly = true
           this.confirm.disabled = true
         } else {
@@ -202,15 +218,53 @@ export class DashboardComponent implements OnInit {
     ), (error: any) => this.notification.error(error)
   }
 
-  onShowMore() {
-    this.isLoading = true
-    this.showMoreDisabled = false
-    setTimeout(() => {
-      this.page++
-      this.loadServiceOrders(this.page)
-      this.isLoading = false
-    }, 1000)
+  openModal() {
+    this.poModal.open()
 
+  }
+
+  private restore() {
+    this.editItems.status = undefined
+    this.editItems.observacao_Status = undefined
+    this.editItems.data_Contratacao = undefined
+    this.editItems.prazo_Operadora = undefined
+    this.editItems.previsao_Entrga = undefined
+    this.editItems.data_Instalacao = undefined
+    this.editItems.taxa_Instalacao = undefined
+    this.editItems.taxa_Mensal = undefined
+    this.editItems.tempo_Contrato = undefined
+    this.editItems.codigo_Viabilidade = undefined
+    this.editItems.designacao_Oemp = undefined
+    this.editItems.responsavel = undefined
+    this.editItems.gestao = undefined
+
+  }
+
+  onShowMore() {
+    if (this.AdvSearchMark) {
+      this.isLoading = true
+      this.showMoreDisabled = false
+      setTimeout(() => {
+        this.AdvSearchFilterContent.page = this.AdvSearchFilterContent.page + 1
+        this.loadAdvSearchOrders(this.AdvSearchFilterContent)
+        this.isLoading = false
+      }, 1000)
+
+    } else {
+      this.isLoading = true
+      this.showMoreDisabled = false
+      setTimeout(() => {
+        this.page++
+        this.loadServiceOrders(this.page)
+        this.isLoading = false
+      }, 1000)
+    }
+  }
+
+  private loadAdvSearchOrders(filters: any) {
+    this.subscriptions$.push(this.service.advancedSearchFilter(filters).subscribe(
+      result => this.items = this.items.concat(result.items)
+    ))
   }
 
   private loadServiceOrders(page: number) {
@@ -225,17 +279,23 @@ export class DashboardComponent implements OnInit {
 
 
   private advancedSearchItems(filters: any) {
+    this.page = 0
+    filters.page = this.page
+    this.AdvSearchMark = true
+    this.AdvSearchFilterContent = filters
     this.loading = !this.loading
     try {
       this.service.advancedSearchFilter(filters).subscribe(
         (result: any) => {
-          this.items = result
+          this.items = result.items
           this.loading = !this.loading
         }), (error: any) => this.notification.error(error)
 
     } catch (error) {
       this.notification.error(error)
     }
+
+
   }
 
   onChangeDisclaimers(disclaimers: []) {
@@ -248,36 +308,41 @@ export class DashboardComponent implements OnInit {
   }
 
   onQuickSearch(filter: string) {
-    filter ? this.quickSearchItems(filter) : this.resetFilters(this.page++)
+    filter ? this.quickSearchItems({ circuito: filter }) : this.resetFilters(this.page++)
   }
 
-  private quickSearchItems(filter: any) {
+  private quickSearchItems(filters: any) {
     this.loading = !this.loading
     try {
-      this.service.quickSearchFilter(filter).subscribe(
+      this.service.quickSearchFilter(filters).subscribe(
         (result: any) => {
           this.items = result
           this.loading = !this.loading
-        }), (error: any) => this.notification.error(error)
+        }
+      ), (error: any) => this.notification.error(error)
+
     } catch (error) {
       this.notification.error(error)
     }
+    
   }
 
   private resetFilters(page: number) {
+    this.AdvSearchMark = false
     this.loading = !this.loading
     this.service.loadAllByPage(page).subscribe(
       (result: any) => {
         this.items = result.items
         this.loading = !this.loading
       }), (error: any) => this.notification.error(error)
+
   }
 
   delivPredCalc() {
-    if (this.editItems.contractDate !== null && this.editItems.contractDate !== undefined &&
-      this.editItems.oempDeadLine !== null && this.editItems.oempDeadLine !== undefined) {
-      let dateConvert = moment(this.editItems.contractDate).add(this.editItems.oempDeadLine, 'days').toDate()
-      this.editItems.deliveryPrediction = dateConvert
+    if (this.editItems.data_Contratacao !== null && this.editItems.data_Contratacao !== undefined &&
+      this.editItems.prazo_Operadora !== null && this.editItems.prazo_Operadora !== undefined) {
+      let dateConvert = moment(this.editItems.data_Contratacao).add(this.editItems.prazo_Operadora, 'days').toDate()
+      this.editItems.previsao_Entrega = dateConvert
     }
   }
 
@@ -291,6 +356,7 @@ export class DashboardComponent implements OnInit {
   }
 
   private proccessOrder() {
+
     switch (this.editItems.status) {
       case undefined:
         this.statusFoco()
@@ -316,48 +382,55 @@ export class DashboardComponent implements OnInit {
           message: 'Para salvar a edição realizada, é necessário informar status atual.'
         })
         return
-      case 'new':
-        this.statusFoco()
-        this.poDialog.alert({
-          literals: { ok: 'Ok' },
-          title: 'Aviso de Campos Obrigatórios',
-          message: 'Para salvar a edição realizada, é necessário informar status atual.'
-        })
-
-        return
-      case 'execution':
-        if ((this.editItems.installationFee === '' || this.editItems.installationFee === undefined || this.editItems.installationFee === null) ||
-          (this.editItems.monthlyPayment === '' || this.editItems.monthlyPayment === undefined || this.editItems.monthlyPayment === null) ||
-          (this.editItems.contractDate === '' || this.editItems.contractDate === undefined || this.editItems.contractDate === null) ||
-          (this.editItems.feasibilityCode === '' || this.editItems.feasibilityCode === undefined || this.editItems.feasibilityCode === null)) {
-          this.dateFoco()
+      case 'novo':
+        if (this.editItems.operadora_Oemp !== 'Sem Atuação OEMP') {
+          this.statusFoco()
           this.poDialog.alert({
             literals: { ok: 'Ok' },
             title: 'Aviso de Campos Obrigatórios',
-            message: 'Para status "Em Execução", é necessário informar os seguintes campos: data de contratação, taxa de instalação, taxa mensal e código de viabilidade.'
+            message: 'Para salvar a edição realizada, é necessário informar status atual.'
           })
           return
         }
         break
-      case 'completed':
-        if ((this.editItems.oempDesignation === '' || this.editItems.oempDesignation === undefined || this.editItems.oempDesignation === null) ||
-          (this.editItems.installationFee === '' || this.editItems.installationFee === undefined || this.editItems.installationFee === null) ||
-          (this.editItems.monthlyPayment === '' || this.editItems.monthlyPayment === undefined || this.editItems.monthlyPayment === null) ||
-          (this.editItems.contractDate === '' || this.editItems.contractDate === undefined || this.editItems.contractDate === null) ||
-          (this.editItems.oempCompany === '' || this.editItems.oempCompany === undefined || this.editItems.oempCompany === null) ||
-          (this.editItems.installationDate === '' || this.editItems.installationDate === undefined || this.editItems.installationDate === null) ||
-          (this.editItems.contractTime === '' || this.editItems.contractTime === undefined || this.editItems.contractTime === null)) {
+      case 'execução':
+        if ((this.editItems.taxa_Instalacao === '' || this.editItems.taxa_Instalacao === undefined || this.editItems.taxa_Instalacao === null) ||
+          (this.editItems.taxa_Mensal === '' || this.editItems.taxa_Mensal === undefined || this.editItems.taxa_Mensal === null) ||
+          (this.editItems.data_Contratacao === '' || this.editItems.data_Contratacao === undefined || this.editItems.data_Contratacao === null) ||
+          (this.editItems.codigo_Viabilidade === '' || this.editItems.codigo_Viabilidade === undefined || this.editItems.codigo_Viabilidade === null) ||
+          (this.editItems.operadora_Oemp === '' || this.editItems.operadora_Oemp === undefined || this.editItems.operadoraOemp === null) ||
+          (this.editItems.responsavel == '' || this.editItems.responsavel === undefined || this.editItems.responsavel === null)) {
           this.dateFoco()
           this.poDialog.alert({
             literals: { ok: 'Ok' },
             title: 'Aviso de Campos Obrigatórios',
-            message: 'Para status "Concluído", é necessário informar os seguintes campos: data de contratação, data instalação, taxa instalação, taxa mensal, tempo contrato, operadora e designação operadora.'
+            message: 'Para status "Em Execução", é necessário informar os seguintes campos: data de contratação, taxa de instalação, taxa mensal, código de viabilidade, operadora e responsável.'
           })
           return
         }
         break
+      case 'concluído':
+        if (this.editItems.operadora_Oemp !== 'Sem Atuação OEMP') {
+          if ((this.editItems.designacao_Oemp === '' || this.editItems.designacao_Oemp === undefined || this.editItems.designacao_Oemp === null) ||
+            (this.editItems.taxa_Instalacao === '' || this.editItems.taxa_Instalacao === undefined || this.editItems.taxa_Instalacao === null) ||
+            (this.editItems.taxa_Mensal === '' || this.editItems.taxa_Mensal === undefined || this.editItems.taxa_Mensal === null) ||
+            (this.editItems.data_Contratacao === '' || this.editItems.data_Contratacao === undefined || this.editItems.data_Contratacao === null) ||
+            (this.editItems.operadora_Oemp === '' || this.editItems.operadora_Oemp === undefined || this.editItems.operadora_Oemp === null) ||
+            (this.editItems.data_Instalacao === '' || this.editItems.data_Instalacao === undefined || this.editItems.data_Instalacao === null) ||
+            (this.editItems.tempo_Contrato === '' || this.editItems.tempo_Contrato === undefined || this.editItems.tempo_Contrato === null) ||
+            (this.editItems.operadora_Oemp === '' || this.editItems.operadora_Oemp === undefined || this.editItems.operadora_Oemp === null)) {
+            this.dateFoco()
+            this.poDialog.alert({
+              literals: { ok: 'Ok' },
+              title: 'Aviso de Campos Obrigatórios',
+              message: 'Para status "Concluído", é necessário informar os seguintes campos: data de contratação, data instalação, taxa instalação, taxa mensal, tempo contrato, operadora e designação operadora.'
+            })
+            return
+          }
+        } else break
 
     }
+
     this.service.save(this.editItems).subscribe(
       (result: any) => {
         if (result.status === 'ok') {
@@ -380,22 +453,18 @@ export class DashboardComponent implements OnInit {
   }
 
   isDisable() {
-    if (this.editItems.status === 'execution') {
-      while ((this.editItems.installationFee === '' || this.editItems.installationFee === undefined) ||
-        (this.editItems.monthlyPayment === '' || this.editItems.monthlyPayment === undefined) ||
-        (this.editItems.contractDate === '' || this.editItems.contractDate === undefined) ||
-        (this.editItems.feasibilityCode === '' || this.editItems.feasibilityCode === undefined)) {
+    if (this.editItems.status === 'execução') {
+      while ((this.editItems.taxa_Instalacao === '' || this.editItems.taxa_Instalacao === undefined) ||
+        (this.editItems.taxa_Mensal === '' || this.editItems.taxa_Mensal === undefined) ||
+        (this.editItems.data_Contratacao === '' || this.editItems.data_Contratacao === undefined) ||
+        (this.editItems.codigo_Viabilidade === '' || this.editItems.codigo_Viabilidade === undefined)) {
         this.confirm.disabled = true
       }
       this.confirm.disabled = false
     }
   }
-  openModal() {
-    this.poModal.open()
 
 
-
-  }
 
   openNew() {
     this.router.navigate(['/oemp/new-orders'])
@@ -414,25 +483,34 @@ export class DashboardComponent implements OnInit {
     this.ngOnInit()
   }
 
+
+
+
   loadSearchOptions(): PoPageDynamicSearchOptions {
     this.statusFilterOptions = this.service.getStatus()
     this.respOptions = this.service.getAccountableOptions()
     this.AdvSearchOempCompanyOptions = this.service.getOempCompanyOptions()
     this.AdvSearchManagementOptions = this.service.getManagementOptions()
+    this.AdvClientOptions = `${this.service.host}/api/oemp/getClient`
     return {
       filters: [
-        { property: 'status', label: 'Status', options: this.statusFilterOptions, gridColumns: 6, optionsMulti: true },
-        { property: 'protocolo', label: 'Protocolo', gridColumns: 6 },
-        { property: 'accountable', label: 'Responsável', options: this.respOptions, gridColumns: 6, optionsMulti: true },
-        { property: 'oempCompany', label: 'Operadora', options: this.AdvSearchOempCompanyOptions, gridColumns: 6, optionsMulti: true },
-        { property: 'management', label: 'Gestão', options: this.AdvSearchManagementOptions, gridColumns: 6, optionsMulti: true },
+        { property: 'conglomerado', label: 'Cliente', optionsService: this.AdvClientOptions, gridColumns: 7, fieldLabel: 'conglomerado', fieldValue: 'conglomerado', icon: 'po-icon po-icon-waiter', order: 1 },
+        { property: 'protocolo', label: 'Protocolo', gridColumns: 5, icon: 'po-icon po-icon-document', order: 2 },
+        { property: 'status', label: 'Status', options: this.statusFilterOptions, gridColumns: 5, optionsMulti: true, icon: 'po-icon po-icon-info', order: 3 },
+        { property: 'operadora_Oemp', label: 'Operadora', options: this.AdvSearchOempCompanyOptions, gridColumns: 6, optionsMulti: true, icon: 'po-icon po-icon-company', order: 5 },
+        { property: 'pove', label: 'GROSS', options: this.AdvSearchGrossOptions, gridColumns: 5, order: 7 },
+        { property: 'responsavel', label: 'Responsável', options: this.respOptions, gridColumns: 7, optionsMulti: true, order: 4 },
+        { property: 'gestao', label: 'Gestão', options: this.AdvSearchManagementOptions, gridColumns: 6, optionsMulti: true, order: 6 },
+
+
+
 
       ]
     }
   }
 
   installationFeeMask() {
-    let value = this.editItems.installationFee
+    let value = this.editItems.taxa_Instalacao
     value = value + ''
     value = parseInt(value.replace(/[\D]+/g, ''))
     value = value + ''
@@ -442,12 +520,12 @@ export class DashboardComponent implements OnInit {
       value = value.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2")
     }
 
-    this.editItems.installationFee = value
-    if (value == 'NaN') this.editItems.installationFee = ''
+    this.editItems.taxa_Instalacao = value
+    if (value == 'NaN') this.editItems.taxa_Instalacao = ''
   }
 
   monthlyPaymentMask() {
-    let value = this.editItems.monthlyPayment
+    let value = this.editItems.taxa_Mensal
     value = value + ''
     value = parseInt(value.replace(/[\D]+/g, ''))
     value = value + ''
@@ -457,8 +535,8 @@ export class DashboardComponent implements OnInit {
       value = value.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2")
     }
 
-    this.editItems.monthlyPayment = value
-    if (value == 'NaN') this.editItems.monthlyPayment = ''
+    this.editItems.taxa_Mensal = value
+    if (value == 'NaN') this.editItems.taxa_Mensal = ''
   }
 
   onChangeOempCompany(e: any) {
@@ -467,18 +545,22 @@ export class DashboardComponent implements OnInit {
     const searchUN = this.service.getUNOempCompanyOptions().find((companyName, index, array) => companyName.value === e)
     const searchNA = this.service.getNAOempCompanyOptions().find((companyName, index, array) => companyName.value === e)
     if (searchOemp) {
-      this.editItems.management = 'OEMP'
+      this.editItems.gestao = 'OEMP'
     } else if (searchInter) {
-      this.editItems.management = 'Intercompany'
+      this.editItems.gestao = 'Intercompany'
     } else if (searchUN) {
-      this.editItems.management = 'UN'
+      this.editItems.gestao = 'UN'
     } else if (searchNA) {
-      this.editItems.management = 'NA'
+      this.editItems.gestao = 'NA'
     }
-    else {
-      this.editItems.management = undefined
-      this.editItems.oempCompany = undefined
-      this.oempcompanyOptions = this.service.getOempCompanyOptions()
+    else if (e === 'Sem Atuação OEMP') {
+      this.editItems.operadora_Oemp = e
+      this.editItems.status = 'concluído'
+
+    } else {
+      this.editItems.gestao = undefined
+      this.editItems.operadora_Oemp = undefined
+      this.oempCompanyOptions = this.service.getOempCompanyOptions()
       this.managementOptions = this.service.getManagementOptions()
     }
   }
@@ -487,20 +569,20 @@ export class DashboardComponent implements OnInit {
   onChangeManagement(e: any) {
     if (e === 'OEMP') {
       this.accountableOptions = this.service.getOempAccountableOptions()
-      this.oempcompanyOptions = this.service.getOempOempCompanyOptions()
+      this.oempCompanyOptions = this.service.getOempOempCompanyOptions()
     } else if (e === 'Intercompany') {
       this.accountableOptions = this.service.getIntercompanyAccountableOptions()
-      this.oempcompanyOptions = this.service.getIntercompanyOempCompanyOptions()
+      this.oempCompanyOptions = this.service.getIntercompanyOempCompanyOptions()
     } else if (e === 'UN') {
       this.accountableOptions = this.service.getUnAccountableOptions()
-      this.oempcompanyOptions = this.service.getUNOempCompanyOptions()
+      this.oempCompanyOptions = this.service.getUNOempCompanyOptions()
     } else if (e === 'NA') {
-      this.oempcompanyOptions = this.service.getNAOempCompanyOptions()
+      this.oempCompanyOptions = this.service.getNAOempCompanyOptions()
     }
     else {
-      this.editItems.oempCompany = undefined
-      this.editItems.management = undefined
-      this.editItems.accountable = undefined
+      this.editItems.operadora_Oemp = undefined
+      this.editItems.gestao = undefined
+      this.editItems.responsavel = undefined
       this.accountableOptions = this.service.getAccountableOptions()
 
     }

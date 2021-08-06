@@ -27,6 +27,16 @@ export class OempService extends Service {
     return this.http.get(`${this.host}/api/oemp`)
   }
 
+  getClient(): Observable<any> {
+    // const options = this.getOptionsReq();
+    // if (options == null) {
+    //   throw new Error('Usuário não autenticado!')
+
+    // } else
+    //   return this.http.get(`${this.host}/api/oemp`, options)
+    return this.http.get(`${this.host}/api/getClients`)
+  }
+
   getOpenOrdersToExport(): Observable<any> {
     // const options = this.getOptionsReq();
     // if (options == null) {
@@ -34,7 +44,7 @@ export class OempService extends Service {
 
     // } else
     //   return this.http.get(`${this.host}/api/oemp/total-counter`, options)
-    return this.http.get(`${this.host}/api/oemp/exportopen`)
+    return this.http.get(`${this.host}/api/oemp/exportOpen`)
   }
 
   getCounters(): Observable<any> {
@@ -82,12 +92,14 @@ export class OempService extends Service {
 
   quickSearchFilter(filter: any): Observable<any> {
     // return this.http.get(`${this.host}/api/oemp/search?circuito=${filter}`, this.getOptionsReq())
-    return this.http.get(`${this.host}/api/oemp/search?circuito=${filter}`)
+    return this.http.post(`${this.host}/api/oemp/search`, filter)
   }
+
+
 
   advancedSearchFilter(filters: any): Observable<any> {
     // return this.http.post(`${this.host}/api/oemp/advancedsearch`, this.postOptionsReq(filters))
-    return this.http.post(`${this.host}/api/oemp/advancedsearch`, filters)
+    return this.http.post(`${this.host}/api/oemp/advancedSearch`, filters)
   }
 
   getStatus() {
@@ -95,14 +107,13 @@ export class OempService extends Service {
 
       { value: 'aguardando assinatura', label: 'Aguardando Assinatura' },
       { value: 'aprovação opex', label: 'Aprovação de OPEX' },
-      { value: 'completed', label: 'Concluído' },
+      { value: 'concluído', label: 'Concluído' },
       { value: 'contratação', label: 'Em contratação' },
       { value: 'viabilidade', label: 'Em estudo viabilidade', },
-      { value: 'execution', label: 'Em execução' },
+      { value: 'execução', label: 'Em execução' },
       { value: 'falha acesso terceiro', label: 'Falha no Acesso Terceiro' },
       { value: 'pendência cliente', label: 'Pendência Cliente' },
-      { value: 'pendência U.N', label: 'Pendência U.N' },
-      { value: 'sem atuação oemp', label: 'Sem atuação OEMP' }
+      { value: 'pendência U.N', label: 'Pendência U.N' }
     ]
   }
 
@@ -148,6 +159,7 @@ export class OempService extends Service {
       { label: 'Rede Própria', value: 'Rede Propria' },
       { label: 'RIXBR27', value: 'RIXBR27' },
       { label: 'SAMM', value: 'SAMM' },
+      { label: 'Sem Atuação OEMP', value: 'Sem Atuação OEMP' },
       { label: 'Sercomtel', value: 'Sercomtel' },
       { label: 'Siteltra', value: 'Siteltra' },
       { label: 'SpeedCast', value: 'SpeedCast' },
@@ -265,10 +277,10 @@ export class OempService extends Service {
     return [
       { label: 'Aguardando Assinatura', value: 'aguardando assinatura' },
       { label: 'Aprovação de OPEX', value: 'aprovação opex' },
-      { label: 'Concluído', value: 'completed' },
+      { label: 'Concluído', value: 'concluído' },
       { label: 'Em contratação', value: 'contratação' },
       { label: 'Em estudo viabilidade', value: 'viabilidade' },
-      { label: 'Em execução', value: 'execution' },
+      { label: 'Em execução', value: 'execução' },
       { label: 'Falha no Acesso Terceiro', value: 'falha acesso terceiro' },
       { label: 'Pendência Cliente', value: 'pendência cliente' },
       { label: 'Pendência U.N', value: 'pendência U.N' },
@@ -278,12 +290,22 @@ export class OempService extends Service {
 
   getOempDeadLineOptions() {
     return [
-
+      { label: '10 dias', value: 10 },
+      { label: '15 dias', value: 15 },
+      { label: '20 dias', value: 20 },
+      { label: '25 dias', value: 25 },
       { label: '30 dias', value: 30 },
+      { label: '35 dias', value: 35 },
       { label: '40 dias', value: 40 },
       { label: '45 dias', value: 45 },
       { label: '50 dias', value: 50 },
+      { label: '55 dias', value: 55 },
       { label: '60 dias', value: 60 },
+      { label: '65 dias', value: 65 },
+      { label: '70 dias', value: 70 },
+      { label: '75 dias', value: 75 },
+      { label: '80 dias', value: 80 },
+      { label: '85 dias', value: 85 },
       { label: '90 dias', value: 90 },
       { label: '120 dias', value: 120 },
 
@@ -295,15 +317,18 @@ export class OempService extends Service {
 
       { label: '12 meses', value: 12 },
       { label: '24 meses', value: 24 },
+      { label: '30 meses', value: 30 },
       { label: '36 meses', value: 36 },
       { label: '48 meses', value: 48 },
       { label: '60 meses', value: 60 },
+      { label: 'Indeterminado', value: 'indeterminado' },
 
     ]
   }
 
   getAccountableOptions() {
     return [
+
       { label: 'Alexandre Rodrigues Pereira', value: 'oi88813' },
       { label: 'Camilo Edison Fracetti Da Silveira', value: 'oi320541' },
       { label: 'David Marques Pires', value: 'oi328091' },
@@ -352,6 +377,7 @@ export class OempService extends Service {
       { property: 'geo', label: 'Regional' },
       { property: 'uf', label: 'UF' },
       { property: 'circuito', label: 'Circuito' },
+      { property: 'NomedoCliente', label: 'Cliente' },
       { property: 'protocolo', label: 'Protocolo' },
       { property: 'pove', label: 'Gross' },
       { property: 'servico', label: 'Serviço' },
@@ -359,8 +385,8 @@ export class OempService extends Service {
         property: 'status',
         type: 'subtitle',
         subtitles: [
-          { value: 'execution', color: 'color-11', label: 'Em execução', content: 'EXE' },
-          { value: 'new', color: 'color-01', label: 'Novo', content: 'NOV' },
+          { value: 'execução', color: 'color-11', label: 'Em execução', content: 'EXE' },
+          { value: 'novo', color: 'color-01', label: 'Novo', content: 'NOV' },
           { value: 'aguardando assinatura', color: 'color-02', label: 'Ag. Assinatura', content: 'AAS' },
           { value: 'aprovação opex', color: 'color-03', label: 'Aprovação de Opex', content: 'OPE' },
           { value: 'contratação', color: 'color-04', label: 'Contratação', content: 'CTR' },
@@ -369,13 +395,13 @@ export class OempService extends Service {
           { value: 'pendência cliente', color: 'color-07', label: 'Pendência Cliente', content: 'PCL' },
           { value: 'pendência U.N', color: 'color-08', label: 'Pendência U.N', content: 'PUN' },
           { value: 'sem atuação oemp', color: 'color-09', label: 'Sem atuação OEMP', content: 'SOP' },
-          { value: 'completed', color: 'color-10', label: 'Concluído', content: 'OK' },
+          { value: 'concluído', color: 'color-10', label: 'Concluído', content: 'OK' },
         ]
       },
-      { property: 'oempCompany', label: 'Operadora' },
-      { property: 'management', label: 'Gestão' },
-      { property: 'contractDate', label: 'Data Contratação', type: 'date', format: 'dd/MM/yyyy' },
-      { property: 'deliveryPrediction', label: 'Prev. Entrega', type: 'date', format: 'dd/MM/yyyy' },
+      { property: 'operadora_Oemp', label: 'Operadora' },
+      { property: 'gestao', label: 'Gestão' },
+      { property: 'data_Contratacao', label: 'Data Contratação', type: 'date', format: 'dd/MM/yyyy' },
+      { property: 'previsao_Entrega', label: 'Prev. Entrega', type: 'date', format: 'dd/MM/yyyy' },
 
     ]
   }

@@ -43,8 +43,8 @@ export class CompletedOrdersComponent implements OnInit {
     { property: 'uf', label: 'UF' },
     { property: 'servico', label: 'Serviço' },
     { property: 'pove', label: 'Gross' },
-    { property: 'oempCompany', label: 'Operadora' },
-    { property: 'oempDesignation', label: 'Desig. Operadora' },
+    { property: 'operadora_Oemp', label: 'Operadora' },
+    { property: 'designacao_Oemp', label: 'Desig. Operadora' },
 
   ]
 
@@ -87,7 +87,7 @@ export class CompletedOrdersComponent implements OnInit {
     this.loading = !this.loading
     try {
 
-      let status = 'completed'
+      let status = 'concluído'
       this.service.filterByStatus(status, this.page).subscribe(
         (results: any) => {
           this.items = results.items
@@ -108,7 +108,7 @@ export class CompletedOrdersComponent implements OnInit {
     this.showMoreDisabled = false
     setTimeout(() => {
       this.page++
-      this.loadNewServiceOrders(this.page, 'completed')
+      this.loadNewServiceOrders(this.page, 'concluído')
       this.isLoading = false
     }, 1000)
 

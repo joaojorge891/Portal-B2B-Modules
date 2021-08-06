@@ -57,6 +57,9 @@ exports.appRouter = function (app) {
         .get(oempRoute.filter)
         .post(oempRoute.save)
 
+    router.route('/oemp/getClient')
+        .get(oempRoute.getClient)
+
     router.route('/oemp/allbypage')
         .get(oempRoute.findAllbyPage)
         .post(oempRoute.save)
@@ -71,20 +74,17 @@ exports.appRouter = function (app) {
         .get(oempRoute.findById)
 
     router.route('/oemp/search')
-        .get(oempRoute.findByCircuit)
+        .post(oempRoute.quickFilter)
 
     router.route('/oemp/exportclosed')
         .post(oempRoute.getClosedByDate)
 
-    router.route('/oemp/new')
-        .get(oempRoute.newFilter)
-
-    router.route('/oemp/advancedsearch')
+    router.route('/oemp/advancedSearch')
         .post(oempRoute.advancedFilter)
 
-    router.route('/oemp/exportopen')
+    router.route('/oemp/exportOpen')
         .get(oempRoute.getTotalOpen)
-
+        
     router.route('/oemp/counters')
         .get(oempRoute.getCounters)
 }

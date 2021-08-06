@@ -9,7 +9,7 @@ function MysqlImportOsAbertas() {
 
   function sqlQuery(mysqlConnection, tableName) {
     return new Promise((resolve, reject) => {
-      let sql = 'SELECT * FROM ' + tableName + ' WHERE area = "OEMP"'
+      let sql = 'SELECT * FROM ' + tableName + ' WHERE area = "OEMP" OR pend = "3902"'
       mysqlConnection.query(sql, function (error, results) {
         if (error) {
           console.log(error)
@@ -34,7 +34,10 @@ function MysqlImportOsAbertas() {
             }
 
             if (data.length === 0) {
-              item.status = 'new'
+              if (item.pend === '3902') {
+                item.gestao = 'UN'
+              }
+              item.status = 'novo'
               item.lastUpdate = new Date()
               await mongoCollection.insertOne(item)
 
@@ -52,11 +55,11 @@ function MysqlImportOsAbertas() {
         promises.push(secondaryPromise)
       })
       Promise.all(promises).then(success => resolve('open base successfully updated!'))
+
     })
 
     return mainPromise
   }
-
 
   mongoose.connect("mongodb://localhost/op-b2b-db", { useNewUrlParser: true, useUnifiedTopology: true })
   const db = mongoose.connection
@@ -73,7 +76,7 @@ function MysqlImportOsAbertas() {
     // user: 'root',
     // password: '89118642',
     // port: 3306,
-    // database: 'os_abertas'
+    // database: 'os'
   })
 
   mysqlCon.connect()

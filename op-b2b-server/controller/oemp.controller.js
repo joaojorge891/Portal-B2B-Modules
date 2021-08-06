@@ -23,100 +23,53 @@ exports.save = async function (order) {
 }
 
 exports.advancedFilter = async function (filters) {
+    let object = {
+        items: [],
+        hasNext: false
+    }
     try {
-        let doc = await oempSchema.find(filters)
-        if (doc !== null && doc !== undefined) {
-            object = doc
-        } else {
-            object = { status: 'fail', error: 'Erro: ' + err.message }
+
+        let page = 0
+        if (filters.page != null) {
+            page = Number(filters.page) || 0
         }
+        delete filters.page
+
+        await oempSchema.find(filters)
+            .limit(30)
+            .skip(page * 30)
+            .then(doc => {
+                if (doc !== null && doc !== undefined) {
+                    object.items = doc
+
+                } else {
+                    object = { status: 'fail', error: 'Erro: ' + err.message }
+                }
+
+            }
+            )
+
     } catch (err) {
         throw new Error(err)
     }
     return object
 }
 
-exports.fullFilter = async function () {
-    try {
-        let doc = await oempSchema.find({ status: 'Em execução' })
-        if (doc !== null && doc !== undefined) {
-            object = (totalOrders.length).toString()
-        } else {
-            object = { status: 'fail', error: 'Erro: ' + err.message }
-        }
-    } catch (err) {
-        throw new Error(err)
-    }
-    return object
-}
-
-exports.newFilter = async function () {
-    try {
-        let doc = await oempSchema.find({ status: 'Novo' })
-        if (doc !== null && doc !== undefined) {
-            object = (doc.length).toString()
-        } else {
-            object = { status: 'fail', error: 'Erro: ' + err.message }
-        }
-    } catch (err) {
-        throw new Error(err)
-    }
-    return object
-}
-
-exports.geralFilter = async function () {
-    try {
-        let doc = await oempSchema.find({})
-        if (doc !== null && doc !== undefined) {
-            object = (doc.length).toString()
-        } else {
-            object = { status: 'fail', error: 'Erro: ' + err.message }
-        }
-    } catch (err) {
-        throw new Error(err)
-    }
-    return object
-}
-
-
-exports.filter = async function (parameters) {
-
+exports.getClient = async function () {
     const object = {
         items: [],
         hasNext: true
     }
-
-    const filter = {}
-
-    Object.entries(parameters).forEach(element => {
-
-        let key = element[0]
-
-        if (key == 'page' || key == 'pageSize') return
-
-        if ((key == 'filter' && req.query.filter.length > 0) || key == 'user') {
-            filter['user'] = { $regex: `.*${req.query.filter}.*`, $options: 'i' }
-            filter[key] = element[1]
-        }
-
-    })
-
     try {
-        let users = await userSchema.find(filter).select('-password')
-        object.items = users
-    } catch (error) {
-        throw new Error(error)
-    }
-    return object
-}
 
-exports.findByCircuit = async function (circuito) {
-    try {
-        let filter = {}
-        filter['circuito'] = { '$eq': circuito }
-        let doc = await oempSchema.find(filter)
+        let doc = await oempSchema.find({}).select(
+            {
+                '_id': 0,
+                'conglomerado': 1,
+            }
+        )
         if (doc !== null && doc !== undefined) {
-            object = doc
+            object.items = doc
         } else {
             object = { status: 'fail', error: 'Erro: ' + err.message }
         }
@@ -124,8 +77,27 @@ exports.findByCircuit = async function (circuito) {
         throw new Error(err)
     }
     return object
-
 }
+
+exports.quickFilter = async function (filters) {
+    try {
+        const doc = await oempSchema.find({ circuito: { $ne: null } })
+        if (doc) {
+            let filteredItems = [...doc]
+            Object.keys(filters).forEach(filter => {
+                object = filteredItems.filter((register) =>
+                    register[filter].toLocaleLowerCase().includes(filters[filter].toLocaleLowerCase())
+                )
+            })
+        } else {
+            object = { status: 'fail', error: 'Erro: ' + err.message }
+        }
+    } catch (error) {
+        throw new Error('Erro na filtragem rápida:' + error)
+    }
+    return object
+}
+
 
 exports.getTotalOpen = function () {
     let promise = new Promise(function (resolve, reject) {
@@ -143,7 +115,7 @@ exports.getTotalOpen = function () {
                 'produto': 1,
                 'velocidade': 1,
                 'servico': 1,
-                'oempCompany': 1,
+                'operadora_Oemp': 1,
                 'pove': 1,
                 'pend': 1,
                 'descricao': 1,
@@ -156,10 +128,18 @@ exports.getTotalOpen = function () {
                 'obsAbertura': 1,
                 'obsPend': 1,
                 'status': 1,
-                'obsStatus': 1,
-                'contractDate': 1,
-                'deliveryPrediction': 1,
-                'accountable': 1
+                'observacao_Status': 1,
+                'data_Contratacao': 1,
+                'previsao_Entrega': 1,
+                'data_Instalacao': 1,
+                'taxa_Instalacao': 1,
+                'taxa_Mensal': 1,
+                'tempo_Contrato': 1,
+                'codigo_Viabilidade': 1,
+                'operadora_Oemp': 1,
+                'designacao_Oemp': 1,
+                'responsavel': 1,
+                'gestao': 1
             }
         )
             .sort({ tempoPosto: -1 })
@@ -257,6 +237,7 @@ exports.findCaseById = async function (id) {
         let doc = await oempSchema.findById(id)
         if (doc !== null && doc !== undefined) {
             object = doc
+
         } else {
             object = { status: 'not_found' }
         }
@@ -291,13 +272,13 @@ exports.filterAll = function (req) {
             //         'projeto': 1,
             //         'pove': 1,
             //         'servico': 1,
-            //         'oempCompany': 1,
+            //         'operadora_Oemp': 1,
             //         'status': 1,
-            //         'deliveryPrediction': 1,
+            //         'previsao_Entrega': 1,
             //         'lastUpdate': 1
             //     }
             // )
-            .sort({ TempoPosto: -1 })
+            .sort({ status: 1 })
             .limit(30)
             .skip(page * 30)
             .then(doc => {
@@ -333,9 +314,9 @@ exports.findAllbyPage = function (req) {
                     'projeto': 1,
                     'pove': 1,
                     'servico': 1,
-                    'oempCompany': 1,
+                    'operadora_Oemp': 1,
                     'status': 1,
-                    'deliveryPrediction': 1
+                    'previsao_Entrega': 1
                 }
             )
             .sort({ tempoPosto: -1 })
@@ -374,10 +355,10 @@ exports.loadOrdersByStatus = function (req) {
                     'protocolo': 1,
                     'pove': 1,
                     'servico': 1,
-                    'oempCompany': 1,
-                    'oempDesignation': 1,
-                    'contractDate': 1,
-                    'deliveryPrediction': 1
+                    'operadora_Oemp': 1,
+                    'designacao_Oemp': 1,
+                    'data_Contratacao': 1,
+                    'previsao_Entrega': 1
                 }
             )
             .sort({ tempoPosto: -1 })
@@ -424,10 +405,10 @@ exports.findByStatus = function (req) {
                         'protocolo': 1,
                         'pove': 1,
                         'servico': 1,
-                        'oempCompany': 1,
-                        'oempDesignation': 1,
-                        'contractDate': 1,
-                        'deliveryPrediction': 1
+                        'operadora_Oemp': 1,
+                        'designacao_Oemp': 1,
+                        'data_Contratacao': 1,
+                        'previsao_Entrega': 1
                     }
                 )
                 .sort({ tempoPosto: -1 })

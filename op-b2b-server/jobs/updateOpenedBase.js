@@ -14,17 +14,17 @@ function execUpdateOpenedBase() {
           await oempSchema.findOneAndUpdate({ protocolo: item.protocolo },
             {
               status: item.status,
-              obsStatus: item.observacao,
-              contractDate: item.dataContratacao,
-              oempDeadLine: item.prazoOperadora,
-              deliveryPrediction: item.previsaoEntrega,
-              currentPrediction: item.previsaoAtual,
-              installationDate: item.dataInstalacao,
-              installationFee: item.taxaInstalacao,
-              monthlyPayment: item.mensalidade,
-              contractTime: item.tempoContrato,
-              feasibilityCode: item.codigoViabilidade,
-              oempDesignation: item.desigOperadora
+              observacao_Status: item.observacao,
+              data_Contratacao: item.dataContratacao,
+              prazo_Operadora: item.prazoOperadora,
+              previsao_Entrega: item.previsaoEntrega,
+              previsao_Atual: item.previsaoAtual,
+              data_Instalacao: item.dataInstalacao,
+              taxa_Instalacao: item.taxaInstalacao,
+              taxa_Mensal: item.mensalidade,
+              tempo_Contrato: item.tempoContrato,
+              codigo_Viabilidade: item.codigoViabilidade,
+              designacao_Oemp: item.desigOperadora
             })
           resolve(true)
         } catch (erro) { throw new Error('falha na atualização da base abertas...') }
@@ -52,6 +52,6 @@ function execUpdateOpenedBase() {
 
 }
 
-module.exports = cron.schedule('* * * * *', execUpdateOpenedBase, {
+module.exports = cron.schedule('0 30 7 * Jan-Dec 1-5', execUpdateOpenedBase, {
   scheduled: false
 })

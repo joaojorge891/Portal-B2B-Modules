@@ -24,98 +24,17 @@ export class ExecOrdersComponent implements OnInit {
 
   editItems: any = {}
 
-  statusOptions: Array<any> = [
+  oempCompanyOptions: Array<any> = this.service.getOempCompanyOptions()
 
-    { label: 'Aguardando Assinatura', value: 'aguardando assinatura' },
-    { label: 'Aprovação de OPEX', value: 'aprovação opex' },
-    { label: 'Concluído', value: 'completed' },
-    { label: 'Em contratação', value: 'contratação' },
-    { label: 'Em estudo viabilidade', value: 'viabilidade' },
-    { label: 'Em execução', value: 'execution' },
-    { label: 'Falha no Acesso Terceiro', value: 'falha acesso terceiro' },
-    { label: 'Pendência Cliente', value: 'pendência cliente' },
-    { label: 'Pendência U.N', value: 'pendência U.N' },
-    { label: 'Sem atuação OEMP', value: 'sem atuação oemp' }
+  statusOptions: Array<any> = this.service.getStatusOptions()
 
-  ]
+  oempDeadLineOptions: Array<any> = this.service.getOempDeadLineOptions()
 
-  oempDeadLineOptions: Array<any> = [
+  contractTimeOptions: Array<any> = this.service.getContractTimeOptions()
 
-    { label: '30 dias', value: 30 },
-    { label: '40 dias', value: 40 },
-    { label: '45 dias', value: 45 },
-    { label: '50 dias', value: 50 },
-    { label: '60 dias', value: 60 },
-    { label: '90 dias', value: 90 },
-    { label: '120 dias', value: 120 },
+  accountableOptions: Array<any> = this.service.getAccountableOptions()
 
-  ]
-
-  contractTimeOptions: Array<any> = [
-
-    { label: '12 meses', value: 12 },
-    { label: '24 meses', value: 24 },
-    { label: '36 meses', value: 36 },
-    { label: '48 meses', value: 48 },
-    { label: '60 meses', value: 60 },
-
-  ]
-
-  oempCompanyOptions: Array<any> = [
-
-    { label: 'Algar', value: 'Algar' },
-    { label: 'AltaRede', value: 'AltaRede' },
-    { label: 'American Tower', value: 'American Tower' },
-    { label: 'Arion', value: 'Arion' },
-    { label: 'Ativa', value: 'Ativa' },
-    { label: 'Avato', value: 'Avato' },
-    { label: 'Brasil Telecom', value: 'Brasil Telecom' },
-    { label: 'CenturyLink', value: 'CenturyLink' },
-    { label: 'Claro', value: 'Claro' },
-    { label: 'Conecta', value: 'Conecta' },
-    { label: 'Copel', value: 'Copel' },
-    { label: 'Gilat', value: 'Gilat' },
-    { label: 'Hispamar', value: 'Hispamar' },
-    { label: 'Hostfiber', value: 'Hostfiber' },
-    { label: 'Hughes', value: 'Hughes' },
-    { label: 'Internexa', value: 'Internexa' },
-    { label: 'MicroTell', value: 'MicroTell' },
-    { label: 'Mob Telecom', value: 'Mob Telecom' },
-    { label: 'Nava', value: 'Nava' },
-    { label: 'Neovia', value: 'Neovia' },
-    { label: 'Net', value: 'Net' },
-    { label: 'Net Turbo', value: 'Net Turbo' },
-    { label: 'NetFacil', value: 'NetFacil' },
-    { label: 'Oi', value: 'Oi' },
-    { label: 'OnNeT', value: 'OnNeT' },
-    { label: 'RIXBR27', value: 'RIXBR27' },
-    { label: 'Sercomtel', value: 'Sercomtel' },
-    { label: 'SpeedCast', value: 'SpeedCast' },
-    { label: 'STIW', value: 'STIW' },
-    { label: 'SumiCity', value: 'SumiCity' },
-    { label: 'Telemar', value: 'Telemar' },
-    { label: 'Telespazio', value: 'Telespazio' },
-    { label: 'Telmex', value: 'Telmex' },
-    { label: 'Tim', value: 'Tim' },
-    { label: 'TUDDO', value: 'TUDDO' },
-    { label: 'Velox R2', value: 'Velox R2' },
-    { label: 'Vivax', value: 'Vivax' },
-    { label: 'Vivo', value: 'Vivo' },
-    { label: 'Vogel', value: 'Vogel' },
-    { label: 'WCS Telecom', value: 'WCS Telecom' },
-    { label: 'WKVE', value: 'WKVE' },
-    { label: 'WT Telecom', value: 'WT Telecom' }
-
-  ]
-
-  accountableOptions: Array<any> = [
-
-    { label: 'Alexandre Rodrigues Pereira', value: 'oi88813' },
-    { label: 'Camilo Edison Fracetti Da Silveira', value: 'oi320541' },
-    { label: 'David Marques Pires', value: 'oi328091' },
-    { label: 'Marcio Rodrigo Funatsu', value: 'oi309953' }
-
-  ]
+  managementOptions: Array<any> = this.service.getManagementOptions()
 
   confirm: PoModalAction = {
     action: () => {
@@ -142,10 +61,10 @@ export class ExecOrdersComponent implements OnInit {
     { property: 'circuito', label: 'Circuito' },
     { property: 'servico', label: 'Serviço' },
     { property: 'pove', label: 'Gross' },
-    { property: 'oempCompany', label: 'Operadora' },
-    { property: 'oempDesignation', label: 'Desig. Operadora' },
-    { property: 'contractDate', label: 'Data Contratação', type: 'date', format: 'dd/MM/yyyy' },
-    { property: 'deliveryPrediction', label: 'Previsão Entrega', type: 'date', format: 'dd/MM/yyyy' }
+    { property: 'operadora_Oemp', label: 'Operadora' },
+    { property: 'designacao_Oemp', label: 'Desig. Operadora' },
+    { property: 'data_Contratacao', label: 'Data Contratação', type: 'date', format: 'dd/MM/yyyy' },
+    { property: 'previsao_Entrega', label: 'Previsão Entrega', type: 'date', format: 'dd/MM/yyyy' }
   ]
 
 
@@ -178,7 +97,7 @@ export class ExecOrdersComponent implements OnInit {
     this.loading = !this.loading
     try {
 
-      let status = 'execution'
+      let status = 'execução'
       this.service.filterByStatus(status, this.page).subscribe(
         (results: any) => {
           this.items = results.items
@@ -195,14 +114,36 @@ export class ExecOrdersComponent implements OnInit {
   }
 
   private onForm(order: any) {
-    this.poModal.open()
     this.restore()
     this.service.filterById(order._id).subscribe(
       (result: any) => {
         this.editItems = result
+        this.openModal()
       }
 
     ), (error: any) => this.notification.error(error)
+
+  }
+
+  private restore() {
+    this.editItems.status = undefined
+    this.editItems.observacao_Status = undefined
+    this.editItems.data_Contratacao = undefined
+    this.editItems.prazo_Operadora = undefined
+    this.editItems.previsao_Entrga = undefined
+    this.editItems.data_Instalacao = undefined
+    this.editItems.taxa_Instalacao = undefined
+    this.editItems.taxa_Mensal = undefined
+    this.editItems.tempo_Contrato = undefined
+    this.editItems.codigo_Viabilidade = undefined
+    this.editItems.designacao_Oemp = undefined
+    this.editItems.responsavel = undefined
+    this.editItems.gestao = undefined
+
+  }
+
+  openModal() {
+    this.poModal.open()
   }
 
   dateFoco() {
@@ -214,6 +155,7 @@ export class ExecOrdersComponent implements OnInit {
   }
 
   private proccessOrder() {
+
     switch (this.editItems.status) {
       case undefined:
         this.statusFoco()
@@ -239,48 +181,55 @@ export class ExecOrdersComponent implements OnInit {
           message: 'Para salvar a edição realizada, é necessário informar status atual.'
         })
         return
-      case 'new':
-        this.statusFoco()
-        this.poDialog.alert({
-          literals: { ok: 'Ok' },
-          title: 'Aviso de Campos Obrigatórios',
-          message: 'Para salvar a edição realizada, é necessário informar status atual.'
-        })
-
-        return
-      case 'execution':
-        if ((this.editItems.installationFee === '' || this.editItems.installationFee === undefined || this.editItems.installationFee === null) ||
-          (this.editItems.monthlyPayment === '' || this.editItems.monthlyPayment === undefined || this.editItems.monthlyPayment === null) ||
-          (this.editItems.contractDate === '' || this.editItems.contractDate === undefined || this.editItems.contractDate === null) ||
-          (this.editItems.feasibilityCode === '' || this.editItems.feasibilityCode === undefined || this.editItems.feasibilityCode === null)) {
-          this.dateFoco()
+      case 'novo':
+        if (this.editItems.operadora_Oemp !== 'Sem Atuação OEMP') {
+          this.statusFoco()
           this.poDialog.alert({
             literals: { ok: 'Ok' },
             title: 'Aviso de Campos Obrigatórios',
-            message: 'Para status "Em Execução", é necessário informar os seguintes campos: data de contratação, taxa de instalação, taxa mensal e código de viabilidade.'
+            message: 'Para salvar a edição realizada, é necessário informar status atual.'
           })
           return
         }
         break
-      case 'completed':
-        if ((this.editItems.oempDesignation === '' || this.editItems.oempDesignation === undefined || this.editItems.oempDesignation === null) ||
-          (this.editItems.installationFee === '' || this.editItems.installationFee === undefined || this.editItems.installationFee === null) ||
-          (this.editItems.monthlyPayment === '' || this.editItems.monthlyPayment === undefined || this.editItems.monthlyPayment === null) ||
-          (this.editItems.contractDate === '' || this.editItems.contractDate === undefined || this.editItems.contractDate === null) ||
-          (this.editItems.oempCompany === '' || this.editItems.oempCompany === undefined || this.editItems.oempCompany === null) ||
-          (this.editItems.installationDate === '' || this.editItems.installationDate === undefined || this.editItems.installationDate === null) ||
-          (this.editItems.contractTime === '' || this.editItems.contractTime === undefined || this.editItems.contractTime === null)) {
+      case 'execução':
+        if ((this.editItems.taxa_Instalacao === '' || this.editItems.taxa_Instalacao === undefined || this.editItems.taxa_Instalacao === null) ||
+          (this.editItems.taxa_Mensal === '' || this.editItems.taxa_Mensal === undefined || this.editItems.taxa_Mensal === null) ||
+          (this.editItems.data_Contratacao === '' || this.editItems.data_Contratacao === undefined || this.editItems.data_Contratacao === null) ||
+          (this.editItems.codigo_Viabilidade === '' || this.editItems.codigo_Viabilidade === undefined || this.editItems.codigo_Viabilidade === null) ||
+          (this.editItems.operadora_Oemp === '' || this.editItems.operadora_Oemp === undefined || this.editItems.operadoraOemp === null) ||
+          (this.editItems.responsavel == '' || this.editItems.responsavel === undefined || this.editItems.responsavel === null)) {
           this.dateFoco()
           this.poDialog.alert({
             literals: { ok: 'Ok' },
             title: 'Aviso de Campos Obrigatórios',
-            message: 'Para status "Concluído", é necessário informar os seguintes campos: data de contratação, data instalação, taxa instalação, taxa mensal, tempo contrato, operadora e designação operadora.'
+            message: 'Para status "Em Execução", é necessário informar os seguintes campos: data de contratação, taxa de instalação, taxa mensal, código de viabilidade, operadora e responsável.'
           })
           return
         }
         break
+      case 'concluído':
+        if (this.editItems.operadora_Oemp !== 'Sem Atuação OEMP') {
+          if ((this.editItems.designacao_Oemp === '' || this.editItems.designacao_Oemp === undefined || this.editItems.designacao_Oemp === null) ||
+            (this.editItems.taxa_Instalacao === '' || this.editItems.taxa_Instalacao === undefined || this.editItems.taxa_Instalacao === null) ||
+            (this.editItems.taxa_Mensal === '' || this.editItems.taxa_Mensal === undefined || this.editItems.taxa_Mensal === null) ||
+            (this.editItems.data_Contratacao === '' || this.editItems.data_Contratacao === undefined || this.editItems.data_Contratacao === null) ||
+            (this.editItems.operadora_Oemp === '' || this.editItems.operadora_Oemp === undefined || this.editItems.operadora_Oemp === null) ||
+            (this.editItems.data_Instalacao === '' || this.editItems.data_Instalacao === undefined || this.editItems.data_Instalacao === null) ||
+            (this.editItems.tempo_Contrato === '' || this.editItems.tempo_Contrato === undefined || this.editItems.tempo_Contrato === null) ||
+            (this.editItems.operadora_Oemp === '' || this.editItems.operadora_Oemp === undefined || this.editItems.operadora_Oemp === null)) {
+            this.dateFoco()
+            this.poDialog.alert({
+              literals: { ok: 'Ok' },
+              title: 'Aviso de Campos Obrigatórios',
+              message: 'Para status "Concluído", é necessário informar os seguintes campos: data de contratação, data instalação, taxa instalação, taxa mensal, tempo contrato, operadora e designação operadora.'
+            })
+            return
+          }
+        } else break
 
     }
+
     this.service.save(this.editItems).subscribe(
       (result: any) => {
         if (result.status === 'ok') {
@@ -299,17 +248,19 @@ export class ExecOrdersComponent implements OnInit {
 
     )
 
+
   }
+
   closeModal() {
     this.poModal.close()
     this.ngOnInit()
   }
 
   delivPredCalc() {
-    if (this.editItems.contractDate !== null && this.editItems.contractDate !== undefined &&
-      this.editItems.oempDeadLine !== null && this.editItems.oempDeadLine !== undefined) {
-      let dateConvert = moment(this.editItems.contractDate).add(this.editItems.oempDeadLine, 'days').toDate()
-      this.editItems.deliveryPrediction = dateConvert
+    if (this.editItems.data_Contratacao !== null && this.editItems.data_Contratacao !== undefined &&
+      this.editItems.prazo_Operadora !== null && this.editItems.prazo_Operadora !== undefined) {
+      let dateConvert = moment(this.editItems.data_Contratacao).add(this.editItems.prazo_Operadora, 'days').toDate()
+      this.editItems.previsao_Entrega = dateConvert
     }
   }
 
@@ -319,7 +270,7 @@ export class ExecOrdersComponent implements OnInit {
     this.showMoreDisabled = false
     setTimeout(() => {
       this.page++
-      this.loadNewServiceOrders(this.page, 'execution')
+      this.loadNewServiceOrders(this.page, 'execução')
       this.isLoading = false
     }, 1000)
 
@@ -330,24 +281,13 @@ export class ExecOrdersComponent implements OnInit {
       result => this.items = this.items.concat(result.items)
     ))
   }
-  restore() {
-    this.editItems.circuito = ''
-    this.editItems.status = ''
-    this.editItems.obsStatus = ''
-    this.editItems.contractDate = ''
-    this.editItems.oempDeadLine = ''
-    this.editItems.deliveryPrediction = ''
-    this.editItems.currentPrediction = ''
-    this.editItems.installationDate = ''
-    this.editItems.installationFee = ''
-  }
 
   onBack() {
     this.router.navigate(['/oemp'])
   }
 
   installationFeeMask() {
-    let value = this.editItems.installationFee
+    let value = this.editItems.taxa_Instalacao
     value = value + ''
     value = parseInt(value.replace(/[\D]+/g, ''))
     value = value + ''
@@ -357,12 +297,12 @@ export class ExecOrdersComponent implements OnInit {
       value = value.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2")
     }
 
-    this.editItems.installationFee = value
-    if (value == 'NaN') this.editItems.installationFee = ''
+    this.editItems.taxa_Instalacao = value
+    if (value == 'NaN') this.editItems.taxa_Instalacao = ''
   }
 
   monthlyPaymentMask() {
-    let value = this.editItems.monthlyPayment
+    let value = this.editItems.taxa_Mensal
     value = value + ''
     value = parseInt(value.replace(/[\D]+/g, ''))
     value = value + ''
@@ -372,8 +312,59 @@ export class ExecOrdersComponent implements OnInit {
       value = value.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2")
     }
 
-    this.editItems.monthlyPayment = value
-    if (value == 'NaN') this.editItems.monthlyPayment = ''
+    this.editItems.taxa_Mensal = value
+    if (value == 'NaN') this.editItems.taxa_Mensal = ''
   }
+
+  onChangeManagement(e: any) {
+    if (e === 'OEMP') {
+      this.accountableOptions = this.service.getOempAccountableOptions()
+      this.oempCompanyOptions = this.service.getOempOempCompanyOptions()
+    } else if (e === 'Intercompany') {
+      this.accountableOptions = this.service.getIntercompanyAccountableOptions()
+      this.oempCompanyOptions = this.service.getIntercompanyOempCompanyOptions()
+    } else if (e === 'UN') {
+      this.accountableOptions = this.service.getUnAccountableOptions()
+      this.oempCompanyOptions = this.service.getUNOempCompanyOptions()
+    } else if (e === 'NA') {
+      this.oempCompanyOptions = this.service.getNAOempCompanyOptions()
+    }
+    else {
+      this.editItems.operadora_Oemp = undefined
+      this.editItems.gestao = undefined
+      this.editItems.responsavel = undefined
+      this.accountableOptions = this.service.getAccountableOptions()
+
+    }
+
+  }
+
+  onChangeOempCompany(e: any) {
+    const searchOemp = this.service.getOempOempCompanyOptions().find((companyName, index, array) => companyName.value === e)
+    const searchInter = this.service.getIntercompanyOempCompanyOptions().find((companyName, index, array) => companyName.value === e)
+    const searchUN = this.service.getUNOempCompanyOptions().find((companyName, index, array) => companyName.value === e)
+    const searchNA = this.service.getNAOempCompanyOptions().find((companyName, index, array) => companyName.value === e)
+    if (searchOemp) {
+      this.editItems.gestao = 'OEMP'
+    } else if (searchInter) {
+      this.editItems.gestao = 'Intercompany'
+    } else if (searchUN) {
+      this.editItems.gestao = 'UN'
+    } else if (searchNA) {
+      this.editItems.gestao = 'NA'
+    }
+    else if (e === 'Sem Atuação OEMP') {
+      this.editItems.operadora_Oemp = e
+      this.editItems.status = 'concluído'
+
+    } else {
+      this.editItems.gestao = undefined
+      this.editItems.operadora_Oemp = undefined
+      this.oempCompanyOptions = this.service.getOempCompanyOptions()
+      this.managementOptions = this.service.getManagementOptions()
+    }
+  }
+
+
 
 }
