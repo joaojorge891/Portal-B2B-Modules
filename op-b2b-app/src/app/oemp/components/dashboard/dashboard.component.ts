@@ -8,8 +8,6 @@ import * as moment from 'moment';
 
 import { ExcelService } from 'src/app/services/excel-export.service';
 import { OempService } from 'src/app/services/oemp.service';
-import { PoComboFilterService } from '@po-ui/ng-components/lib/components/po-field/po-combo/po-combo-filter.service';
-
 
 
 @Component({
@@ -18,50 +16,50 @@ import { PoComboFilterService } from '@po-ui/ng-components/lib/components/po-fie
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+
   items: Array<any> = []
 
   editItems: any = {}
 
   page: number = 0
 
-  rowDirection: PoTableRowTemplateArrowDirection = PoTableRowTemplateArrowDirection.Right
-
+  
   isLoading: boolean = false
-
+  
   showMoreDisabled: boolean = false
-
+  
   executionCounter: string = '0'
-
+  
   newCounter: string = '0'
-
+  
   totalCounter: number = 0
 
   completedCounter: string = '0'
-
+  
   maxColumns: number = 0
-
+  
   loading: boolean = false
-
+  
   lastUpdate!: Date
-
+  
   lastUpdateCompleted!: Date
-
+  
   isReadOnly: any
-
+  
   exportAllOrders: any
-
+  
   temporaryCounter = 0
-
+  
   AdvSearchMark: boolean = false
-
-  getClients: any
-
+  
   AdvSearchFilterContent: any
 
+  rowDirection: PoTableRowTemplateArrowDirection = PoTableRowTemplateArrowDirection.Right
+  
   oempCompanyOptions: Array<any> = this.service.getOempCompanyOptions()
 
   statusOptions: Array<any> = this.service.getStatusOptions()
-
+  
   oempDeadLineOptions: Array<any> = this.service.getOempDeadLineOptions()
 
   contractTimeOptions: Array<any> = this.service.getContractTimeOptions()
@@ -84,6 +82,26 @@ export class DashboardComponent implements OnInit {
     },
     label: 'Fechar',
     danger: true
+  }
+
+  confirmOrderWithoutActing() {
+    this.service.save(this.editItems).subscribe(
+      (result: any) => {
+        if (result.status === 'ok') {
+          this.confirm.loading = true
+          setTimeout(() => {
+            this.notification.success('Ordem atualizada com sucesso!')
+            this.confirm.loading = false
+            this.closeModal()
+
+          }, 700)
+
+        }
+      },
+      (err: any) => this.notification.error(err)
+
+
+    )
   }
 
   customLiterals: PoPageDynamicSearchLiterals = {
@@ -324,7 +342,7 @@ export class DashboardComponent implements OnInit {
     } catch (error) {
       this.notification.error(error)
     }
-    
+
   }
 
   private resetFilters(page: number) {
@@ -427,7 +445,17 @@ export class DashboardComponent implements OnInit {
             })
             return
           }
-        } else break
+        } else {
+          this.poDialog.confirm({
+            literals: { cancel: 'Cancelar', confirm: 'Confirmar' },
+            title: 'Aviso',
+            message: 'Ao prosseguir com envio, a ordem será tramitada para status "concluído", sem possibilidade de reedição. Deseja confirmar?',
+            confirm: () => this.confirmOrderWithoutActing(),
+
+          })
+          return
+
+        } break
 
     }
 
@@ -492,12 +520,13 @@ export class DashboardComponent implements OnInit {
     this.AdvSearchOempCompanyOptions = this.service.getOempCompanyOptions()
     this.AdvSearchManagementOptions = this.service.getManagementOptions()
     this.AdvClientOptions = `${this.service.host}/api/oemp/getClient`
+
     return {
       filters: [
-        { property: 'conglomerado', label: 'Cliente', optionsService: this.AdvClientOptions, gridColumns: 7, fieldLabel: 'conglomerado', fieldValue: 'conglomerado', icon: 'po-icon po-icon-waiter', order: 1 },
-        { property: 'protocolo', label: 'Protocolo', gridColumns: 5, icon: 'po-icon po-icon-document', order: 2 },
-        { property: 'status', label: 'Status', options: this.statusFilterOptions, gridColumns: 5, optionsMulti: true, icon: 'po-icon po-icon-info', order: 3 },
-        { property: 'operadora_Oemp', label: 'Operadora', options: this.AdvSearchOempCompanyOptions, gridColumns: 6, optionsMulti: true, icon: 'po-icon po-icon-company', order: 5 },
+        { property: 'conglomerado', label: 'Cliente (Conglomerado)', optionsService: this.AdvClientOptions, gridColumns: 7, fieldLabel: 'conglomerado', fieldValue: 'conglomerado', order: 1 },
+        { property: 'protocolo', label: 'Protocolo', gridColumns: 5, order: 2 },
+        { property: 'status', label: 'Status', options: this.statusFilterOptions, gridColumns: 5, optionsMulti: true, order: 3 },
+        { property: 'operadora_Oemp', label: 'Operadora', options: this.AdvSearchOempCompanyOptions, gridColumns: 6, optionsMulti: true, order: 5 },
         { property: 'pove', label: 'GROSS', options: this.AdvSearchGrossOptions, gridColumns: 5, order: 7 },
         { property: 'responsavel', label: 'Responsável', options: this.respOptions, gridColumns: 7, optionsMulti: true, order: 4 },
         { property: 'gestao', label: 'Gestão', options: this.AdvSearchManagementOptions, gridColumns: 6, optionsMulti: true, order: 6 },
@@ -584,7 +613,8 @@ export class DashboardComponent implements OnInit {
       this.editItems.gestao = undefined
       this.editItems.responsavel = undefined
       this.accountableOptions = this.service.getAccountableOptions()
-
+      this.oempCompanyOptions = this.service.getOempCompanyOptions()
+      this.managementOptions = this.service.getManagementOptions()
     }
 
   }

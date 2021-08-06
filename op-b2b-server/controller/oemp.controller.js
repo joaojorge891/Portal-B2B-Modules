@@ -55,26 +55,56 @@ exports.advancedFilter = async function (filters) {
     return object
 }
 
-exports.getClient = async function () {
-    const object = {
+exports.getClient = async function (req) {
+    let parameter = { conglomerado: req.query.filter }
+    let object = {
         items: [],
         hasNext: true
     }
-    try {
+    if (parameter.conglomerado !== '') {
+        try {
+            let doc = await oempSchema.find({}).select(
+                {
+                    '_id': 0,
+                    'conglomerado': 1,
+                }
+            )
+            if (doc) {
+                const mapedDoc = doc
+                    .map(e => JSON.stringify(e))
+                    .reduce((acc, cur) => (acc.includes(cur) || acc.push(cur), acc), [])
+                    .map(e => JSON.parse(e));
+                let filteredItems = [...mapedDoc]
+                Object.keys(parameter).forEach(filter => {
+                    object.items = filteredItems.filter((register) =>
+                        register[filter].toLocaleLowerCase().includes(parameter[filter].toLocaleLowerCase())
+                    )
 
-        let doc = await oempSchema.find({}).select(
-            {
-                '_id': 0,
-                'conglomerado': 1,
+                })
+            } else {
+                object.items = { status: 'fail', error: 'Erro: ' + err.message }
             }
-        )
-        if (doc !== null && doc !== undefined) {
-            object.items = doc
-        } else {
-            object = { status: 'fail', error: 'Erro: ' + err.message }
+        } catch (error) {
+            throw new Error('Erro na filtragem de clientes por parâmetro:' + error)
         }
-    } catch (err) {
-        throw new Error(err)
+    } else {
+
+        try {
+
+            let doc = await oempSchema.find({}).select(
+                {
+                    '_id': 0,
+                    'conglomerado': 1,
+                }
+            ).sort({ conglomerado: 1 })
+            if (doc !== null && doc !== undefined) {
+                object.items = doc
+            } else {
+                object.items = { status: 'fail', error: 'Erro: ' + err.message }
+            }
+        } catch (err) {
+            throw new Error(err)
+        }
     }
     return object
 }
