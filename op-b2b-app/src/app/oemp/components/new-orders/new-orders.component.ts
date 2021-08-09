@@ -56,14 +56,16 @@ export class NewOrdersComponent implements OnInit {
   private subscriptions$: Array<Subscription> = []
 
   columns: Array<PoTableColumn> = [
-    { property: 'TempoVida', label: 'Tempo Vida' },
-    { property: 'TempoPosto', label: 'Tempo Posto' },
-    { property: 'geo', label: 'Regional' },
-    { property: 'uf', label: 'UF' },
-    { property: 'circuito', label: 'Circuito' },
-    { property: 'servico', label: 'Serviço' },
-    { property: 'protocolo', label: 'Protocolo' },
-    { property: 'pove', label: 'Gross' },
+    { property: 'TempoVida', label: 'Tempo Vida', width: '8%' },
+    { property: 'TempoPosto', label: 'Tempo Posto', width: '8%' },
+    { property: 'geo', label: 'Regional', width: '8%' },
+    { property: 'uf', label: 'UF', width: '5%' },
+    { property: 'circuito', label: 'Circuito', width: '8%' },
+    { property: 'protocolo', label: 'Protocolo', width: '9%' },
+    { property: 'NomedoCliente', label: 'Cliente' },
+    { property: 'servico', label: 'Serviço', width: '8%' },
+    { property: 'pove', label: 'Gross', width: '6%' },
+    { property: 'gestao', label: 'Gestão', width: '6%' },
 
   ]
 
@@ -322,7 +324,7 @@ export class NewOrdersComponent implements OnInit {
 
   }
 
-  
+
   onChangeOempCompany(e: any) {
     const searchOemp = this.service.getOempOempCompanyOptions().find((companyName, index, array) => companyName.value === e)
     const searchInter = this.service.getIntercompanyOempCompanyOptions().find((companyName, index, array) => companyName.value === e)

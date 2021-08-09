@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PoNotificationService } from '@po-ui/ng-components';
 import { Observable } from 'rxjs';
+
+
 import { Service } from './service';
 
 @Injectable({
@@ -372,17 +374,17 @@ export class OempService extends Service {
 
   getColumns() {
     return [
-      { property: 'TempoVida', label: 'T. Vida' },
-      { property: 'TempoPosto', label: 'T. Posto' },
-      { property: 'geo', label: 'Regional' },
-      { property: 'uf', label: 'UF' },
-      { property: 'circuito', label: 'Circuito' },
-      { property: 'NomedoCliente', label: 'Cliente' },
-      { property: 'protocolo', label: 'Protocolo' },
-      { property: 'pove', label: 'Gross' },
-      { property: 'servico', label: 'Serviço' },
+      { property: 'TempoVida', label: 'T. Vida', width: '70px' },
+      { property: 'TempoPosto', label: 'T. Posto', width: '80px' },
+      { property: 'geo', label: 'Regional', width: '80px' },
+      { property: 'uf', label: 'UF', width: '50px', visible: false },
+      { property: 'circuito', label: 'Circuito', width: '100px' },
+      { property: 'protocolo', label: 'Protocolo', width: '110px' },
+      { property: 'NomedoCliente', label: 'Cliente', width: '200px' },
+      { property: 'pove', label: 'Gross', width: '65px' },
+      { property: 'servico', label: 'Serviço', width: '75px' },
       {
-        property: 'status',
+        property: 'status', width: '70px',
         type: 'subtitle',
         subtitles: [
           { value: 'execução', color: 'color-11', label: 'Em execução', content: 'EXE' },
@@ -398,10 +400,10 @@ export class OempService extends Service {
           { value: 'concluído', color: 'color-10', label: 'Concluído', content: 'OK' },
         ]
       },
-      { property: 'operadora_Oemp', label: 'Operadora' },
-      { property: 'gestao', label: 'Gestão' },
-      { property: 'data_Contratacao', label: 'Data Contratação', type: 'date', format: 'dd/MM/yyyy' },
-      { property: 'previsao_Entrega', label: 'Prev. Entrega', type: 'date', format: 'dd/MM/yyyy' },
+      { property: 'gestao', label: 'Gestão', width: '80px' },
+      { property: 'operadora_Oemp', label: 'Operadora', width: '130px', visible: false },
+      { property: 'data_Contratacao', label: 'Data Contratação', type: 'date', format: 'dd/MM/yyyy', width: '130px' },
+      { property: 'previsao_Entrega', label: 'Prev. Entrega', type: 'date', format: 'dd/MM/yyyy', width: '120px' },
 
     ]
   }
@@ -418,83 +420,83 @@ export class OempService extends Service {
 
   }
 
-  getClients(){
+  getClients() {
 
-  return [
-    {
-      hireStatus: '1',
-      name: 'James Johnson',
-      city: 'Ontario',
-      age: 24,
-      idCard: 'AB34lxi90',
-      job: 'abc',
-      jobDescription: 'Systems Analyst'
-    },
-    {
-      hireStatus: '2',
-      name: 'Brian Brown',
-      city: 'Buffalo',
-      age: 23,
-      idCard: 'HG56lds54',
-      job: 'def',
-      jobDescription: 'Trainee'
-    },
-    {
-      hireStatus: '3',
-      name: 'Mary Davis',
-      city: 'Albany',
-      age: 31,
-      idCard: 'DF23cfr65',
-      job: 'ghi',
-      jobDescription: 'Programmer'
-    },
-    {
-      hireStatus: '1',
-      name: 'Margaret Garcia',
-      city: 'New York',
-      age: 29,
-      idCard: 'GF45fgh34',
-      job: 'jkl',
-      jobDescription: 'Web developer'
-    },
-    {
-      hireStatus: '1',
-      name: 'Emma Hall',
-      city: 'Ontario',
-      age: 34,
-      idCard: 'RF76jut21',
-      job: 'mno',
-      jobDescription: 'Recruiter'
-    },
-    {
-      hireStatus: '2',
-      name: 'Lucas Clark',
-      city: 'Utica',
-      age: 32,
-      idCard: 'HY21kgu65',
-      job: 'pqr',
-      jobDescription: 'Consultant'
-    },
-    {
-      hireStatus: '1',
-      name: 'Ella Scott',
-      city: 'Ontario',
-      age: 24,
-      idCard: 'UL78flg68',
-      job: 'stu',
-      jobDescription: 'DBA'
-    },
-    {
-      hireStatus: '2',
-      name: 'Chloe Walker',
-      city: 'Albany',
-      age: 29,
-      idCard: 'JH12oli98',
-      job: 'ghi',
-      jobDescription: 'Programmer'
-    }
-  ]
-}
+    return [
+      {
+        hireStatus: '1',
+        name: 'James Johnson',
+        city: 'Ontario',
+        age: 24,
+        idCard: 'AB34lxi90',
+        job: 'abc',
+        jobDescription: 'Systems Analyst'
+      },
+      {
+        hireStatus: '2',
+        name: 'Brian Brown',
+        city: 'Buffalo',
+        age: 23,
+        idCard: 'HG56lds54',
+        job: 'def',
+        jobDescription: 'Trainee'
+      },
+      {
+        hireStatus: '3',
+        name: 'Mary Davis',
+        city: 'Albany',
+        age: 31,
+        idCard: 'DF23cfr65',
+        job: 'ghi',
+        jobDescription: 'Programmer'
+      },
+      {
+        hireStatus: '1',
+        name: 'Margaret Garcia',
+        city: 'New York',
+        age: 29,
+        idCard: 'GF45fgh34',
+        job: 'jkl',
+        jobDescription: 'Web developer'
+      },
+      {
+        hireStatus: '1',
+        name: 'Emma Hall',
+        city: 'Ontario',
+        age: 34,
+        idCard: 'RF76jut21',
+        job: 'mno',
+        jobDescription: 'Recruiter'
+      },
+      {
+        hireStatus: '2',
+        name: 'Lucas Clark',
+        city: 'Utica',
+        age: 32,
+        idCard: 'HY21kgu65',
+        job: 'pqr',
+        jobDescription: 'Consultant'
+      },
+      {
+        hireStatus: '1',
+        name: 'Ella Scott',
+        city: 'Ontario',
+        age: 24,
+        idCard: 'UL78flg68',
+        job: 'stu',
+        jobDescription: 'DBA'
+      },
+      {
+        hireStatus: '2',
+        name: 'Chloe Walker',
+        city: 'Albany',
+        age: 29,
+        idCard: 'JH12oli98',
+        job: 'ghi',
+        jobDescription: 'Programmer'
+      }
+    ]
+  }
 
 
 }

@@ -35,7 +35,23 @@ exports.advancedFilter = async function (filters) {
         }
         delete filters.page
 
-        await oempSchema.find(filters)
+        await oempSchema.find(filters).select({
+            '_id': 1,
+            'TempoVida': 1,
+            'TempoPosto': 1,
+            'geo': 1,
+            'uf': 1,
+            'circuito': 1,
+            'NomedoCliente': 1,
+            'protocolo': 1,
+            'pove': 1,
+            'servico': 1,
+            'status': 1,
+            'operadora_Oemp': 1,
+            'gestao': 1,
+            'data_Contratacao': 1,
+            'previsao_Entrega': 1
+        })
             .limit(30)
             .skip(page * 30)
             .then(doc => {
@@ -111,7 +127,23 @@ exports.getClient = async function (req) {
 
 exports.quickFilter = async function (filters) {
     try {
-        const doc = await oempSchema.find({ circuito: { $ne: null } })
+        const doc = await oempSchema.find({ circuito: { $ne: null } }).select({
+            '_id': 1,
+            'TempoVida': 1,
+            'TempoPosto': 1,
+            'geo': 1,
+            'uf': 1,
+            'circuito': 1,
+            'NomedoCliente': 1,
+            'protocolo': 1,
+            'pove': 1,
+            'servico': 1,
+            'status': 1,
+            'operadora_Oemp': 1,
+            'gestao': 1,
+            'data_Contratacao': 1,
+            'previsao_Entrega': 1
+        })
         if (doc) {
             let filteredItems = [...doc]
             Object.keys(filters).forEach(filter => {
@@ -291,23 +323,26 @@ exports.filterAll = function (req) {
             page = Number(req.query.page) || 0
         }
         oempSchema.find({})
-            // .select(
-            //     {
-            //         'TempoVida': 1,
-            //         'TempoPosto': 1,
-            //         'geo': 1,
-            //         'uf': 1,
-            //         'circuito': 1,
-            //         'protocolo': 1,
-            //         'projeto': 1,
-            //         'pove': 1,
-            //         'servico': 1,
-            //         'operadora_Oemp': 1,
-            //         'status': 1,
-            //         'previsao_Entrega': 1,
-            //         'lastUpdate': 1
-            //     }
-            // )
+            .select(
+                {
+                    '_id': 1,
+                    'TempoVida': 1,
+                    'TempoPosto': 1,
+                    'geo': 1,
+                    'uf': 1,
+                    'circuito': 1,
+                    'NomedoCliente': 1,
+                    'protocolo': 1,
+                    'pove': 1,
+                    'servico': 1,
+                    'status': 1,
+                    'operadora_Oemp': 1,
+                    'gestao': 1,
+                    'data_Contratacao': 1,
+                    'previsao_Entrega': 1,
+                    'lastUpdate': 1
+                }
+            )
             .sort({ status: 1 })
             .limit(30)
             .skip(page * 30)
@@ -340,12 +375,14 @@ exports.findAllbyPage = function (req) {
                     'geo': 1,
                     'uf': 1,
                     'circuito': 1,
+                    'NomedoCliente': 1,
                     'protocolo': 1,
-                    'projeto': 1,
                     'pove': 1,
                     'servico': 1,
-                    'operadora_Oemp': 1,
                     'status': 1,
+                    'operadora_Oemp': 1,
+                    'gestao': 1,
+                    'data_Contratacao': 1,
                     'previsao_Entrega': 1
                 }
             )
@@ -382,11 +419,13 @@ exports.loadOrdersByStatus = function (req) {
                     'geo': 1,
                     'uf': 1,
                     'circuito': 1,
+                    'NomedoCliente': 1,
                     'protocolo': 1,
                     'pove': 1,
                     'servico': 1,
+                    'status': 1,
                     'operadora_Oemp': 1,
-                    'designacao_Oemp': 1,
+                    'gestao': 1,
                     'data_Contratacao': 1,
                     'previsao_Entrega': 1
                 }
@@ -432,11 +471,13 @@ exports.findByStatus = function (req) {
                         'geo': 1,
                         'uf': 1,
                         'circuito': 1,
+                        'NomedoCliente': 1,
                         'protocolo': 1,
                         'pove': 1,
                         'servico': 1,
+                        'status': 1,
                         'operadora_Oemp': 1,
-                        'designacao_Oemp': 1,
+                        'gestao': 1,
                         'data_Contratacao': 1,
                         'previsao_Entrega': 1
                     }
