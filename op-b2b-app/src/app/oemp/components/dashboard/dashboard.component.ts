@@ -22,7 +22,6 @@ export class DashboardComponent implements OnInit {
   editItems: any = {}
 
   page: number = 0
-
   
   isLoading: boolean = false
   
@@ -115,6 +114,10 @@ export class DashboardComponent implements OnInit {
   private AdvSearchOempCompanyOptions: Array<PoMultiselectOption> = []
 
   private AdvSearchManagementOptions: Array<PoMultiselectOption> = []
+
+  private AdvSearchRegionalOptions: Array<PoMultiselectOption> = []
+
+  private AdvSearchUFOptions: Array<PoMultiselectOption> = []
 
   private AdvClientOptions: any
 
@@ -400,17 +403,17 @@ export class DashboardComponent implements OnInit {
           message: 'Para salvar a edição realizada, é necessário informar status atual.'
         })
         return
-      case 'novo':
-        if (this.editItems.operadora_Oemp !== 'Sem Atuação OEMP') {
-          this.statusFoco()
-          this.poDialog.alert({
-            literals: { ok: 'Ok' },
-            title: 'Aviso de Campos Obrigatórios',
-            message: 'Para salvar a edição realizada, é necessário informar status atual.'
-          })
-          return
-        }
-        break
+      // case 'novo':
+      //   if (this.editItems.operadora_Oemp !== 'Sem Atuação OEMP') {
+      //     this.statusFoco()
+      //     this.poDialog.alert({
+      //       literals: { ok: 'Ok' },
+      //       title: 'Aviso de Campos Obrigatórios',
+      //       message: 'Para salvar a edição realizada, é necessário informar status atual.'
+      //     })
+      //     return
+      //   }
+      //   break
       case 'execução':
         if ((this.editItems.taxa_Instalacao === '' || this.editItems.taxa_Instalacao === undefined || this.editItems.taxa_Instalacao === null) ||
           (this.editItems.taxa_Mensal === '' || this.editItems.taxa_Mensal === undefined || this.editItems.taxa_Mensal === null) ||
@@ -520,6 +523,8 @@ export class DashboardComponent implements OnInit {
     this.AdvSearchOempCompanyOptions = this.service.getOempCompanyOptions()
     this.AdvSearchManagementOptions = this.service.getManagementOptions()
     this.AdvClientOptions = `${this.service.host}/api/oemp/getClient`
+    this.AdvSearchRegionalOptions = this.service.getRegionalOptions()
+    this.AdvSearchUFOptions = this.service.getUFOptions()
 
     return {
       filters: [
@@ -527,9 +532,11 @@ export class DashboardComponent implements OnInit {
         { property: 'protocolo', label: 'Protocolo', gridColumns: 5, order: 2 },
         { property: 'status', label: 'Status', options: this.statusFilterOptions, gridColumns: 5, optionsMulti: true, order: 3 },
         { property: 'operadora_Oemp', label: 'Operadora', options: this.AdvSearchOempCompanyOptions, gridColumns: 6, optionsMulti: true, order: 5 },
-        { property: 'pove', label: 'GROSS', options: this.AdvSearchGrossOptions, gridColumns: 5, order: 7 },
+        { property: 'pove', label: 'GROSS', options: this.AdvSearchGrossOptions, gridColumns: 5, order: 9 },
         { property: 'responsavel', label: 'Responsável', options: this.respOptions, gridColumns: 7, optionsMulti: true, order: 4 },
         { property: 'gestao', label: 'Gestão', options: this.AdvSearchManagementOptions, gridColumns: 6, optionsMulti: true, order: 6 },
+        { property: 'geo', label: 'Regional', options: this.AdvSearchRegionalOptions, gridColumns: 3, optionsMulti: true, order: 7 },
+        { property: 'uf', label: 'UF', options: this.AdvSearchUFOptions, gridColumns: 3, optionsMulti: true, order: 8 },
 
 
 

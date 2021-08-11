@@ -57,15 +57,15 @@ export class ExecOrdersComponent implements OnInit {
     { property: 'TempoVida', label: 'T. Vida', width: '70px' },
       { property: 'TempoPosto', label: 'T. Posto', width: '80px' },
       { property: 'geo', label: 'Regional', width: '80px' },
-      { property: 'uf', label: 'UF', width: '50px', visible: false },
+      { property: 'uf', label: 'UF', width: '50px' },
       { property: 'circuito', label: 'Circuito', width: '100px' },
       { property: 'protocolo', label: 'Protocolo', width: '110px' },
-      { property: 'NomedoCliente', label: 'Cliente', width: '200px' },
+      { property: 'NomedoCliente', label: 'Cliente', width: '170px' },
       { property: 'pove', label: 'Gross', width: '65px' },
-      { property: 'servico', label: 'Serviço', width: '75px' },
+      { property: 'servico', label: 'Serviço', width: '75px', visible: false },
       { property: 'gestao', label: 'Gestão', width: '80px' },
-      { property: 'operadora_Oemp', label: 'Operadora', width: '130px', visible: false },
-      { property: 'data_Contratacao', label: 'Data Contratação', type: 'date', format: 'dd/MM/yyyy', width: '130px' },
+      { property: 'operadora_Oemp', label: 'Operadora', width: '100px' },
+      { property: 'data_Contratacao', label: 'Data Contratação', type: 'date', format: 'dd/MM/yyyy', width: '130px', visible: false },
       { property: 'previsao_Entrega', label: 'Prev. Entrega', type: 'date', format: 'dd/MM/yyyy', width: '120px' }
   ]
 

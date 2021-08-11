@@ -284,6 +284,7 @@ export class OempService extends Service {
       { label: 'Em estudo viabilidade', value: 'viabilidade' },
       { label: 'Em execução', value: 'execução' },
       { label: 'Falha no Acesso Terceiro', value: 'falha acesso terceiro' },
+      { label: 'Novo', value: 'novo' },
       { label: 'Pendência Cliente', value: 'pendência cliente' },
       { label: 'Pendência U.N', value: 'pendência U.N' },
       { label: 'Sem atuação OEMP', value: 'sem atuação oemp' }
@@ -377,12 +378,12 @@ export class OempService extends Service {
       { property: 'TempoVida', label: 'T. Vida', width: '70px' },
       { property: 'TempoPosto', label: 'T. Posto', width: '80px' },
       { property: 'geo', label: 'Regional', width: '80px' },
-      { property: 'uf', label: 'UF', width: '50px', visible: false },
+      { property: 'uf', label: 'UF', width: '50px' },
       { property: 'circuito', label: 'Circuito', width: '100px' },
-      { property: 'protocolo', label: 'Protocolo', width: '110px' },
-      { property: 'NomedoCliente', label: 'Cliente', width: '200px' },
+      { property: 'protocolo', label: 'Protocolo', width: '100px' },
+      { property: 'NomedoCliente', label: 'Cliente', width: '170px' },
       { property: 'pove', label: 'Gross', width: '65px' },
-      { property: 'servico', label: 'Serviço', width: '75px' },
+      { property: 'servico', label: 'Serviço', width: '75px', visible: false },
       {
         property: 'status', width: '70px',
         type: 'subtitle',
@@ -401,8 +402,8 @@ export class OempService extends Service {
         ]
       },
       { property: 'gestao', label: 'Gestão', width: '80px' },
-      { property: 'operadora_Oemp', label: 'Operadora', width: '130px', visible: false },
-      { property: 'data_Contratacao', label: 'Data Contratação', type: 'date', format: 'dd/MM/yyyy', width: '130px' },
+      { property: 'operadora_Oemp', label: 'Operadora', width: '110px' },
+      { property: 'data_Contratacao', label: 'Data Contratação', type: 'date', format: 'dd/MM/yyyy', width: '130px', visible: false },
       { property: 'previsao_Entrega', label: 'Prev. Entrega', type: 'date', format: 'dd/MM/yyyy', width: '120px' },
 
     ]
@@ -420,83 +421,51 @@ export class OempService extends Service {
 
   }
 
-  getClients() {
-
+  getRegionalOptions() {
     return [
-      {
-        hireStatus: '1',
-        name: 'James Johnson',
-        city: 'Ontario',
-        age: 24,
-        idCard: 'AB34lxi90',
-        job: 'abc',
-        jobDescription: 'Systems Analyst'
-      },
-      {
-        hireStatus: '2',
-        name: 'Brian Brown',
-        city: 'Buffalo',
-        age: 23,
-        idCard: 'HG56lds54',
-        job: 'def',
-        jobDescription: 'Trainee'
-      },
-      {
-        hireStatus: '3',
-        name: 'Mary Davis',
-        city: 'Albany',
-        age: 31,
-        idCard: 'DF23cfr65',
-        job: 'ghi',
-        jobDescription: 'Programmer'
-      },
-      {
-        hireStatus: '1',
-        name: 'Margaret Garcia',
-        city: 'New York',
-        age: 29,
-        idCard: 'GF45fgh34',
-        job: 'jkl',
-        jobDescription: 'Web developer'
-      },
-      {
-        hireStatus: '1',
-        name: 'Emma Hall',
-        city: 'Ontario',
-        age: 34,
-        idCard: 'RF76jut21',
-        job: 'mno',
-        jobDescription: 'Recruiter'
-      },
-      {
-        hireStatus: '2',
-        name: 'Lucas Clark',
-        city: 'Utica',
-        age: 32,
-        idCard: 'HY21kgu65',
-        job: 'pqr',
-        jobDescription: 'Consultant'
-      },
-      {
-        hireStatus: '1',
-        name: 'Ella Scott',
-        city: 'Ontario',
-        age: 24,
-        idCard: 'UL78flg68',
-        job: 'stu',
-        jobDescription: 'DBA'
-      },
-      {
-        hireStatus: '2',
-        name: 'Chloe Walker',
-        city: 'Albany',
-        age: 29,
-        idCard: 'JH12oli98',
-        job: 'ghi',
-        jobDescription: 'Programmer'
-      }
+
+      { label: 'BA/RJ', value: 'BA/RJ' },
+      { label: 'CE/NE/NO', value: 'CE/NE/NO' },
+      { label: 'CO/MG', value: 'CO/MG' },
+      { label: 'SUL/SP', value: 'SUL/SP' }
+
     ]
+
   }
 
+  getUFOptions() {
+    return [
+
+      { label: 'AC', value: 'AC' },
+      { label: 'AL', value: 'AL' },
+      { label: 'AM', value: 'AM' },
+      { label: 'AP', value: 'AP' },
+      { label: 'BA', value: 'BA' },
+      { label: 'CE', value: 'CE' },
+      { label: 'DF', value: 'DF' },
+      { label: 'ES', value: 'ES' },
+      { label: 'GO', value: 'GO' },
+      { label: 'MA', value: 'MA' },
+      { label: 'MG', value: 'MG' },
+      { label: 'MS', value: 'MS' },
+      { label: 'MT', value: 'MT' },
+      { label: 'PA', value: 'PA' },
+      { label: 'PB', value: 'PB' },
+      { label: 'PE', value: 'PE' },
+      { label: 'PI', value: 'PI' },
+      { label: 'PR', value: 'PR' },
+      { label: 'RJ', value: 'RJ' },
+      { label: 'RN', value: 'RN' },
+      { label: 'RO', value: 'RO' },
+      { label: 'RR', value: 'RR' },
+      { label: 'RS', value: 'RS' },
+      { label: 'SC', value: 'SC' },
+      { label: 'SE', value: 'SE' },
+      { label: 'SP', value: 'SP' },
+      { label: 'TO', value: 'TO' }
+
+    ]
+
+  }
 
 }
