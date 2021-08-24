@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { PoNotificationService } from '@po-ui/ng-components';
 import { Md5 } from 'ts-md5';
 
-import { Service } from './service';
+import { Service } from '../../services/service';
 
 @Injectable({
   providedIn: 'root'

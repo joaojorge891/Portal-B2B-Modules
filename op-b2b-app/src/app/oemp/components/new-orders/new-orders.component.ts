@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { PoDialogService, PoModalAction, PoModalComponent, PoNotificationService, PoPageAction, PoSelectComponent, PoTableAction, PoTableColumn } from '@po-ui/ng-components';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
-import { OempService } from 'src/app/services/oemp.service';
+import { OempService } from 'src/app/oemp/components/dashboard/services/oemp.service';
 
 @Component({
   selector: 'app-new-orders',
@@ -12,6 +12,7 @@ import { OempService } from 'src/app/services/oemp.service';
 })
 export class NewOrdersComponent implements OnInit {
 
+@Output() execCounter!: any
 
   items: Array<any> = []
 
@@ -114,11 +115,11 @@ export class NewOrdersComponent implements OnInit {
   }
 
   private onForm(order: any) {
-    this.openModal()
     this.restore()
     this.service.filterById(order._id).subscribe(
       (result: any) => {
         this.editItems = result
+        this.openModal()
       }
 
     ), (error: any) => this.notification.error(error)
@@ -200,23 +201,36 @@ export class NewOrdersComponent implements OnInit {
         break
 
     }
-    this.service.save(this.editItems).subscribe(
-      (result: any) => {
-        if (result.status === 'ok') {
-          this.confirm.loading = true
-          setTimeout(() => {
-            this.notification.success('Ordem atualizada com sucesso!')
-            this.confirm.loading = false
-            this.closeModal()
-
-          }, 700)
-
-        }
-      },
-      (err: any) => this.notification.error(err)
+    this.onUpdate(this.editItems)
+  }
 
 
-    )
+
+  private onUpdate(item: any) {
+    const index = this.items.findIndex((elem: any) => elem._id === item._id)
+    this.service.save(item).subscribe(result => {
+      if (result.status === 'ok') {
+        this.confirm.loading = true
+        this.items.splice(index, 1)
+        setTimeout(() => {
+          this.notification.success('Ordem atualizada com sucesso!')
+          this.confirm.loading = false
+          this.closeModal()
+
+        }, 700)
+
+      }
+
+    },
+      (error) => {
+        this.notification.error(error)
+      })
+  }
+
+
+  closeModal() {
+    this.poModal.close()
+    this.editItems = []
 
   }
 
@@ -224,11 +238,6 @@ export class NewOrdersComponent implements OnInit {
     this.poModal.open()
   }
 
-
-  closeModal() {
-    this.poModal.close()
-    this.ngOnInit()
-  }
 
   delivPredCalc() {
     if (this.editItems.data_Contratacao !== null && this.editItems.data_Contratacao !== undefined &&
@@ -268,7 +277,7 @@ export class NewOrdersComponent implements OnInit {
   }
 
   onBack() {
-    this.router.navigate(['/oemp'])
+    this.router.navigate(['/home/oemp'])
   }
 
   installationFeeMask() {

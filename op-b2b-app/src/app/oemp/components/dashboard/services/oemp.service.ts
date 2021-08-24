@@ -4,7 +4,7 @@ import { PoNotificationService } from '@po-ui/ng-components';
 import { Observable } from 'rxjs';
 
 
-import { Service } from './service';
+import { Service } from '../../../../services/service';
 
 @Injectable({
   providedIn: 'root'
@@ -104,21 +104,6 @@ export class OempService extends Service {
     return this.http.post(`${this.host}/api/oemp/advancedSearch`, filters)
   }
 
-  getStatus() {
-    return [
-
-      { value: 'aguardando assinatura', label: 'Aguardando Assinatura' },
-      { value: 'aprovação opex', label: 'Aprovação de OPEX' },
-      { value: 'concluído', label: 'Concluído' },
-      { value: 'contratação', label: 'Em contratação' },
-      { value: 'viabilidade', label: 'Em estudo viabilidade', },
-      { value: 'execução', label: 'Em execução' },
-      { value: 'falha acesso terceiro', label: 'Falha no Acesso Terceiro' },
-      { value: 'pendência cliente', label: 'Pendência Cliente' },
-      { value: 'pendência U.N', label: 'Pendência U.N' }
-    ]
-  }
-
   getOempCompanyOptions() {
     return [
       { label: 'Algar', value: 'Algar' },
@@ -150,18 +135,18 @@ export class OempService extends Service {
       { label: 'Mob Telecom', value: 'Mob Telecom' },
       { label: 'MTel', value: 'MTel' },
       { label: 'Nava', value: 'Nava' },
-      { label: 'Nava (OEMP)', value: 'Nava(OEMP)' },
+      { label: 'Nava (OEMP)', value: 'Nava (OEMP)' },
       { label: 'Neovia', value: 'Neovia' },
       { label: 'Net Turbo', value: 'Net Turbo' },
       { label: 'Netell', value: 'Netell' },
-      { label: 'NetFacil', value: 'NetFacil' },
+      { label: 'NetFácil', value: 'NetFácil' },
       { label: 'NewMaster', value: 'NewMaster' },
       { label: 'OnNeT', value: 'OnNeT' },
       { label: 'OSI Telecom', value: 'OSI Telecom' },
-      { label: 'Rede Própria', value: 'Rede Propria' },
+      { label: 'Rede Própria', value: 'Rede Própria' },
       { label: 'RIXBR27', value: 'RIXBR27' },
       { label: 'SAMM', value: 'SAMM' },
-      { label: 'Sem Atuação OEMP', value: 'Sem Atuação OEMP' },
+      { label: 'Sem Atuação OEMP', value: 'Sem atuação OEMP' },
       { label: 'Sercomtel', value: 'Sercomtel' },
       { label: 'Siteltra', value: 'Siteltra' },
       { label: 'SpeedCast', value: 'SpeedCast' },
@@ -173,7 +158,7 @@ export class OempService extends Service {
       { label: 'TIVIT', value: 'TIVIT' },
       { label: 'TIWS', value: 'TIWS' },
       { label: 'TUDDO', value: 'TUDDO' },
-      { label: 'UMTelecom', value: 'UMTelecom' },
+      { label: 'UmTelecom', value: 'UmTelecom' },
       { label: 'UOLDiveo', value: 'UOLDiveo' },
       { label: 'Velox R2', value: 'Velox R2' },
       { label: 'Vivax', value: 'Vivax' },
@@ -214,11 +199,11 @@ export class OempService extends Service {
       { label: 'MicroTell', value: 'MicroTell' },
       { label: 'Mob Telecom', value: 'Mob Telecom' },
       { label: 'MTel', value: 'MTel' },
-      { label: 'Nava (OEMP)', value: 'Nava(OEMP)' },
+      { label: 'Nava (OEMP)', value: 'Nava (OEMP)' },
       { label: 'Neovia', value: 'Neovia' },
       { label: 'Net Turbo', value: 'Net Turbo' },
       { label: 'Netell', value: 'Netell' },
-      { label: 'NetFacil', value: 'NetFacil' },
+      { label: 'NetFácil', value: 'NetFácil' },
       { label: 'NewMaster', value: 'NewMaster' },
       { label: 'OnNeT', value: 'OnNeT' },
       { label: 'OSI Telecom', value: 'OSI Telecom' },
@@ -232,7 +217,7 @@ export class OempService extends Service {
       { label: 'TIVIT', value: 'TIVIT' },
       { label: 'TIWS', value: 'TIWS' },
       { label: 'TUDDO', value: 'TUDDO' },
-      { label: 'UMTelecom', value: 'UMTelecom' },
+      { label: 'UmTelecom', value: 'UmTelecom' },
       { label: 'UOLDiveo', value: 'UOLDiveo' },
       { label: 'Vivax', value: 'Vivax' },
       { label: 'Vivo', value: 'Vivo' },
@@ -270,7 +255,7 @@ export class OempService extends Service {
   getNAOempCompanyOptions() {
     return [
       { label: 'CPE', value: 'CPE' },
-      { label: 'Rede Própria', value: 'Rede Propria' },
+      { label: 'Rede Própria', value: 'Rede Própria' },
 
     ]
   }
@@ -284,18 +269,21 @@ export class OempService extends Service {
       { label: 'Em estudo viabilidade', value: 'viabilidade' },
       { label: 'Em execução', value: 'execução' },
       { label: 'Falha no Acesso Terceiro', value: 'falha acesso terceiro' },
+      { label: 'NA', value: 'NA' },
       { label: 'Novo', value: 'novo' },
       { label: 'Pendência Cliente', value: 'pendência cliente' },
       { label: 'Pendência U.N', value: 'pendência U.N' },
-      { label: 'Sem atuação OEMP', value: 'sem atuação oemp' }
+
     ]
   }
 
   getOempDeadLineOptions() {
     return [
       { label: '10 dias', value: 10 },
+      { label: '14 dias', value: 14 },
       { label: '15 dias', value: 15 },
       { label: '20 dias', value: 20 },
+      { label: '21 dias', value: 21 },
       { label: '25 dias', value: 25 },
       { label: '30 dias', value: 30 },
       { label: '35 dias', value: 35 },
@@ -378,7 +366,7 @@ export class OempService extends Service {
       { property: 'TempoVida', label: 'T. Vida', width: '70px' },
       { property: 'TempoPosto', label: 'T. Posto', width: '80px' },
       { property: 'geo', label: 'Regional', width: '80px' },
-      { property: 'uf', label: 'UF', width: '50px' },
+      { property: 'uf', label: 'UF', width: '50px', visible: false },
       { property: 'circuito', label: 'Circuito', width: '100px' },
       { property: 'protocolo', label: 'Protocolo', width: '100px' },
       { property: 'NomedoCliente', label: 'Cliente', width: '170px' },
@@ -389,15 +377,15 @@ export class OempService extends Service {
         type: 'subtitle',
         subtitles: [
           { value: 'execução', color: 'color-11', label: 'Em execução', content: 'EXE' },
-          { value: 'novo', color: 'color-01', label: 'Novo', content: 'NOV' },
           { value: 'aguardando assinatura', color: 'color-02', label: 'Ag. Assinatura', content: 'AAS' },
+          { value: 'NA', color: 'color-12', label: 'NA', content: 'NA' },
+          { value: 'novo', color: 'color-01', label: 'Novo', content: 'NOV' },
           { value: 'aprovação opex', color: 'color-03', label: 'Aprovação de Opex', content: 'OPE' },
           { value: 'contratação', color: 'color-04', label: 'Contratação', content: 'CTR' },
           { value: 'viabilidade', color: 'color-05', label: 'Viabilidade', content: 'VAB' },
           { value: 'falha acesso terceiro', color: 'color-06', label: 'Ac Terceiro', content: 'TER' },
           { value: 'pendência cliente', color: 'color-07', label: 'Pendência Cliente', content: 'PCL' },
           { value: 'pendência U.N', color: 'color-08', label: 'Pendência U.N', content: 'PUN' },
-          { value: 'sem atuação oemp', color: 'color-09', label: 'Sem atuação OEMP', content: 'SOP' },
           { value: 'concluído', color: 'color-10', label: 'Concluído', content: 'OK' },
         ]
       },
@@ -405,6 +393,7 @@ export class OempService extends Service {
       { property: 'operadora_Oemp', label: 'Operadora', width: '110px' },
       { property: 'data_Contratacao', label: 'Data Contratação', type: 'date', format: 'dd/MM/yyyy', width: '130px', visible: false },
       { property: 'previsao_Entrega', label: 'Prev. Entrega', type: 'date', format: 'dd/MM/yyyy', width: '120px' },
+
 
     ]
   }
@@ -463,9 +452,7 @@ export class OempService extends Service {
       { label: 'SE', value: 'SE' },
       { label: 'SP', value: 'SP' },
       { label: 'TO', value: 'TO' }
-
     ]
-
   }
-
+ 
 }

@@ -1,3 +1,4 @@
+import { UsersModule } from './users/users.module';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeAdminComponent } from './components/home-admin/home-admin.component';
@@ -8,30 +9,64 @@ import { DashboardComponent } from './oemp/components/dashboard/dashboard.compon
 import { ExecOrdersComponent } from './oemp/components/exec-orders/exec-orders.component';
 import { NewOrdersComponent } from './oemp/components/new-orders/new-orders.component';
 
-import { LoginComponent } from './users/components/login/login.component';
-import { ResetPwdComponent } from './users/components/login/reset-pwd/reset-pwd.component';
+import { LoginComponent } from './login/components/login.component';
+import { ResetPwdComponent } from './login/components/reset-pwd/reset-pwd.component';
 import { NewRegisterComponent } from './users/components/new-register/new-register.component';
 import { UserDashboardComponent } from './users/components/dashboard/dashboard.component';
 import { NewUserComponent } from './users/components/dashboard/new-user/new-user.component';
 import { UpdateUserComponent } from './users/components/dashboard/update-user/update-user.component';
 import { ValidateComponent } from './users/components/validate/validate.component';
+import { RedirectGuard } from 'src/utils/linkExternalRedirect';
+
+
 
 
 const routes: Routes = [
   // { path: '', component: LoginComponent },
-
+  
   // { path: 'users/reset-pwd/:id/:token', component: ResetPwdComponent },
   // { path: 'users/new-register', component: NewRegisterComponent },
 
+  {
+    path: 'portal',
+    canActivate: [RedirectGuard],
+    component: RedirectGuard,
+    data: {
+      externalUrl: 'http://10.61.81.95/op_b2b/index.php'
+    }
+},
+  {
+    path: 'oemp', loadChildren: () => import('./oemp/oemp.module').then(
+      m => m.OempModule
+      )
+    },
+    
+  {
+    path: 'users', loadChildren: () => import('./users/users.module').then(
+      m => m.UsersModule
+    )
+  },
+
+  {
+    path: 'home', component: HomeComponent, children: [
+      { path: 'oemp', component: DashboardComponent },
+      { path: 'oemp/new-orders', component: NewOrdersComponent },
+      { path: 'oemp/new-orders/:id', component: NewOrdersComponent },
+      { path: 'oemp/exec-orders', component: ExecOrdersComponent },
+      { path: 'oemp/exec-orders/:id', component: ExecOrdersComponent },
+      { path: 'oemp/completed-orders', component: CompletedOrdersComponent }
+    ]
+  },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+
+  
 
 
-  { path: '', component: DashboardComponent },
-  { path: 'oemp', component: DashboardComponent },
-  { path: 'oemp/new-orders', component: NewOrdersComponent },
-  { path: 'oemp/new-orders/:id', component: NewOrdersComponent },
-  { path: 'oemp/exec-orders', component: ExecOrdersComponent },
-  { path: 'oemp/exec-orders/:id', component: ExecOrdersComponent },
-  { path: 'oemp/completed-orders', component: CompletedOrdersComponent },
+
+
+
+
+
 
 
 

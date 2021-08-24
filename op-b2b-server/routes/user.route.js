@@ -10,11 +10,11 @@ module.exports = {
 
     },
 
-    updateLastAccess: function (req, res) {
-        let document = controller.updateLastAccess(req.body)
-        document.then(result => res.send(result))
+    // updateLastLogin: function (req, res) {
+    //     let document = controller.updateLastLogin(req.body)
+    //     document.then(result => res.send(result))
 
-    },
+    // },
 
     filter: function (req, res) {
         let document = controller.filter(req.query)

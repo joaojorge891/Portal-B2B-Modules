@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PoToolbarAction, PoToolbarProfile } from '@po-ui/ng-components';
+import { PoDialogService, PoToolbarAction, PoToolbarProfile } from '@po-ui/ng-components';
 
 @Component({
   selector: 'app-home',
@@ -8,11 +8,14 @@ import { PoToolbarAction, PoToolbarProfile } from '@po-ui/ng-components';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  // menuArr = [
-  //   // { label: 'Home', link: '/home' },
-  //   { label: 'OEMP', link: '/home/oemp', icon: 'po-icon po-icon-company', shortLabel: 'OEMP' },
-  //   { label: 'Logout', action: this.logout.bind(this), icon: 'po-icon-exit', shortLabel: 'Logout' }
-  // ];
+  menuArr = [
+    // { label: 'Home', link: '/home' },
+    { label: 'OEMP', link: '/home/oemp', icon: 'po-icon po-icon-company', shortLabel: 'Controle' },
+    { label: 'Dashboard', action: this.onDashboard.bind(this), icon: 'po-icon po-icon-chart-columns', shortLabel: 'Dashboard' },
+    { label: 'Logout', action: this.logout.bind(this), icon: 'po-icon-exit', shortLabel: 'Logout' },
+    // { label: 'Logout', link: 'http://10.61.81.95/op_b2b/index.php', icon: 'po-icon-exit', shortLabel: 'Logout' }
+  ]
+
 
   profile: PoToolbarProfile = {
     avatar: './assets/user-icon.png',
@@ -27,12 +30,14 @@ export class HomeComponent implements OnInit {
 
   constructor(
 
-    private router: Router
+    private router: Router,
+    public poDialog: PoDialogService
   ) {
 
   }
 
   ngOnInit() {
+
     this.router.navigate(['/home/oemp'])
     // if (this.validateUser() === 'user') {
     //   this.router.navigateByUrl('')
@@ -40,9 +45,14 @@ export class HomeComponent implements OnInit {
   }
 
   public logout() {
-    // localStorage.setItem('current_user', '')
-    // this.router.navigateByUrl('')
+    localStorage.setItem('current_user', '')
+    this.router.navigate(['/portal/'])
+    
 
+  }
+
+  public onDashboard(){
+    this.poDialog.alert({ title: 'Aviso', message: 'Feature em desenvolvimento. Será disponibilizado em breve.' })
   }
 
 }

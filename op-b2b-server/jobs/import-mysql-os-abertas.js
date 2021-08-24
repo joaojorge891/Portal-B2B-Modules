@@ -90,6 +90,6 @@ function MysqlImportOsAbertas() {
 
 }
 
-module.exports = cron.schedule('0 00 6 * Jan-Dec 1-5', MysqlImportOsAbertas, {
+module.exports = cron.schedule('0 00 8 * Jan-Dec 1-5', MysqlImportOsAbertas, {
   scheduled: false
 })

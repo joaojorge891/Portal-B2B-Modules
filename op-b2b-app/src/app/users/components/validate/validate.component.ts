@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { PoNotificationService, PoPageAction } from '@po-ui/ng-components';
 
-import { UsersService } from 'src/app/services/users.service';
+import { UsersService } from 'src/app/users/services/users.service';
 
 @Component({
   selector: 'app-validate',

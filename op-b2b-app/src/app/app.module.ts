@@ -10,6 +10,7 @@ import { OempModule } from './oemp/oemp.module';
 import { HomeComponent } from './components/home/home.component';
 import { HomeAdminComponent } from './components/home-admin/home-admin.component';
 import { UsersModule } from './users/users.module';
+import { LoginModule } from './login/login.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { UsersModule } from './users/users.module';
     AppRoutingModule,
     PoModule,
     PoTemplatesModule,
-    //UsersModule,
+    UsersModule,
+    LoginModule,
     OempModule
   ],
   providers: [],

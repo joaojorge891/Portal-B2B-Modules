@@ -1,7 +1,7 @@
 const excelToJson = require('convert-excel-to-json');
 const mongoose = require('mongoose')
 const result = excelToJson({
-    sourceFile: '../Backlog2.xlsx',
+    sourceFile: '../backlog_v2.xlsx',
     columnToKey: {
         A: 'protocolo',
         B: 'circuito',
@@ -16,7 +16,11 @@ const result = excelToJson({
         K: 'mensalidade',
         L: 'tempoContrato',
         M: 'codigoViabilidade',
-        N: 'desigOperadora'
+        N: 'desigOperadora',
+        O: 'operadora',
+        P: 'responsavel',
+        Q: 'gestao',
+        R: 'projeto'
     }
 })
 

@@ -14,6 +14,7 @@ module.exports = {
         const filters = req.body
         delete filters.access_token
         delete filters.username
+        
         let document = controller.advancedFilter(filters)
         document.then(result => res.send(result))
 

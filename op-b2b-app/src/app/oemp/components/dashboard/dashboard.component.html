@@ -1,4 +1,4 @@
-<po-page-default p-title="DashBoard OEMP">
+<po-page-default p-title="Controle OEMP">
     <div class="po-row">
         <po-widget
             class ="po-sm-12 po-md-3 po-lg-3 po-xl-4"
@@ -39,22 +39,39 @@
         <div class="completedUpdate po-font-text-small po-text-center">Atualizado em: {{lastUpdateCompleted}}</div>
         </po-widget>
         </div>
-        <div class="po-row">
-        
-                <po-page-dynamic-search class="dynamic"
-                        (p-quick-search)="onQuickSearch($event)"
-                        (p-change-disclaimers)="onChangeDisclaimers($event)"
-                        p-title="Todas as Solicitações" 
-                        [p-quick-search-width]="400"
-                        [p-literals]="customLiterals"
-                        [p-load]="loadSearchOptions.bind(this)"
-                        (p-advanced-search)="onAdvancedSearch($event)"
-                        >
-                        
+        <div class="po-row searchRow">
+           
+                        <po-input #input
+                                name="quickSearch"
+                                (keydown)="onQuickSearch($event)"
+                                [(ngModel)]="quickSearchValue"
+                                p-clean="true"
+                                p-placeholder="Pesquisa por Circuito"
+                                class="po-offset-lg-9 po-offset-xl-9 po-xl-2 po-lg-2 po-offset-md-7 po-md-4 po-sm-12"
+                                >
+                
+                        </po-input>
+               
+                
+                <!-- <div class="divSearch po-offset-md-12 po-md-1"> -->
+
+                        <span class="spanSearch po-offset-md-12 po-md-1" (click)="openModalAdvSearch()">
+                          Busca avançada
+                        </span>
+                <!-- </div>  -->
+                <po-disclaimer-group
+                        [p-disclaimers]="filters"
+                        (p-change)="onChangeDisclaimers($event)"
+                        p-title="Apresentando resultados filtrados por:"
+                       >
+                </po-disclaimer-group>
+
+        </div>
+                <div class="po-row">
                         <div class="excelButton">
                                 <po-button p-icon="fas fa-file-excel" p-label="Exportar" (p-click)="exportToXlsx()" ></po-button>
                         </div>
-                        <po-table
+                        <po-table class="table"
                                 [p-height]="400"
                                 [p-actions]="actions"
                                 [p-items]="items" 
@@ -79,13 +96,9 @@
                                 
                               >
                               </ng-template> -->
-                </po-table>
-                </po-page-dynamic-search>
-       
-
-     
-       
-    </div>
+                        </po-table>
+                </div>
+        <!-- </po-page-dynamic-search> -->
 </po-page-default>
     
     
@@ -258,6 +271,18 @@
     
                     </div>
             
+            </po-modal>
+
+            <po-modal #searchModal
+            [p-primary-action]="advSearchApply"
+            [p-secondary-action]="advSearchCancel"
+            p-size="lg"
+            >
+                <po-dynamic-form (p-form)="getForm($event)"
+                [p-fields]="advSearchFields"
+                [p-value]="fieldsInitValues"
+                >
+                </po-dynamic-form>
             </po-modal>
     
    

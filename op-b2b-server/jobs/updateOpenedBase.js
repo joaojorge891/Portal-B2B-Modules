@@ -24,10 +24,14 @@ function execUpdateOpenedBase() {
               taxa_Mensal: item.mensalidade,
               tempo_Contrato: item.tempoContrato,
               codigo_Viabilidade: item.codigoViabilidade,
-              designacao_Oemp: item.desigOperadora
+              designacao_Oemp: item.desigOperadora,
+              operadora_Oemp: item.operadora,
+              responsavel: item.responsavel,
+              gestao: item.gestao,
+              projeto: item.projeto
             })
           resolve(true)
-        } catch (erro) { throw new Error('falha na atualização da base abertas...') }
+        } catch (erro) { throw new Error('falha na atualização da base abertas...'+ erro) }
       }).then(sucess => resolve('Base de abertas atualizada com sucesso'))
 
       importedMongoCollection.off
@@ -52,6 +56,6 @@ function execUpdateOpenedBase() {
 
 }
 
-module.exports = cron.schedule('0 30 7 * Jan-Dec 1-5', execUpdateOpenedBase, {
+module.exports = cron.schedule('* * * * *', execUpdateOpenedBase, {
   scheduled: false
 })

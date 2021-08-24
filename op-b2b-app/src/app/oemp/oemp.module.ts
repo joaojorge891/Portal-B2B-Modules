@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { PoButtonModule, PoDividerModule, PoFieldModule, PoModalModule, PoPageModule, PoTableModule, PoWidgetModule } from '@po-ui/ng-components';
+import { PoButtonModule, PoDisclaimerGroupModule, PoDividerModule, PoDynamicModule, PoFieldModule, PoInfoModule, PoModalModule, PoPageModule, PoTableModule, PoWidgetModule } from '@po-ui/ng-components';
 import { PoPageDynamicSearchModule } from '@po-ui/ng-templates';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -31,7 +31,10 @@ import { NewOrdersComponent } from './components/new-orders/new-orders.component
     PoModalModule,
     PoWidgetModule,
     ReactiveFormsModule,
-    PoDividerModule
+    PoDividerModule,
+    PoInfoModule,
+    PoDisclaimerGroupModule,
+    PoDynamicModule
   ]
 })
 export class OempModule { }

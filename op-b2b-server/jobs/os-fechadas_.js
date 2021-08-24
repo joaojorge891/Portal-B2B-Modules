@@ -63,6 +63,6 @@ function handleClosedOrders() {
 
 }
 
-module.exports = cron.schedule('0 00 7 * Jan-Dec 1-5', handleClosedOrders, {
+module.exports = cron.schedule('0 10 8 * Jan-Dec 1-5', handleClosedOrders, {
   scheduled: false
 })

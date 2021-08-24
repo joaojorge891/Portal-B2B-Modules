@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { PoDialogService, PoModalAction, PoModalComponent, PoNotificationService, PoPageAction, PoTableAction, PoTableColumn } from '@po-ui/ng-components';
+import { PoDatepickerIsoFormat, PoDialogService, PoModalAction, PoModalComponent, PoNotificationService, PoPageAction, PoTableAction, PoTableColumn } from '@po-ui/ng-components';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
-import { OempService } from 'src/app/services/oemp.service';
+import { OempService } from 'src/app/oemp/components/dashboard/services/oemp.service';
 
 @Component({
   selector: 'app-exec-orders',
@@ -11,6 +11,11 @@ import { OempService } from 'src/app/services/oemp.service';
   styleUrls: ['./exec-orders.component.css']
 })
 export class ExecOrdersComponent implements OnInit {
+
+  @Output() newCounter!: any
+  @Output() executionCounter!: any
+  @Output() completedCounter!: any
+
 
   items: Array<any> = []
 
@@ -36,6 +41,7 @@ export class ExecOrdersComponent implements OnInit {
 
   managementOptions: Array<any> = this.service.getManagementOptions()
 
+
   confirm: PoModalAction = {
     action: () => {
       this.proccessOrder()
@@ -55,18 +61,18 @@ export class ExecOrdersComponent implements OnInit {
 
   columns: Array<PoTableColumn> = [
     { property: 'TempoVida', label: 'T. Vida', width: '70px' },
-      { property: 'TempoPosto', label: 'T. Posto', width: '80px' },
-      { property: 'geo', label: 'Regional', width: '80px' },
-      { property: 'uf', label: 'UF', width: '50px' },
-      { property: 'circuito', label: 'Circuito', width: '100px' },
-      { property: 'protocolo', label: 'Protocolo', width: '110px' },
-      { property: 'NomedoCliente', label: 'Cliente', width: '170px' },
-      { property: 'pove', label: 'Gross', width: '65px' },
-      { property: 'servico', label: 'Serviço', width: '75px', visible: false },
-      { property: 'gestao', label: 'Gestão', width: '80px' },
-      { property: 'operadora_Oemp', label: 'Operadora', width: '100px' },
-      { property: 'data_Contratacao', label: 'Data Contratação', type: 'date', format: 'dd/MM/yyyy', width: '130px', visible: false },
-      { property: 'previsao_Entrega', label: 'Prev. Entrega', type: 'date', format: 'dd/MM/yyyy', width: '120px' }
+    { property: 'TempoPosto', label: 'T. Posto', width: '80px' },
+    { property: 'geo', label: 'Regional', width: '80px' },
+    { property: 'uf', label: 'UF', width: '50px' },
+    { property: 'circuito', label: 'Circuito', width: '100px' },
+    { property: 'protocolo', label: 'Protocolo', width: '110px' },
+    { property: 'NomedoCliente', label: 'Cliente', width: '170px' },
+    { property: 'pove', label: 'Gross', width: '65px' },
+    { property: 'servico', label: 'Serviço', width: '75px', visible: false },
+    { property: 'gestao', label: 'Gestão', width: '80px' },
+    { property: 'operadora_Oemp', label: 'Operadora', width: '100px' },
+    { property: 'data_Contratacao', label: 'Data Contratação', type: 'date', format: 'dd/MM/yyyy', width: '130px', visible: false },
+    { property: 'previsao_Entrega', label: 'Prev. Entrega', type: 'date', format: 'dd/MM/yyyy', width: '120px' }
   ]
 
 
@@ -116,7 +122,6 @@ export class ExecOrdersComponent implements OnInit {
   }
 
   private onForm(order: any) {
-    this.restore()
     this.service.filterById(order._id).subscribe(
       (result: any) => {
         this.editItems = result
@@ -124,23 +129,6 @@ export class ExecOrdersComponent implements OnInit {
       }
 
     ), (error: any) => this.notification.error(error)
-
-  }
-
-  private restore() {
-    this.editItems.status = undefined
-    this.editItems.observacao_Status = undefined
-    this.editItems.data_Contratacao = undefined
-    this.editItems.prazo_Operadora = undefined
-    this.editItems.previsao_Entrga = undefined
-    this.editItems.data_Instalacao = undefined
-    this.editItems.taxa_Instalacao = undefined
-    this.editItems.taxa_Mensal = undefined
-    this.editItems.tempo_Contrato = undefined
-    this.editItems.codigo_Viabilidade = undefined
-    this.editItems.designacao_Oemp = undefined
-    this.editItems.responsavel = undefined
-    this.editItems.gestao = undefined
 
   }
 
@@ -232,30 +220,39 @@ export class ExecOrdersComponent implements OnInit {
 
     }
 
-    this.service.save(this.editItems).subscribe(
-      (result: any) => {
-        if (result.status === 'ok') {
-          this.confirm.loading = true
-          setTimeout(() => {
-            this.notification.success('Ordem atualizada com sucesso!')
-            this.confirm.loading = false
-            this.closeModal()
-
-          }, 700)
-
-        }
-      },
-      (err: any) => this.notification.error(err)
-
-
-    )
-
-
+    this.onUpdate(this.editItems)
   }
 
+
+
+  private onUpdate(item: any) {
+    const index = this.items.findIndex((elem: any) => elem._id === item._id)
+    this.service.save(item).subscribe(result => {
+      if (result.status === 'ok') {
+        this.confirm.loading = true
+        if (item.status !== 'execução') {
+          this.items.splice(index, 1)
+        } else this.items.splice(index, 1, item)
+        setTimeout(() => {
+          this.notification.success('Ordem atualizada com sucesso!')
+          this.confirm.loading = false
+          this.closeModal()
+
+        }, 700)
+
+      }
+
+    },
+      (error) => {
+        this.notification.error(error)
+      })
+  }
+
+  
   closeModal() {
     this.poModal.close()
-    this.ngOnInit()
+    this.editItems = []
+
   }
 
   delivPredCalc() {
@@ -285,7 +282,7 @@ export class ExecOrdersComponent implements OnInit {
   }
 
   onBack() {
-    this.router.navigate(['/oemp'])
+    this.router.navigate(['/home/oemp'])
   }
 
   installationFeeMask() {

@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { PoDatepickerRange, PoDatepickerRangeComponent, PoNotificationService, PoPageAction, PoTableColumn, PoDialogService } from '@po-ui/ng-components';
 
 import { ExcelService } from 'src/app/services/excel-export.service';
-import { OempService } from 'src/app/services/oemp.service';
+import { OempService } from 'src/app/oemp/components/dashboard/services/oemp.service';
 
 @Component({
   selector: 'app-completed-orders',
@@ -121,7 +121,7 @@ export class CompletedOrdersComponent implements OnInit {
   }
 
   onBack() {
-    this.router.navigate(['/oemp'])
+    this.router.navigate(['home/oemp'])
   }
 
   exportClosedToXlsx(): void {

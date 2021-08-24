@@ -5,7 +5,7 @@ import { PoDialogService, PoNotificationService } from '@po-ui/ng-components';
 import { PoPageChangePassword, PoPageChangePasswordComponent } from '@po-ui/ng-templates';
 import * as moment from 'moment';
 
-import { UsersService } from 'src/app/services/users.service';
+import { UsersService } from 'src/app/users/services/users.service';
 import { AccessValidate } from 'src/utils/accessvalidate';
 
 @Component({

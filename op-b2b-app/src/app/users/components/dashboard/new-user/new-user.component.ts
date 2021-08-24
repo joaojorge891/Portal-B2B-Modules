@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { PoNotificationService, PoPageAction } from '@po-ui/ng-components';
 import { Md5 } from 'ts-md5';
 
-import { UsersService } from 'src/app/services/users.service';
+import { UsersService } from 'src/app/users/services/users.service';
 import { AccessValidate } from 'src/utils/accessvalidate';
 
 @Component({
@@ -43,7 +43,7 @@ export class NewUserComponent extends AccessValidate implements OnInit {
   private restore(){
     this.model.email = ''
     this.model.name === ''
-    this.model.user === ''
+    this.model.userId === ''
     this.model.typeUser === ''
     this.model.company === ''
     this.model.department === ''
@@ -85,12 +85,12 @@ export class NewUserComponent extends AccessValidate implements OnInit {
   }
 
   userVerify() {
-    if (this.model.user != '') {
-      this.service.userValidate(this.model.user).subscribe(
+    if (this.model.userId != '') {
+      this.service.userValidate(this.model.userId).subscribe(
         (result: any) => {
           if (result != '' && result != null && result != undefined) {
             this.notification.error('Matrícula já existe. Por favor, informe outra matrícula válida.')
-            this.model.user = ''
+            this.model.userId = ''
             this.userFocus()
 
           }
@@ -103,7 +103,7 @@ export class NewUserComponent extends AccessValidate implements OnInit {
 
   private onSave() {
     if (this.model.email === '' || this.model.name === '' ||
-      this.model.user === '' || this.model.company === '' ||
+      this.model.userId === '' || this.model.company === '' ||
       this.model.department === '' || this.model.uf === '' ||
       this.model.status === '' || this.password === '' ||
       this.confirmPassword === '') {

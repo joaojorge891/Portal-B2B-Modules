@@ -295,12 +295,10 @@ exports.getClosedByDate = async function (req) {
 
 exports.findCaseById = async function (id) {
     try {
-
-        let doc = await oempSchema.findById(id)
-        if (doc !== null && doc !== undefined) {
-            object = doc
-
-        } else {
+        await oempSchema.findById(id).then(result => {
+            object = result
+        })
+        if (!object) {
             object = { status: 'not_found' }
         }
 

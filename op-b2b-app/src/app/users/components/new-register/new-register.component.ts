@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { PoNotificationService } from '@po-ui/ng-components';
 import { Md5 } from 'ts-md5';
 
-import { UsersService } from 'src/app/services/users.service';
+import { UsersService } from 'src/app/users/services/users.service';
 
 @Component({
   selector: 'app-new-register',

@@ -8,9 +8,11 @@ module.exports = {
         document.then(result => {
             if (result.status === 'ok') {
                 res.send(result)
-                let documentUpdateLastLogin = userController.updateLastAccess(req.body)
-                documentUpdateLastLogin.then(resultado => {
-                    if (resultado.status != 'ok') {
+                let docLastLogin = userController.updateLastLogin(req.body)
+                docLastLogin.then(resultado => {
+                    if (resultado.status === 'ok') {
+                        res.send(resultado)
+                    } else {
                         res.status(500).send(result.error)
                     }
                 })
@@ -18,8 +20,6 @@ module.exports = {
             } else if (result.status === 'error') {
                 res.status(500).send(result.error)
 
-            } else {
-                res.status(500).send(result)
             }
         })
     }

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { PoNotificationService } from '@po-ui/ng-components';
 import { PoModalPasswordRecoveryType, PoPageLoginLiterals, PoPageLoginRecovery } from '@po-ui/ng-templates';
 
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/login/services/auth.service'
 
 
 @Component({
@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authservice: AuthService,
     private notification: PoNotificationService,
+    
 
 
 
@@ -38,6 +39,8 @@ export class LoginComponent implements OnInit {
     loginPlaceholder: 'Insira sua matrícula'
 
   }
+
+ 
   onLogin(loginFormData: any) {
     let lastLogin = new Date()
     this.authservice.auth(loginFormData.login, loginFormData.password, lastLogin).subscribe(
@@ -50,6 +53,8 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['home-admin'])
           } else {
             this.router.navigate([''])
+            
+            
           }
         }
       },

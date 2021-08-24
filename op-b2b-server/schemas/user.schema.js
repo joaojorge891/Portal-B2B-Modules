@@ -3,8 +3,8 @@ const mongoose = require('mongoose')
 const userSchema = new mongoose.Schema(
 
     {
+        userId: String,
         name: String,
-        user: String,
         company: String,
         typeUser: String,
         password: String,
@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema(
         nickName: String,
         avatar: String,
         department: String,
-        lastAccess: Date,
+        lastLogin: Date,
         requester: String,
         reason: String
     },

@@ -43,7 +43,7 @@ exports.appRouter = function (app) {
 
     router.route('/users/:id')
         .delete(jwtValidate, userRoute.delete)
-        .get(jwtValidate, userRoute.findById)
+        .get(userRoute.findById)
 
     router.route('/no-validate/:id')
         .get(userRoute.findById)

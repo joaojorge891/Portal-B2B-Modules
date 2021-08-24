@@ -92,11 +92,11 @@ exports.save = async function (user) {
 
 }
 
-exports.updateLastAccess = async function (user) {
+exports.updateLastLogin = async function (user) {
     try {
 
-        let result = await userSchema.findOneAndUpdate({ user: user.user }, { lastAccess: user.lastAccess })
-        console.log(`[LOG] [ULTIMO ACESSO DO USUARIO ${result.user} ATUALIZADO COM SUCESSO!]`)
+        let result = await userSchema.findOneAndUpdate({ userId: user.userId }, { lastLogin: user.lastLogin })
+        console.log(`[LOG] [ULTIMO ACESSO DO USUARIO ${result.userId} ATUALIZADO COM SUCESSO!]`)
         object = { status: 'ok' }
 
     }
@@ -169,10 +169,13 @@ exports.findById = async function (id) {
 }
 
 exports.findByUser = async function (user) {
-
-    let filter = {}
-    filter['user'] = { '$eq': user }
-    var user = await userSchema.find(filter)
+    try {
+        let filter = {}
+        filter['userId'] = { '$eq': user }
+        var user = await userSchema.find(filter)
+    } catch (error) {
+        throw new Error(error)
+    }
     return (user)
 
 }

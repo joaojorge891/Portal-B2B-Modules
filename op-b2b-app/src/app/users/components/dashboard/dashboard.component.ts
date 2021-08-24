@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { PoNotificationService, PoPageAction, PoTableAction, PoTableColumn } from '@po-ui/ng-components';
 import { PoPageDynamicSearchLiterals } from '@po-ui/ng-templates';
 
-import { UsersService } from 'src/app/services/users.service';
+import { UsersService } from 'src/app/users/services/users.service';
 import { AccessValidate } from 'src/utils/accessvalidate';
 
 @Component({

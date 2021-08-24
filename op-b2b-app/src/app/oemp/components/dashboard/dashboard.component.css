@@ -1,156 +1,191 @@
-.executionLabel{
-    color:rgb(158, 40, 32);
-    
- }
- 
- .executionCounter{
-     color:rgb(158, 40, 32);
-     font-weight: bold;
-  }
- 
- .newLabel{
-     color: rgb(124, 124, 27)
- }
- 
- .newCounter{
-     color: rgb(124, 124, 27);
-     font-weight: bold;
-     
- }
- 
- .totalLabel{
-     color: rgb(57, 41, 146);
-     justify-content:space-around
- }
- 
- .totalCounter{
-     color: rgb(57, 41, 146);
-     font-weight: bold;
- }
- 
- .completedLabel{
-     color:rgb(32, 158, 32);
-  }
- 
-  .completedCounter{
-     color:rgb(32, 158, 32);
-     font-weight: bold;
-  }
- 
-  .excelButton{
-      margin-bottom: 10px;
-    
-  }
+.searchRow {
+    margin-top: 6px;
+}
 
-  /* .dynamic{
-     height: 60px;
-     
-  } */
+.divSearch {
+    margin-top: 3px;
+    /* padding-left: 30px; */
+    padding-right: 0px;
+    width: 65px;
+}
 
-  .po-wrapper{
-      margin: 0 auto;
-  }
- 
+.spanSearch {
+    color: rgb(153, 33, 232);
+    /* box-sizing: border-box; */
+    cursor: pointer;
+    font-family: Roboto-Bold, sans-serif;
+    font-size: 15px;
+    width: 65px;
+    margin-top: 6px;
+    /* line-height: 16px;
+    max-height: 32px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+    text-decoration-line: none;
+    text-decoration-style: solid;
+    text-decoration-thickness: auto;
+    white-space: normal;
+    
+    height: auto; */
+}
+
+/* .divSearch {
+    box-sizing: border-box;
+    display: inline-block;
+    font-family: Roboto;
+    height: 32px;
+    line-height: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+    max-width: 72px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+    position: relative;
+    top: 6px;
+    white-space: normal;
+    width: 72px
+} */
+
+.executionLabel {
+    color: rgb(158, 40, 32);
+}
+
+.executionCounter {
+    color: rgb(158, 40, 32);
+    font-weight: bold;
+}
+
+.newLabel {
+    color: rgb(124, 124, 27)
+}
+
+.newCounter {
+    color: rgb(124, 124, 27);
+    font-weight: bold;
+}
+
+.totalLabel {
+    color: rgb(57, 41, 146);
+    justify-content: space-around
+}
+
+.totalCounter {
+    color: rgb(57, 41, 146);
+    font-weight: bold;
+}
+
+.completedLabel {
+    color: rgb(32, 158, 32);
+}
+
+.completedCounter {
+    color: rgb(32, 158, 32);
+    font-weight: bold;
+}
+
+.excelButton {
+    margin-bottom: 10px;
+}
 
 @media only screen and (min-width: 744px) and (max-width: 844px) {
-    .totalLabel{
+    .totalLabel {
         font-size: 20px;
         font-weight: bold;
     }
-    .newLabel{
+    .newLabel {
         font-size: 20px;
         font-weight: bold;
     }
-    .executionLabel{
+    .executionLabel {
         font-size: 20px;
         font-weight: bold;
     }
-    .completedLabel{
+    .completedLabel {
         font-size: 20px;
         font-weight: bold;
     }
-    .totalUpdate{
-        font-size: 9px;
-        
-    }
-    .newUpdate{
+    .totalUpdate {
         font-size: 9px;
     }
-    .executionUpdate{
+    .newUpdate {
         font-size: 9px;
     }
-    .completedUpdate{
+    .executionUpdate {
         font-size: 9px;
     }
-
-    .totalCounter{
+    .completedUpdate {
+        font-size: 9px;
+    }
+    .totalCounter {
         font-size: 16px;
         font-weight: bold;
     }
-    .newCounter{
+    .newCounter {
         font-size: 16px;
         font-weight: bold;
     }
-    .executionCounter{
+    .executionCounter {
         font-size: 16px;
         font-weight: bold;
     }
-    .completedCounter{
+    .completedCounter {
         font-size: 16px;
         font-weight: bold;
     }
-    
 }
-
 
 @media only screen and (min-width: 480px) and (max-width: 743px) {
-    .totalLabel{
+    .totalLabel {
         font-size: 16px;
         font-weight: bold;
     }
-    .newLabel{
+    .newLabel {
         font-size: 16px;
         font-weight: bold;
     }
-    .executionLabel{
+    .executionLabel {
         font-size: 16px;
         font-weight: bold;
     }
-    .completedLabel{
+    .completedLabel {
         font-size: 16px;
         font-weight: bold;
     }
-
-    .totalUpdate{
+    .totalUpdate {
         font-size: 8px;
     }
-    .newUpdate{
+    .newUpdate {
         font-size: 8px;
     }
-    .executionUpdate{
+    .executionUpdate {
         font-size: 8px;
     }
-    .completedUpdate{
+    .completedUpdate {
         font-size: 8px;
     }
-
-    .totalCounter{
+    .totalCounter {
         font-size: 12px;
         font-weight: bold;
     }
-    .newCounter{
+    .newCounter {
         font-size: 12px;
         font-weight: bold;
     }
-    .executionCounter{
+    .executionCounter {
         font-size: 12px;
         font-weight: bold;
     }
-    .completedCounter{
+    .completedCounter {
         font-size: 12px;
         font-weight: bold;
     }
-    
 }
-
- 

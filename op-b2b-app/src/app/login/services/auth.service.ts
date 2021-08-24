@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { PoNotificationService } from '@po-ui/ng-components';
 import {Md5} from 'ts-md5/dist/md5'
 
-import { Service } from './service';
+import { Service } from '../../services/service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,12 +19,12 @@ export class AuthService extends Service {
     super()
   }
 
-  auth(login: string, pwd: string, lastAccess: Date): Observable<any> {
+  auth(login: string, pwd: string, lastLogin: Date): Observable<any> {
     let pwdCrypt = Md5.hashStr(pwd)
     const body = {
-      user: login,
+      userId: login,
       password: pwdCrypt,
-      lastAccess: lastAccess
+      lastLogin: lastLogin
 
     }
     return this.http.post(`${this.host}/api/auth`, body)

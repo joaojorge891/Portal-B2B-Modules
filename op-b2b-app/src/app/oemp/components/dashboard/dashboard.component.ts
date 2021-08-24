@@ -2,12 +2,19 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { PoDialogService, PoModalAction, PoModalComponent, PoMultiselectOption, PoNotificationService, PoRadioGroupOption, PoTableAction, PoTableColumn, PoTableComponent, PoTableRowTemplateArrowDirection } from '@po-ui/ng-components';
-import { PoPageDynamicSearchLiterals, PoPageDynamicSearchOptions } from '@po-ui/ng-templates';
+import {
+  PoDialogService, PoDisclaimer, PoDynamicFormField, PoModalAction,
+  PoModalComponent, PoMultiselectOption, PoNotificationService, PoRadioGroupOption,
+  PoTableAction, PoTableColumn, PoTableComponent, PoTableRowTemplateArrowDirection
+} from '@po-ui/ng-components';
+import { PoPageDynamicSearchLiterals } from '@po-ui/ng-templates';
 import * as moment from 'moment';
 
 import { ExcelService } from 'src/app/services/excel-export.service';
-import { OempService } from 'src/app/services/oemp.service';
+import { OempService } from 'src/app/oemp/components/dashboard/services/oemp.service';
+import { NgForm } from '@angular/forms';
+
+
 
 
 @Component({
@@ -17,48 +24,56 @@ import { OempService } from 'src/app/services/oemp.service';
 })
 export class DashboardComponent implements OnInit {
 
+  fieldsInitValues = {}
+
   items: Array<any> = []
 
-  editItems: any = {}
+  editItems: any = []
+
+  quickSearchValue: any
 
   page: number = 0
-  
-  isLoading: boolean = false
-  
-  showMoreDisabled: boolean = false
-  
-  executionCounter: string = '0'
-  
-  newCounter: string = '0'
-  
-  totalCounter: number = 0
 
-  completedCounter: string = '0'
-  
+  isLoading: boolean = false
+
+  showMoreDisabled: boolean = false
+
+  executionCounter: any
+
+  newCounter: any
+
+  totalCounter: any
+
+  completedCounter: any
+
   maxColumns: number = 0
-  
+
   loading: boolean = false
-  
+
   lastUpdate!: Date
-  
+
   lastUpdateCompleted!: Date
-  
+
   isReadOnly: any
-  
+
   exportAllOrders: any
-  
+
   temporaryCounter = 0
-  
+
   AdvSearchMark: boolean = false
-  
+
   AdvSearchFilterContent: any
 
+  AdvSearchDynamicForm!: NgForm
+
+  getAdvFilters: any
+
   rowDirection: PoTableRowTemplateArrowDirection = PoTableRowTemplateArrowDirection.Right
-  
+
   oempCompanyOptions: Array<any> = this.service.getOempCompanyOptions()
 
   statusOptions: Array<any> = this.service.getStatusOptions()
-  
+
   oempDeadLineOptions: Array<any> = this.service.getOempDeadLineOptions()
 
   contractTimeOptions: Array<any> = this.service.getContractTimeOptions()
@@ -66,6 +81,8 @@ export class DashboardComponent implements OnInit {
   accountableOptions: Array<any> = this.service.getAccountableOptions()
 
   managementOptions: Array<any> = this.service.getManagementOptions()
+
+  filters: Array<PoDisclaimer> = []
 
   confirm: PoModalAction = {
     action: () => {
@@ -83,45 +100,44 @@ export class DashboardComponent implements OnInit {
     danger: true
   }
 
-  confirmOrderWithoutActing() {
-    this.service.save(this.editItems).subscribe(
-      (result: any) => {
-        if (result.status === 'ok') {
-          this.confirm.loading = true
-          setTimeout(() => {
-            this.notification.success('Ordem atualizada com sucesso!')
-            this.confirm.loading = false
-            this.closeModal()
+  advSearchApply: PoModalAction = {
+    action: () => {
+      this.applyFilters()
+    },
+    label: 'Aplicar Filtros'
+  }
 
-          }, 700)
+  advSearchCancel: PoModalAction = {
+    action: () => {
+      this.closeSearchModal()
+    },
+    label: 'Cancelar',
+    danger: true
 
-        }
-      },
-      (err: any) => this.notification.error(err)
-
-
-    )
   }
 
   customLiterals: PoPageDynamicSearchLiterals = {
     searchPlaceholder: 'Pesquisa por circuito'
   }
 
-  private statusFilterOptions: Array<PoMultiselectOption> = []
 
-  private respOptions: Array<PoMultiselectOption> = []
+  private statusFilterOptions: Array<PoMultiselectOption> = this.service.getStatusOptions()
 
-  private AdvSearchOempCompanyOptions: Array<PoMultiselectOption> = []
+  private respOptions: Array<PoMultiselectOption> = this.service.getAccountableOptions()
 
-  private AdvSearchManagementOptions: Array<PoMultiselectOption> = []
+  private AdvSearchOempCompanyOptions: Array<PoMultiselectOption> = this.service.getOempCompanyOptions()
 
-  private AdvSearchRegionalOptions: Array<PoMultiselectOption> = []
+  private AdvSearchManagementOptions: Array<PoMultiselectOption> = this.service.getManagementOptions()
 
-  private AdvSearchUFOptions: Array<PoMultiselectOption> = []
+  private AdvSearchRegionalOptions: Array<PoMultiselectOption> = this.service.getRegionalOptions()
 
-  private AdvClientOptions: any
+  private AdvSearchUFOptions: Array<PoMultiselectOption> = this.service.getUFOptions()
+
+  private AdvClientOptions: string = `${this.service.host}/api/oemp/getClient`
 
   private AdvSearchGrossOptions: Array<PoRadioGroupOption> = [{ label: 'Sim', value: 'SIM' }, { label: 'Não', value: 'NAO' }]
+
+
 
   private subscriptions$: Array<Subscription> = []
 
@@ -131,14 +147,23 @@ export class DashboardComponent implements OnInit {
     { action: this.onForm.bind(this), icon: 'po-icon-edit', label: '' }
   ]
 
+  advSearchFields: Array<PoDynamicFormField> = [
+    { property: 'conglomerado', divider: 'Busca Avançada', label: 'Cliente (Conglomerado)', optionsService: this.AdvClientOptions, gridColumns: 7, fieldLabel: 'conglomerado', fieldValue: 'conglomerado', order: 1 },
+    { property: 'protocolo', label: 'Protocolo', gridColumns: 5, order: 2 },
+    { property: 'status', label: 'Status', options: this.statusFilterOptions, gridColumns: 5, optionsMulti: true, order: 3 },
+    { property: 'operadora_Oemp', label: 'Operadora', options: this.AdvSearchOempCompanyOptions, gridColumns: 6, optionsMulti: true, order: 5 },
+    { property: 'pove', label: 'GROSS', options: this.AdvSearchGrossOptions, gridColumns: 5, order: 9 },
+    { property: 'responsavel', label: 'Responsável', options: this.respOptions, gridColumns: 7, optionsMulti: true, order: 4 },
+    { property: 'gestao', label: 'Gestão', options: this.AdvSearchManagementOptions, gridColumns: 6, optionsMulti: true, order: 6 },
+    { property: 'geo', label: 'Regional', options: this.AdvSearchRegionalOptions, gridColumns: 3, optionsMulti: true, order: 7 },
+    { property: 'uf', label: 'UF', options: this.AdvSearchUFOptions, gridColumns: 3, optionsMulti: true, order: 8 },
+  ]
 
   @ViewChild(PoModalComponent, { static: true }) poModal!: PoModalComponent
+  @ViewChild('searchModal') poAdvSearchModal!: PoModalComponent
   @ViewChild(PoTableComponent, { static: true }) poTable!: PoTableComponent
   @ViewChild('date') dateFocus!: HTMLElement
   @ViewChild('status') statusFocus!: HTMLElement
-  // @ViewChild('TABLE') table!: ElementRef;
-
-  // @ViewChild('optionsForm', { static: true }) form!: NgForm
 
   constructor(
     private service: OempService,
@@ -158,6 +183,9 @@ export class DashboardComponent implements OnInit {
     //   this.router.navigateByUrl('')
     // }
     this.loading = !this.loading
+
+    this.updateCounters()
+
     try {
 
       this.service.filter().subscribe(
@@ -165,28 +193,6 @@ export class DashboardComponent implements OnInit {
           this.lastUpdate = (result.items[0].lastUpdate)
           this.items = result.items
           this.loading = !this.loading
-
-        }
-      ), (error: any) => this.notification.error(error)
-      this.temporaryCounter = 0
-      this.service.getCounters().subscribe(
-        (result: Array<any>) => {
-          result.forEach(item => {
-            this.temporaryCounter += item.count
-            switch (item._id) {
-              case 'novo':
-                this.newCounter = item.count
-                break
-              case 'execução':
-                this.executionCounter = item.count
-                break
-              case 'concluído':
-                this.completedCounter = item.count
-                break
-            }
-          })
-          this.totalCounter = this.temporaryCounter
-
         }
       ), (error: any) => this.notification.error(error)
 
@@ -205,6 +211,30 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  updateCounters() {
+    //this.temporaryCounter = 0
+    this.service.getCounters().subscribe(
+      (result: Array<any>) => {
+        result.forEach(item => {
+          this.temporaryCounter += item.count
+          switch (item._id) {
+            case 'novo':
+              this.newCounter = item.count
+              break
+            case 'execução':
+              this.executionCounter = item.count
+              break
+            case 'concluído':
+              this.completedCounter = item.count
+              break
+          }
+        })
+        this.totalCounter = this.temporaryCounter
+
+      }
+    ), (error: any) => this.notification.error(error)
+  }
+
   exportToXlsx(): void {
     try {
       this.service.getOpenOrdersToExport().subscribe(
@@ -217,48 +247,6 @@ export class DashboardComponent implements OnInit {
     } catch (error) {
       this.notification.error(error)
     }
-  }
-
-
-  private onForm(order: any) {
-    this.restore()
-    this.service.filterById(order._id).subscribe(
-      (result: any) => {
-        this.editItems = result
-        this.openModal()
-        if (this.editItems.status === 'concluído') {
-          this.isReadOnly = true
-          this.confirm.disabled = true
-        } else {
-          this.isReadOnly = false
-          this.confirm.disabled = false
-        }
-
-      }
-
-    ), (error: any) => this.notification.error(error)
-  }
-
-  openModal() {
-    this.poModal.open()
-
-  }
-
-  private restore() {
-    this.editItems.status = undefined
-    this.editItems.observacao_Status = undefined
-    this.editItems.data_Contratacao = undefined
-    this.editItems.prazo_Operadora = undefined
-    this.editItems.previsao_Entrga = undefined
-    this.editItems.data_Instalacao = undefined
-    this.editItems.taxa_Instalacao = undefined
-    this.editItems.taxa_Mensal = undefined
-    this.editItems.tempo_Contrato = undefined
-    this.editItems.codigo_Viabilidade = undefined
-    this.editItems.designacao_Oemp = undefined
-    this.editItems.responsavel = undefined
-    this.editItems.gestao = undefined
-
   }
 
   onShowMore() {
@@ -319,17 +307,73 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  onQuickSearch(e: KeyboardEvent) {
+    if (e.key === 'Enter') {
+      if (this.quickSearchValue) {
+        this.filters = []
+        this.filters.push({ value: this.quickSearchValue })
+        this.quickSearchItems({ circuito: this.quickSearchValue })
+      } else {
+        this.filters = []
+      }
+    }
+  }
+
+
   onChangeDisclaimers(disclaimers: []) {
     const filter: any = {}
     disclaimers.forEach((item: any) => {
       filter[item.property] = item.value
     })
-    disclaimers.length ? this.advancedSearchItems(filter) : this.resetFilters(this.page++)
+    disclaimers.length ? this.advancedSearchItems(filter) : this.resetFilters(this.page)
+    // if (disclaimers.length > 0) {
+    //   if (this.quickSearchValue !== undefined && '') {
+    //     this.quickSearchItems({ circuito: this.quickSearchValue })
+    //   } else this.advancedSearchItems(filter)
+    //   disclaimers.length ? this.advancedSearchItems(filter) : this.resetFilters(this.page)
+
+    // } else this.resetFilters(this.page)
+
+  }
+  // onQuickSearch(filter: string) {
+  //   filter ? this.quickSearchItems({ circuito: filter }) : this.resetFilters(this.page++)
+  // }
+
+  openModalAdvSearch() {
+    this.fieldsInitValues = {
+      conglomerado: undefined,
+      protocolo: undefined,
+      status: undefined,
+      operadora_Oemp: undefined,
+      pove: undefined,
+      responsavel: undefined,
+      gestao: undefined,
+      geo: undefined,
+      uf: undefined
+    }
+    this.poAdvSearchModal.open()
 
   }
 
-  onQuickSearch(filter: string) {
-    filter ? this.quickSearchItems({ circuito: filter }) : this.resetFilters(this.page++)
+  getForm(form: NgForm) {
+    this.AdvSearchDynamicForm = form
+    this.AdvSearchDynamicForm.control.valueChanges.subscribe(values => this.getAdvFilters = values)
+  }
+
+  applyFilters() {
+    this.filters = []
+    let values = this.getAdvFilters
+    for (let key in values) {
+      if (values[key]) {
+        this.filters.push({ property: key, value: values[key] })
+      }
+    }
+    this.closeSearchModal()
+  }
+
+  closeSearchModal() {
+    this.poAdvSearchModal.close()
+
   }
 
   private quickSearchItems(filters: any) {
@@ -359,11 +403,13 @@ export class DashboardComponent implements OnInit {
 
   }
 
+
   delivPredCalc() {
     if (this.editItems.data_Contratacao !== null && this.editItems.data_Contratacao !== undefined &&
       this.editItems.prazo_Operadora !== null && this.editItems.prazo_Operadora !== undefined) {
       let dateConvert = moment(this.editItems.data_Contratacao).add(this.editItems.prazo_Operadora, 'days').toDate()
       this.editItems.previsao_Entrega = dateConvert
+
     }
   }
 
@@ -374,6 +420,49 @@ export class DashboardComponent implements OnInit {
 
   statusFoco() {
     this.statusFocus.focus()
+  }
+
+
+  confirmOrderWithoutActing() {
+    this.service.save(this.editItems).subscribe(
+      (result: any) => {
+        if (result.status === 'ok') {
+          this.confirm.loading = true
+          setTimeout(() => {
+            this.notification.success('Ordem atualizada com sucesso!')
+            this.confirm.loading = false
+            this.closeModal()
+
+          }, 700)
+
+        }
+      },
+      (err: any) => this.notification.error(err)
+
+
+    )
+  }
+
+  private onUpdate(item: any) {
+    const index = this.items.findIndex((elem: any) => elem._id === item._id)
+    this.service.save(item).subscribe(result => {
+      if (result.status === 'ok') {
+        this.confirm.loading = true
+        this.items.splice(index, 1, item)
+        this.getCounters()
+        setTimeout(() => {
+          this.notification.success('Ordem atualizada com sucesso!')
+          this.confirm.loading = false
+          this.closeModal()
+
+        }, 700)
+
+      }
+
+    },
+      (error) => {
+        this.notification.error(error)
+      })
   }
 
   private proccessOrder() {
@@ -462,26 +551,61 @@ export class DashboardComponent implements OnInit {
 
     }
 
-    this.service.save(this.editItems).subscribe(
-      (result: any) => {
-        if (result.status === 'ok') {
-          this.confirm.loading = true
-          setTimeout(() => {
-            this.notification.success('Ordem atualizada com sucesso!')
-            this.confirm.loading = false
-            this.closeModal()
-
-          }, 700)
-
-        }
-      },
-      (err: any) => this.notification.error(err)
-
-
-    )
-
+    this.onUpdate(this.editItems)
 
   }
+
+  private onForm(order: any) {
+    this.service.filterById(order._id).subscribe(
+      (result: any) => {
+        this.editItems = result
+        this.openModal()
+        if (this.editItems.status === 'concluído') {
+          this.isReadOnly = true
+          this.confirm.disabled = true
+        } else {
+          this.isReadOnly = false
+          this.confirm.disabled = false
+        }
+
+      }
+
+    ), (error: any) => this.notification.error(error)
+  }
+
+  openModal() {
+    this.poModal.open()
+  }
+
+  private getCounters() {
+    this.temporaryCounter = 0
+    this.service.getCounters().subscribe(
+      (result: Array<any>) => {
+        result.forEach(item => {
+          this.temporaryCounter += item.count
+          switch (item._id) {
+            case 'novo':
+              this.newCounter = item.count
+              break
+            case 'execução':
+              this.executionCounter = item.count
+              break
+            case 'concluído':
+              this.completedCounter = item.count
+              break
+          }
+        })
+        this.totalCounter = this.temporaryCounter
+
+      }
+    ), (error: any) => this.notification.error(error)
+  }
+
+  closeModal() {
+    this.poModal.close()
+    this.editItems = []
+  }
+
 
   isDisable() {
     if (this.editItems.status === 'execução') {
@@ -498,51 +622,15 @@ export class DashboardComponent implements OnInit {
 
 
   openNew() {
-    this.router.navigate(['/oemp/new-orders'])
+    this.router.navigate(['home/oemp/new-orders'])
   }
 
   openExec() {
-    this.router.navigate(['/oemp/exec-orders'])
+    this.router.navigate(['home/oemp/exec-orders'])
   }
 
   openCompleted() {
-    this.router.navigate(['/oemp/completed-orders'])
-  }
-
-  closeModal() {
-    this.poModal.close()
-    this.ngOnInit()
-  }
-
-
-
-
-  loadSearchOptions(): PoPageDynamicSearchOptions {
-    this.statusFilterOptions = this.service.getStatus()
-    this.respOptions = this.service.getAccountableOptions()
-    this.AdvSearchOempCompanyOptions = this.service.getOempCompanyOptions()
-    this.AdvSearchManagementOptions = this.service.getManagementOptions()
-    this.AdvClientOptions = `${this.service.host}/api/oemp/getClient`
-    this.AdvSearchRegionalOptions = this.service.getRegionalOptions()
-    this.AdvSearchUFOptions = this.service.getUFOptions()
-
-    return {
-      filters: [
-        { property: 'conglomerado', label: 'Cliente (Conglomerado)', optionsService: this.AdvClientOptions, gridColumns: 7, fieldLabel: 'conglomerado', fieldValue: 'conglomerado', order: 1 },
-        { property: 'protocolo', label: 'Protocolo', gridColumns: 5, order: 2 },
-        { property: 'status', label: 'Status', options: this.statusFilterOptions, gridColumns: 5, optionsMulti: true, order: 3 },
-        { property: 'operadora_Oemp', label: 'Operadora', options: this.AdvSearchOempCompanyOptions, gridColumns: 6, optionsMulti: true, order: 5 },
-        { property: 'pove', label: 'GROSS', options: this.AdvSearchGrossOptions, gridColumns: 5, order: 9 },
-        { property: 'responsavel', label: 'Responsável', options: this.respOptions, gridColumns: 7, optionsMulti: true, order: 4 },
-        { property: 'gestao', label: 'Gestão', options: this.AdvSearchManagementOptions, gridColumns: 6, optionsMulti: true, order: 6 },
-        { property: 'geo', label: 'Regional', options: this.AdvSearchRegionalOptions, gridColumns: 3, optionsMulti: true, order: 7 },
-        { property: 'uf', label: 'UF', options: this.AdvSearchUFOptions, gridColumns: 3, optionsMulti: true, order: 8 },
-
-
-
-
-      ]
-    }
+    this.router.navigate(['home/oemp/completed-orders'])
   }
 
   installationFeeMask() {
@@ -575,11 +663,11 @@ export class DashboardComponent implements OnInit {
     if (value == 'NaN') this.editItems.taxa_Mensal = ''
   }
 
-  onChangeOempCompany(e: any) {
-    const searchOemp = this.service.getOempOempCompanyOptions().find((companyName, index, array) => companyName.value === e)
-    const searchInter = this.service.getIntercompanyOempCompanyOptions().find((companyName, index, array) => companyName.value === e)
-    const searchUN = this.service.getUNOempCompanyOptions().find((companyName, index, array) => companyName.value === e)
-    const searchNA = this.service.getNAOempCompanyOptions().find((companyName, index, array) => companyName.value === e)
+  onChangeOempCompany(event: any) {
+    const searchOemp = this.service.getOempOempCompanyOptions().find((companyName, index, array) => companyName.value == event)
+    const searchInter = this.service.getIntercompanyOempCompanyOptions().find((companyName, index, array) => companyName.value == event)
+    const searchUN = this.service.getUNOempCompanyOptions().find((companyName, index, array) => companyName.value == event)
+    const searchNA = this.service.getNAOempCompanyOptions().find((companyName, index, array) => companyName.value == event)
     if (searchOemp) {
       this.editItems.gestao = 'OEMP'
     } else if (searchInter) {
@@ -589,8 +677,8 @@ export class DashboardComponent implements OnInit {
     } else if (searchNA) {
       this.editItems.gestao = 'NA'
     }
-    else if (e === 'Sem Atuação OEMP') {
-      this.editItems.operadora_Oemp = e
+    else if (event === 'Sem atuação OEMP') {
+      this.editItems.operadora_Oemp = event
       this.editItems.status = 'concluído'
 
     } else {
@@ -603,17 +691,20 @@ export class DashboardComponent implements OnInit {
 
 
   onChangeManagement(e: any) {
-    if (e === 'OEMP') {
+    if (e == 'OEMP') {
       this.accountableOptions = this.service.getOempAccountableOptions()
       this.oempCompanyOptions = this.service.getOempOempCompanyOptions()
-    } else if (e === 'Intercompany') {
+    } else if (e == 'Intercompany') {
       this.accountableOptions = this.service.getIntercompanyAccountableOptions()
       this.oempCompanyOptions = this.service.getIntercompanyOempCompanyOptions()
-    } else if (e === 'UN') {
+      this.editItems.status = 'NA'
+    } else if (e == 'UN') {
       this.accountableOptions = this.service.getUnAccountableOptions()
       this.oempCompanyOptions = this.service.getUNOempCompanyOptions()
-    } else if (e === 'NA') {
+      this.editItems.status = 'NA'
+    } else if (e == 'NA') {
       this.oempCompanyOptions = this.service.getNAOempCompanyOptions()
+      this.editItems.status = 'NA'
     }
     else {
       this.editItems.operadora_Oemp = undefined
