@@ -1,16 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import {
   PoDialogService, PoDisclaimer, PoDynamicFormField, PoModalAction,
   PoModalComponent, PoMultiselectOption, PoNotificationService, PoRadioGroupOption,
-  PoTableAction, PoTableColumn, PoTableComponent, PoTableRowTemplateArrowDirection
+  PoTableAction, PoTableComponent, PoTableRowTemplateArrowDirection
 } from '@po-ui/ng-components';
 import { PoPageDynamicSearchLiterals } from '@po-ui/ng-templates';
 import * as moment from 'moment';
 
-import { ExcelService } from 'src/app/services/excel-export.service';
+
 import { OempService } from 'src/app/oemp/components/dashboard/services/oemp.service';
 import { NgForm } from '@angular/forms';
 
@@ -34,6 +34,8 @@ export class DashboardComponent implements OnInit {
 
   page: number = 0
 
+  tableHeight: number = 320
+
   isLoading: boolean = false
 
   showMoreDisabled: boolean = false
@@ -46,8 +48,6 @@ export class DashboardComponent implements OnInit {
 
   completedCounter: any
 
-  maxColumns: number = 0
-
   loading: boolean = false
 
   lastUpdate!: Date
@@ -55,8 +55,6 @@ export class DashboardComponent implements OnInit {
   lastUpdateCompleted!: Date
 
   isReadOnly: any
-
-  exportAllOrders: any
 
   temporaryCounter = 0
 
@@ -138,10 +136,11 @@ export class DashboardComponent implements OnInit {
   private AdvSearchGrossOptions: Array<PoRadioGroupOption> = [{ label: 'Sim', value: 'SIM' }, { label: 'Não', value: 'NAO' }]
 
 
+  innerWidth: any
 
   private subscriptions$: Array<Subscription> = []
 
-  columns: Array<PoTableColumn> = this.service.getColumns()
+  columns = this.service.getColumns()
 
   actions: Array<PoTableAction> = [
     { action: this.onForm.bind(this), icon: 'po-icon-edit', label: '' }
@@ -169,7 +168,6 @@ export class DashboardComponent implements OnInit {
     private service: OempService,
     private router: Router,
     private notification: PoNotificationService,
-    private excelService: ExcelService,
     private poDialog: PoDialogService
 
 
@@ -177,11 +175,71 @@ export class DashboardComponent implements OnInit {
 
 
 
+  @HostListener('window:resize', ['$event'])
+
+  onResize(event: any) {
+    this.innerWidth = event.target.innerWidth
+    this.responsiveTable()
+
+  }
+
+  public responsiveTable() {
+    if (this.innerWidth <= 1366 && this.innerWidth >= 1260) {
+      for (let property in this.columns) {
+
+      }
+      this.columns[0].width = '70px'
+      this.columns[1].width = '80px'
+      this.columns[2].width = '80px'
+      this.columns[2].visible = false
+      this.columns[3].width = '50px'
+      this.columns[4].width = '100px'
+      this.columns[5].width = '100px'
+      this.columns[6].width = '190px'
+      this.columns[7].width = '65px'
+      this.columns[8].width = '75px'
+      this.columns[8].visible = false
+      this.columns[9].width = '70px'
+      this.columns[10].width = '80px'
+      this.columns[11].width = '110px'
+      this.columns[12].width = '130px'
+      this.columns[12].visible = false
+      this.columns[13].width = '120px'
+    }
+    if (this.innerWidth >= 1024 && this.innerWidth < 1260) {
+      this.columns[0].width = '70px'
+      this.columns[0].visible = false
+      this.columns[1].width = '80px'
+      this.columns[2].width = '80px'
+      this.columns[2].visible = false
+      this.columns[3].width = '50px'
+      this.columns[4].width = '100px'
+      this.columns[5].width = '100px'
+      this.columns[6].width = '190px'
+      this.columns[7].width = '65px'
+      this.columns[7].visible = false
+      this.columns[8].width = '75px'
+      this.columns[8].visible = false
+      this.columns[9].width = '70px'
+      this.columns[9].visible = false
+      this.columns[10].width = '80px'
+      this.columns[11].width = '110px'
+      this.columns[12].width = '130px'
+      this.columns[12].visible = false
+      this.columns[13].width = '120px'
+      this.columns[13].visible = false
+    }
+
+  }
 
   ngOnInit() {
     // if (this.validateUser() === 'user') {
     //   this.router.navigateByUrl('')
     // }
+    this.innerWidth = window.innerWidth
+
+    this.responsiveTable()
+
     this.loading = !this.loading
 
     this.updateCounters()
@@ -233,20 +291,6 @@ export class DashboardComponent implements OnInit {
 
       }
     ), (error: any) => this.notification.error(error)
-  }
-
-  exportToXlsx(): void {
-    try {
-      this.service.getOpenOrdersToExport().subscribe(
-        (result: any) => {
-          this.exportAllOrders = result
-          this.excelService.exportAsExcelFile(this.exportAllOrders, 'abertas')
-
-        }
-      ), (error: any) => this.notification.error(error)
-    } catch (error) {
-      this.notification.error(error)
-    }
   }
 
   onShowMore() {
@@ -311,8 +355,7 @@ export class DashboardComponent implements OnInit {
     if (e.key === 'Enter') {
       if (this.quickSearchValue) {
         this.filters = []
-        this.filters.push({ value: this.quickSearchValue })
-        this.quickSearchItems({ circuito: this.quickSearchValue })
+        this.filters.push({ label: 'Pesquisa rápida: ' + this.quickSearchValue, value: this.quickSearchValue })
       } else {
         this.filters = []
       }
@@ -321,23 +364,23 @@ export class DashboardComponent implements OnInit {
 
 
   onChangeDisclaimers(disclaimers: []) {
-    const filter: any = {}
-    disclaimers.forEach((item: any) => {
-      filter[item.property] = item.value
-    })
-    disclaimers.length ? this.advancedSearchItems(filter) : this.resetFilters(this.page)
-    // if (disclaimers.length > 0) {
-    //   if (this.quickSearchValue !== undefined && '') {
-    //     this.quickSearchItems({ circuito: this.quickSearchValue })
-    //   } else this.advancedSearchItems(filter)
-    //   disclaimers.length ? this.advancedSearchItems(filter) : this.resetFilters(this.page)
-
-    // } else this.resetFilters(this.page)
-
+    if (disclaimers.length) {
+      this.tableHeight = 220
+      if (this.filters[0].label?.charAt(0) == 'P' && this.filters[0].label.charAt(1) == 'e' &&
+        this.filters[0].label?.charAt(2) == 's' && this.filters[0].label?.charAt(3) == 'q') {
+        this.quickSearchItems({ circuito: this.quickSearchValue })
+      } else {
+        const filter: any = {}
+        disclaimers.forEach((item: any) => {
+          filter[item.property] = item.value
+        })
+        this.advancedSearchItems(filter)
+      }
+    } else {
+      this.tableHeight = 320
+      this.resetFilters(this.page)
+    }
   }
-  // onQuickSearch(filter: string) {
-  //   filter ? this.quickSearchItems({ circuito: filter }) : this.resetFilters(this.page++)
-  // }
 
   openModalAdvSearch() {
     this.fieldsInitValues = {
@@ -365,7 +408,7 @@ export class DashboardComponent implements OnInit {
     let values = this.getAdvFilters
     for (let key in values) {
       if (values[key]) {
-        this.filters.push({ property: key, value: values[key] })
+        this.filters.push({ label: key + ': ' + values[key], property: key, value: values[key] })
       }
     }
     this.closeSearchModal()

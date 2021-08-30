@@ -11,6 +11,7 @@ module.exports = {
     },
 
     advancedFilter: function (req, res) {
+        
         const filters = req.body
         delete filters.access_token
         delete filters.username
@@ -45,8 +46,9 @@ module.exports = {
         document.then(result => res.send(result))
     },
 
-    getTotalOpen: function (req, res) {
-        let document = controller.getTotalOpen(req)
+    getBaseToExport: function (req, res) {
+        console.log(req.body)
+        let document = controller.getBaseToExport(req.body)
         document.then(result => res.send(result))
     },
 

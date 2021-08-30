@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { PoDialogService, PoToolbarAction, PoToolbarProfile } from '@po-ui/ng-components';
+
+import { PoDialogService, PoMenuItem, PoToolbarAction, PoToolbarProfile } from '@po-ui/ng-components';
+import { faFileExcel} from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-home',
@@ -8,12 +11,15 @@ import { PoDialogService, PoToolbarAction, PoToolbarProfile } from '@po-ui/ng-co
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  menuArr = [
-    // { label: 'Home', link: '/home' },
-    { label: 'OEMP', link: '/home/oemp', icon: 'po-icon po-icon-company', shortLabel: 'Controle' },
+  excelIcon = faFileExcel
+
+  @ViewChild('iconTemplate', { static: true }) iconTemplate!: TemplateRef<void>;
+
+  menuArr: Array<PoMenuItem> = [
+    { label: 'OEMP', action: this.onOemp.bind(this), icon: 'po-icon po-icon-company', shortLabel: 'Controle' },
     { label: 'Dashboard', action: this.onDashboard.bind(this), icon: 'po-icon po-icon-chart-columns', shortLabel: 'Dashboard' },
+    { label: 'Exportar', action: this.onExport.bind(this), icon: 'po-icon po-icon-doc-xls', shortLabel: 'Exportar' },
     { label: 'Logout', action: this.logout.bind(this), icon: 'po-icon-exit', shortLabel: 'Logout' },
-    // { label: 'Logout', link: 'http://10.61.81.95/op_b2b/index.php', icon: 'po-icon-exit', shortLabel: 'Logout' }
   ]
 
 
@@ -28,6 +34,8 @@ export class HomeComponent implements OnInit {
     { icon: 'po-icon-exit', label: 'Sair', type: 'danger', separator: true, action: () => this.router.navigate(['']) }
   ];
 
+  toolBarTitle: string = ''
+
   constructor(
 
     private router: Router,
@@ -39,6 +47,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
 
     this.router.navigate(['/home/oemp'])
+    this.toolBarTitle = 'PORTAL DE OPERAÇÕES B2B - ÁREA DE CONTROLE OEMP'
     // if (this.validateUser() === 'user') {
     //   this.router.navigateByUrl('')
     // }
@@ -46,13 +55,23 @@ export class HomeComponent implements OnInit {
 
   public logout() {
     localStorage.setItem('current_user', '')
-    this.router.navigate(['/portal/'])
-    
+    this.router.navigate(['portal'])
+
 
   }
 
-  public onDashboard(){
-    this.poDialog.alert({ title: 'Aviso', message: 'Feature em desenvolvimento. Será disponibilizado em breve.' })
+  public onDashboard() {
+    this.poDialog.alert({ title: 'Portal de Operações B2B', message: 'Feature em desenvolvimento. Será disponibilizado em breve.' })
+    //this.toolBarTitle = 'PORTAL DE OPERAÇÕES B2B - DASHBOARD'
+  }
+
+  public onExport() {
+    this.router.navigate(['/home/oemp/exports'])
+  }
+
+  public onOemp() {
+    this.router.navigate(['/home/oemp'])
+    this.toolBarTitle = 'PORTAL DE OPERAÇÕES B2B - ÁREA DE CONTROLE OEMP'
   }
 
 }

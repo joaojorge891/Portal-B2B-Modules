@@ -9,14 +9,14 @@ function handleClosedOrders() {
   function removeCompletedInsertClosed(mysqlConnection, tableName, openMongoCollection, closedMongoCollection) {
     const promises = []
     const mainPromise = new Promise((resolve, reject) => {
-      openMongoCollection.find({}).forEach(function (item) {
+      openMongoCollection.find({status:'concluído'}).forEach(function (item) {
         const secondaryPromise = new Promise((resolve, reject) => {
           let sql = 'select * from ' + tableName + ' where protocolo = ' + item.protocolo
           mysqlConnection.query(sql, async function (error, data) {
             if (error) throw new Error('Erro na coleta de OS fechadas no Mysql...')
             if (data !== undefined && data !== null && data.length > 0) {
               await openMongoCollection.deleteOne({ protocolo: item.protocolo })
-              await closedMongoCollection.insertMany(data)
+              await closedMongoCollection.insertOne(data)
             }
             resolve(true)
           })

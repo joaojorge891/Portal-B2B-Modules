@@ -1,4 +1,5 @@
-<po-page-default p-title="Controle OEMP">
+<po-page-default>
+        
     <div class="po-row">
         <po-widget
             class ="po-sm-12 po-md-3 po-lg-3 po-xl-4"
@@ -8,8 +9,6 @@
             <div class="newLabel po-text-center po-font-subtitle"><span class="po-icon po-icon-plus-circle"></span>Novas</div>
             <div class="newCounter po-font-subtitle po-text-center">{{newCounter}}</div>
             <div class="newUpdate po-font-text-small po-text-center">Atualizado em: {{lastUpdate}}</div>
-           
-           
         </po-widget>
     
         <po-widget
@@ -19,9 +18,8 @@
             <div class="executionLabel po-text-center po-font-subtitle"><span class="po-icon po-icon-change"></span>Em Execução</div>
             <div class="executionCounter po-font-subtitle po-text-center"> {{executionCounter}}</div>
             <div class="executionUpdate po-font-text-small po-text-center">Atualizado em: {{lastUpdate}}</div>
-            
-    
         </po-widget>
+
         <po-widget
         class ="po-sm-12 po-md-3 po-lg-3 po-xl-4"
         [p-primary]="false">
@@ -41,25 +39,23 @@
         </div>
         <div class="po-row searchRow">
            
-                        <po-input #input
-                                name="quickSearch"
-                                (keydown)="onQuickSearch($event)"
-                                [(ngModel)]="quickSearchValue"
-                                p-clean="true"
-                                p-placeholder="Pesquisa por Circuito"
-                                class="po-offset-lg-9 po-offset-xl-9 po-xl-2 po-lg-2 po-offset-md-7 po-md-4 po-sm-12"
-                                >
-                
-                        </po-input>
+                <po-input #input 
+                        name="quickSearch"
+                        (keydown)="onQuickSearch($event)"
+                        [(ngModel)]="quickSearchValue"
+                        p-clean="true"
+                        p-icon="po-icon po-icon-search"
+                        p-placeholder="Pesquisa por Circuito"
+                        class="inputSearch po-offset-lg-8 po-offset-xl-8 po-xl-3 po-lg-3 po-offset-md-7 po-md-4 po-sm-12"
+                        >
+                </po-input>
                
+                <span class="spanSearch po-offset-md-12 po-md-1 po-offset-lg-12 po-lg-1" (click)="openModalAdvSearch()">
+                        Busca avançada
+                </span>
                 
-                <!-- <div class="divSearch po-offset-md-12 po-md-1"> -->
-
-                        <span class="spanSearch po-offset-md-12 po-md-1" (click)="openModalAdvSearch()">
-                          Busca avançada
-                        </span>
-                <!-- </div>  -->
                 <po-disclaimer-group
+                        class="searchDisclaimer"
                         [p-disclaimers]="filters"
                         (p-change)="onChangeDisclaimers($event)"
                         p-title="Apresentando resultados filtrados por:"
@@ -68,11 +64,8 @@
 
         </div>
                 <div class="po-row">
-                        <div class="excelButton">
-                                <po-button p-icon="fas fa-file-excel" p-label="Exportar" (p-click)="exportToXlsx()" ></po-button>
-                        </div>
                         <po-table class="table"
-                                [p-height]="400"
+                                [p-height]="tableHeight"
                                 [p-actions]="actions"
                                 [p-items]="items" 
                                 [p-columns]="columns" 
@@ -83,7 +76,6 @@
                                 p-container="shadow"
                                 [p-loading]="loading"
                                 [p-infinite-scroll]="true"
-                                [p-infinite-scroll-distance]="90"
                                 (p-show-more)="onShowMore()"
                                 [p-hide-text-overflow]="true"
                                 [p-show-more-disabled]="showMoreDisabled" 
@@ -98,7 +90,7 @@
                               </ng-template> -->
                         </po-table>
                 </div>
-        <!-- </po-page-dynamic-search> -->
+        
 </po-page-default>
     
     

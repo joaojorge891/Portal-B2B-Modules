@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PoNotificationService } from '@po-ui/ng-components';
+import { PoNotificationService, PoTableColumn } from '@po-ui/ng-components';
 import { Observable } from 'rxjs';
 
 
@@ -39,14 +39,14 @@ export class OempService extends Service {
     return this.http.get(`${this.host}/api/getClients`)
   }
 
-  getOpenOrdersToExport(): Observable<any> {
+  exportBase(filter: any, dates: any): Observable<any> {
     // const options = this.getOptionsReq();
     // if (options == null) {
     //   throw new Error('Usuário não autenticado!')
 
     // } else
     //   return this.http.get(`${this.host}/api/oemp/total-counter`, options)
-    return this.http.get(`${this.host}/api/oemp/exportOpen`)
+    return this.http.post(`${this.host}/api/oemp/exportBase`, filter, dates)
   }
 
   getCounters(): Observable<any> {
@@ -277,6 +277,23 @@ export class OempService extends Service {
     ]
   }
 
+  getExportStatusOptions(){
+    return [
+      { label: 'Todos', value: 'todos' },
+      { label: 'Aguardando Assinatura', value: 'aguardando assinatura' },
+      { label: 'Aprovação de OPEX', value: 'aprovação opex' },
+      { label: 'Concluído', value: 'concluído' },
+      { label: 'Em contratação', value: 'contratação' },
+      { label: 'Em estudo viabilidade', value: 'viabilidade' },
+      { label: 'Em execução', value: 'execução' },
+      { label: 'Falha no Acesso Terceiro', value: 'falha acesso terceiro' },
+      { label: 'NA', value: 'NA' },
+      { label: 'Novo', value: 'novo' },
+      { label: 'Pendência Cliente', value: 'pendência cliente' },
+      { label: 'Pendência U.N', value: 'pendência U.N' },
+    ]
+  }
+
   getOempDeadLineOptions() {
     return [
       { label: '10 dias', value: 10 },
@@ -361,19 +378,19 @@ export class OempService extends Service {
     ]
   }
 
-  getColumns() {
+  getColumns(): Array<PoTableColumn> {
     return [
-      { property: 'TempoVida', label: 'T. Vida', width: '70px' },
-      { property: 'TempoPosto', label: 'T. Posto', width: '80px' },
-      { property: 'geo', label: 'Regional', width: '80px' },
-      { property: 'uf', label: 'UF', width: '50px', visible: false },
-      { property: 'circuito', label: 'Circuito', width: '100px' },
-      { property: 'protocolo', label: 'Protocolo', width: '100px' },
-      { property: 'NomedoCliente', label: 'Cliente', width: '170px' },
-      { property: 'pove', label: 'Gross', width: '65px' },
-      { property: 'servico', label: 'Serviço', width: '75px', visible: false },
+      { property: 'TempoVida', label: 'T. Vida' },
+      { property: 'TempoPosto', label: 'T. Posto' },
+      { property: 'geo', label: 'Regional' },
+      { property: 'uf', label: 'UF' },
+      { property: 'circuito', label: 'Circuito' },
+      { property: 'protocolo', label: 'Protocolo' },
+      { property: 'NomedoCliente', label: 'Cliente' },
+      { property: 'pove', label: 'Gross' },
+      { property: 'servico', label: 'Serviço' },
       {
-        property: 'status', width: '70px',
+        property: 'status',
         type: 'subtitle',
         subtitles: [
           { value: 'execução', color: 'color-11', label: 'Em execução', content: 'EXE' },
@@ -389,10 +406,10 @@ export class OempService extends Service {
           { value: 'concluído', color: 'color-10', label: 'Concluído', content: 'OK' },
         ]
       },
-      { property: 'gestao', label: 'Gestão', width: '80px' },
-      { property: 'operadora_Oemp', label: 'Operadora', width: '110px' },
-      { property: 'data_Contratacao', label: 'Data Contratação', type: 'date', format: 'dd/MM/yyyy', width: '130px', visible: false },
-      { property: 'previsao_Entrega', label: 'Prev. Entrega', type: 'date', format: 'dd/MM/yyyy', width: '120px' },
+      { property: 'gestao', label: 'Gestão' },
+      { property: 'operadora_Oemp', label: 'Operadora' },
+      { property: 'data_Contratacao', label: 'Data Contratação', type: 'date', format: 'dd/MM/yyyy' },
+      { property: 'previsao_Entrega', label: 'Prev. Entrega', type: 'date', format: 'dd/MM/yyyy' },
 
 
     ]

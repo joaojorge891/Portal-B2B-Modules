@@ -8,7 +8,7 @@ const EXCEL_EXTENSION = '.xlsx';
   providedIn: 'root'
 })
 
-export class ExcelService {
+export class ExportBaseService {
 
   constructor() { }
 

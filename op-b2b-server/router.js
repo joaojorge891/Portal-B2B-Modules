@@ -82,8 +82,8 @@ exports.appRouter = function (app) {
     router.route('/oemp/advancedSearch')
         .post(oempRoute.advancedFilter)
 
-    router.route('/oemp/exportOpen')
-        .get(oempRoute.getTotalOpen)
+    router.route('/oemp/exportBase')
+        .post(oempRoute.getBaseToExport)
         
     router.route('/oemp/counters')
         .get(oempRoute.getCounters)

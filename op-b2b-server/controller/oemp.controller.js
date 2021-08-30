@@ -161,55 +161,107 @@ exports.quickFilter = async function (filters) {
 }
 
 
-exports.getTotalOpen = function () {
+exports.getBaseToExport = function (req) {
+    const filter = req.find(status => status == 'todos')
     let promise = new Promise(function (resolve, reject) {
-        oempSchema.find({}).select(
-            {
-                '_id': 0,
-                'TempoVida': 1,
-                'TempoPosto': 1,
-                'geo': 1,
-                'uf': 1,
-                'protocolo': 1,
-                'osCrm': 1,
-                'circuito': 1,
-                'localidade': 1,
-                'produto': 1,
-                'velocidade': 1,
-                'servico': 1,
-                'operadora_Oemp': 1,
-                'pove': 1,
-                'pend': 1,
-                'descricao': 1,
-                'gerencia': 1,
-                'atividade': 1,
-                'conglomerado': 1,
-                'projeto': 1,
-                'NomedoCliente': 1,
-                'segm': 1,
-                'obsAbertura': 1,
-                'obsPend': 1,
-                'status': 1,
-                'observacao_Status': 1,
-                'data_Contratacao': 1,
-                'previsao_Entrega': 1,
-                'data_Instalacao': 1,
-                'taxa_Instalacao': 1,
-                'taxa_Mensal': 1,
-                'tempo_Contrato': 1,
-                'codigo_Viabilidade': 1,
-                'operadora_Oemp': 1,
-                'designacao_Oemp': 1,
-                'responsavel': 1,
-                'gestao': 1
-            }
-        )
-            .sort({ tempoPosto: -1 })
-            .then(doc => {
-                object = doc
-                resolve(object)
-            }
-            ).catch(error)
+        if (filter) {
+            oempSchema.find({}).select(
+                {
+                    '_id': 0,
+                    'TempoVida': 1,
+                    'TempoPosto': 1,
+                    'geo': 1,
+                    'uf': 1,
+                    'protocolo': 1,
+                    'osCrm': 1,
+                    'circuito': 1,
+                    'localidade': 1,
+                    'produto': 1,
+                    'velocidade': 1,
+                    'servico': 1,
+                    'operadora_Oemp': 1,
+                    'pove': 1,
+                    'pend': 1,
+                    'descricao': 1,
+                    'gerencia': 1,
+                    'atividade': 1,
+                    'conglomerado': 1,
+                    'projeto': 1,
+                    'NomedoCliente': 1,
+                    'segm': 1,
+                    'obsAbertura': 1,
+                    'obsPend': 1,
+                    'status': 1,
+                    'observacao_Status': 1,
+                    'data_Contratacao': 1,
+                    'previsao_Entrega': 1,
+                    'data_Instalacao': 1,
+                    'taxa_Instalacao': 1,
+                    'taxa_Mensal': 1,
+                    'tempo_Contrato': 1,
+                    'codigo_Viabilidade': 1,
+                    'operadora_Oemp': 1,
+                    'designacao_Oemp': 1,
+                    'responsavel': 1,
+                    'gestao': 1
+                }
+            )
+                .sort({ tempoVida: -1 })
+                .then(doc => {
+                    object = doc
+                    resolve(object)
+                }
+                ).catch(error)
+
+        } else {
+            oempSchema.find({ status: req }).select(
+                {
+                    '_id': 0,
+                    'TempoVida': 1,
+                    'TempoPosto': 1,
+                    'geo': 1,
+                    'uf': 1,
+                    'protocolo': 1,
+                    'osCrm': 1,
+                    'circuito': 1,
+                    'localidade': 1,
+                    'produto': 1,
+                    'velocidade': 1,
+                    'servico': 1,
+                    'operadora_Oemp': 1,
+                    'pove': 1,
+                    'pend': 1,
+                    'descricao': 1,
+                    'gerencia': 1,
+                    'atividade': 1,
+                    'conglomerado': 1,
+                    'projeto': 1,
+                    'NomedoCliente': 1,
+                    'segm': 1,
+                    'obsAbertura': 1,
+                    'obsPend': 1,
+                    'status': 1,
+                    'observacao_Status': 1,
+                    'data_Contratacao': 1,
+                    'previsao_Entrega': 1,
+                    'data_Instalacao': 1,
+                    'taxa_Instalacao': 1,
+                    'taxa_Mensal': 1,
+                    'tempo_Contrato': 1,
+                    'codigo_Viabilidade': 1,
+                    'operadora_Oemp': 1,
+                    'designacao_Oemp': 1,
+                    'responsavel': 1,
+                    'gestao': 1
+                }
+            )
+                .sort({ tempoVida: -1 })
+                .then(doc => {
+                    object = doc
+                    resolve(object)
+                }
+                ).catch(error)
+        }
     })
     return promise
 }

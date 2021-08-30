@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { PoDatepickerRange, PoDatepickerRangeComponent, PoNotificationService, PoPageAction, PoTableColumn, PoDialogService } from '@po-ui/ng-components';
 
-import { ExcelService } from 'src/app/services/excel-export.service';
+import { ExportBaseService } from 'src/app/services/exportBase.service';
 import { OempService } from 'src/app/oemp/components/dashboard/services/oemp.service';
 
 @Component({
@@ -62,7 +62,7 @@ export class CompletedOrdersComponent implements OnInit {
     private notification: PoNotificationService,
     private router: Router,
     private service: OempService,
-    private excelService: ExcelService,
+    private exportBaseService: ExportBaseService,
     private formBuilder: FormBuilder,
     private poDialog: PoDialogService
 
@@ -131,7 +131,7 @@ export class CompletedOrdersComponent implements OnInit {
         (result: any) => {
           if (result !== null && result !== undefined && result.length !== 0) {
             this.closedOrdersByPeriod = result
-            this.excelService.exportAsExcelFile(this.closedOrdersByPeriod, 'fechadas')
+            this.exportBaseService.exportAsExcelFile(this.closedOrdersByPeriod, 'fechadas')
           } else {
             this.poDatePicker.focus()
             this.poDialog.alert({
