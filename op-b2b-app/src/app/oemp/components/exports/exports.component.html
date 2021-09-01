@@ -12,10 +12,10 @@
     </div>
     <po-tabs
     [p-small]="true">
-        <po-tab 
+        <po-tab
         p-label="Em Andamento"
         [p-active]="active"
-        (p-click)="onclickTab()">
+        (p-click)="onclickTab($event)">
         <form>
             <div class="selectStatus">
                 <div class="selectStatusTitle">
@@ -35,10 +35,9 @@
             </div>
         </form >
         </po-tab>
-        <po-tab 
+        <po-tab
             p-label="Encerradas"
-            (p-click)="onclickTab()">
-            
+            (p-click)="onclickTab($event)">
                 <div class="selectDate">
                     <po-datepicker-range
                         name="datePicker"
@@ -46,46 +45,17 @@
                         [p-required]="true"
                         [p-help]="helpText"
                         [p-start-date]="startDate"
-                        [p-end-date]="endDate"
                         [(ngModel)]="selectedDates"
                         [p-required]="true"
                         (p-change)="onChangeDates()"
                         class="datePickerTitle po-sm-12 po-md-5 po-lg-6 po-xl-6">
                     </po-datepicker-range>
-                <div class="fieldError">
-                    <span *ngIf="validateDate">{{showErrorDate}}</span>
-                </div>               
+                    <div class="fieldError">
+                        <span *ngIf="validateDate">{{showErrorDate}}</span>
+                    </div>               
                 </div>
-            
         </po-tab>
     </po-tabs>
-            <!-- <div class="po-row">
-                <po-datepicker-range
-                    name="datePicker"
-                    p-label="Selecione o Intevalo:"
-                    [p-required]="true"
-                    [p-start-date]="startDate"
-                    [p-end-date]="endDate"
-                    [(ngModel)]="selectedDates"
-                    [p-clean]="true"
-                    (p-change)="onChangeDate()"
-                    class="selectDate po-sm-12 po-md-4 po-lg-5 po-xl-5">
-                </po-datepicker-range>
-            </div>
-            <po-divider></po-divider>
-            <div class="selectStatusTitle">
-                <span >Selecione o Status da solicitação:</span>
-            </div>
-            
-            <div class="po-row">
-            <po-checkbox-group
-                name="statusCheck"
-                [p-options]="statusOptions"
-                [p-columns]="3"
-                [(ngModel)]="options"
-                [p-indeterminate]="true"
-                (p-change)="OnChangeOptions($event)">
-            </po-checkbox-group>
-            </div> -->
-        </form>
+          
+</form>
 </po-modal>

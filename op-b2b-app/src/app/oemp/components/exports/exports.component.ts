@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { PoCheckboxGroupOption, PoModalAction, PoModalComponent, PoNotificationService, PoDialogService } from '@po-ui/ng-components';
-import * as moment from 'moment';
+import { PoCheckboxGroupOption, PoModalAction, PoModalComponent, PoNotificationService, PoDialogService, PoDatepickerComponent, PoDatepickerRangeComponent } from '@po-ui/ng-components';
 
 import { OempService } from '../dashboard/services/oemp.service';
 import { ExportBaseService } from 'src/app/services/exportBase.service';
@@ -16,18 +15,19 @@ export class ExportsComponent implements OnInit {
 
   statusOptions: Array<PoCheckboxGroupOption> = this.service.getExportStatusOptions()
   options: any
-  exportOrders: any
+  openedOrders: any
   selectedDates: any
   startDate: any
-  endDate: any
   active!: boolean
   helpText: any
   validateDate!: boolean
   showErrorDate!: string
+  tabLabel!: string
+  closedOrdersByPeriod: any
 
 
   @ViewChild(PoModalComponent, { static: true }) poModal!: PoModalComponent
-
+  @ViewChild(PoDatepickerRangeComponent, { static: true }) poDatePicker!: PoDatepickerRangeComponent
 
   confirm: PoModalAction = {
     action: () => {
@@ -53,12 +53,16 @@ export class ExportsComponent implements OnInit {
     private notification: PoNotificationService,
     private exportBaseService: ExportBaseService,
     private poDialog: PoDialogService
-
   ) { }
 
   ngOnInit(): void {
     this.poModal.open()
     this.active = true
+    this.tabLabel = 'Em Andamento'
+    this.confirm.disabled = true
+    for (let property in this.options) {
+      this.options[property] = false
+    }
 
     // Object.assign(this.selectedDates, {start:"", end: new Date()} )
     // moment(this.selectedDates).format('YYYY-MM-DD')
@@ -81,24 +85,10 @@ export class ExportsComponent implements OnInit {
 
 
   private proccessExport() {
-    let filter: any = []
-    for (let property in this.options) {
-      if (this.options[property] === true) {
-        filter.push(property)
-      }
-    }
-
-    this.confirm.loading = true
-    try {
-      this.service.exportBase(filter, this.selectedDates).subscribe(
-        (result: any) => {
-          this.exportOrders = result
-          this.exportBaseService.exportAsExcelFile(this.exportOrders, 'base_geral')
-          this.confirm.loading = false
-        }
-      ), (error: any) => this.notification.error(error)
-    } catch (error) {
-      this.notification.error(error)
+    if (this.tabLabel === 'Em Andamento') {
+      this.exportOpenedToExcel()
+    } else {
+      this.exportClosedToXlsx()
     }
   }
 
@@ -110,11 +100,10 @@ export class ExportsComponent implements OnInit {
     const dateRange = (end.getTime() - start.getTime()) / (1000 * 3600 * 24)
     if ((this.selectedDates.start !== "" && this.selectedDates.end !== "") &&
       (dateRange > 90)) {
-        this.validateDate = true
-        this.showErrorDate = "! Por favor Informe um intervalo inferior ou igual a 90 dias."
-        
-        return
-
+      this.validateDate = true
+      this.showErrorDate = ""
+      this.showErrorDate = "! Por favor Informe um intervalo inferior ou igual a 90 dias."
+      return
     }
     if ((this.selectedDates.start === "" && this.selectedDates.end === "") ||
       (this.selectedDates.start !== "" && this.selectedDates.end === "") ||
@@ -123,26 +112,76 @@ export class ExportsComponent implements OnInit {
       this.confirm.disabled = true
     } else if (this.selectedDates.start !== "" && this.selectedDates.end !== "" && (new Date(this.selectedDates.end) > (new Date()))) {
       this.validateDate = true
+      this.showErrorDate = ""
       this.showErrorDate = "! Intervalo superior a data atual."
       this.confirm.disabled = true
     } else this.confirm.disabled = false
-    
+
 
   }
 
-  onclickTab() {
-    // this.endDate = moment(new Date()).format('YYYY-MM-DD')
-    this.confirm.disabled = true
-    this.selectedDates = undefined
-    this.validateDate = false
-    this.showErrorDate = ""
-    for (let property in this.options){
-      this.options[property] = false
+  onclickTab(e: any) {
+    this.tabLabel = e.label
+    if (e.label === "Em Andamento") {
+      this.confirm.disabled = true
+      for (let property in this.options) {
+        this.options[property] = false
+      }
+    } else {
+      this.confirm.disabled = true
+      this.selectedDates = undefined
+      this.validateDate = false
+      this.showErrorDate = ""
+    }
+  }
+
+  private exportClosedToXlsx(): void {
+    try {
+      this.service.getClosedByDate(this.selectedDates).subscribe(
+        (result: any) => {
+          if (result.length !== 0) {
+            this.closedOrdersByPeriod = result
+            this.exportBaseService.exportAsExcelFile(this.closedOrdersByPeriod, 'fechadas')
+          } else {
+            this.focusDatePicker()
+            this.poDialog.alert({
+              literals: { ok: 'Ok' },
+              title: 'Resultado da Busca',
+              message: 'Não há ordens encerradas entre as datas informadas!'
+            })
+          }
+        }
+      ), (error: any) => this.notification.error(error)
+    } catch (error) {
+      this.notification.error(error)
+    }
+  }
+
+  private exportOpenedToExcel(): void {
+    let filter: any = []
+    for (let property in this.options) {
+      if (this.options[property] === true) {
+        filter.push(property)
+      }
     }
 
+    this.confirm.loading = true
+    try {
+      this.service.exportBase(filter).subscribe(
+        (result: any) => {
+          this.openedOrders = result
+          this.exportBaseService.exportAsExcelFile(this.openedOrders, 'abertas')
+          this.confirm.loading = false
+        }
+      ), (error: any) => this.notification.error(error)
+    } catch (error) {
+      this.notification.error(error)
+    }
   }
 
-
+  private focusDatePicker() {
+    this.poDatePicker.focus()
+  }
 
 }
 

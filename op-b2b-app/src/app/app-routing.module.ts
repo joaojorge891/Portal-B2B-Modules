@@ -17,12 +17,14 @@ import { UserDashboardComponent } from './users/components/dashboard/dashboard.c
 import { NewUserComponent } from './users/components/dashboard/new-user/new-user.component';
 import { UpdateUserComponent } from './users/components/dashboard/update-user/update-user.component';
 import { ValidateComponent } from './users/components/validate/validate.component';
+import { PwdRecoveryComponent } from './login/components/pwd-recovery/pwd-recovery.component';
 
 
 
 
 const routes: Routes = [
-  // { path: '', component: LoginComponent },
+  { path: 'pwdRecovery', component: PwdRecoveryComponent },
+  { path: 'login', component: LoginComponent },
   
   { path: 'users/reset-pwd/:id/:token', component: ResetPwdComponent },
   { path: 'users/new-register', component: NewRegisterComponent },

@@ -192,18 +192,22 @@ exports.findByTypeUser = async function () {
 }
 
 exports.findByMail = async function (email) {
+    try {
+        let filter = {}
+        filter['email'] = { '$eq': email }
+        var user = await userSchema.find(filter)
+        if (user != null && user != undefined && user != '') {
+            sendMail.sendMailPwdRecovery(user)
+            object = { status: 'ok' }
 
-    let filter = {}
-    filter['email'] = { '$eq': email }
-    var user = await userSchema.find(filter)
-    if (user != null && user != undefined && user != '') {
-        sendMail.sendMailPwdRecovery(user)
-        return { status: 'ok' }
-
-    } else {
-        return { status: 'error' }
+        } else {
+            object = { status: 'error' }
+        }
+    } catch (error) {
+        throw new Error(error)
     }
-
+    
+    return object
 }
 
 exports.findMail = async function (email) {

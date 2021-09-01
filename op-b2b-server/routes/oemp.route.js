@@ -47,7 +47,6 @@ module.exports = {
     },
 
     getBaseToExport: function (req, res) {
-        console.log(req.body)
         let document = controller.getBaseToExport(req.body)
         document.then(result => res.send(result))
     },

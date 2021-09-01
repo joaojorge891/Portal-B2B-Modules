@@ -40,6 +40,13 @@ export class UsersService extends Service {
 
   }
 
+  pwdRecovery(mail: any): Observable<any> {
+    const body = {
+      email: mail
+    }
+    return this.http.post(`${this.host}/api/users/resetPwd`, body)
+  }
+
   userValidate(userLogin: any): Observable<any> {
     const body = {
       user: userLogin

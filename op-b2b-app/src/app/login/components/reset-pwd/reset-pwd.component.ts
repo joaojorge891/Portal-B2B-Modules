@@ -41,7 +41,7 @@ export class ResetPwdComponent extends AccessValidate implements OnInit {
 
     if (currentTime > Number(token)) {
       this.notification.error('Link de Recuperação de senha expirado. Por favor, gere novo link.')
-      this.router.navigateByUrl('')
+      this.router.navigate(['portal'])
     }
   }
 

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { PoModule } from '@po-ui/ng-components';
+import { PoModule, PoModalModule } from '@po-ui/ng-components';
 import { PoTemplatesModule } from '@po-ui/ng-templates';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -20,6 +20,7 @@ import { OempModule } from './oemp/oemp.module';
     AppComponent,
     HomeComponent,
     HomeAdminComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -29,7 +30,8 @@ import { OempModule } from './oemp/oemp.module';
     UsersModule,
     LoginModule,
     OempModule,
-    FontAwesomeModule
+    FontAwesomeModule, 
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

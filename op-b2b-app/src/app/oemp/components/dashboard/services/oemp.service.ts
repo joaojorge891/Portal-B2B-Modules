@@ -39,14 +39,14 @@ export class OempService extends Service {
     return this.http.get(`${this.host}/api/getClients`)
   }
 
-  exportBase(filter: any, dates: any): Observable<any> {
+  exportBase(filter: any): Observable<any> {
     // const options = this.getOptionsReq();
     // if (options == null) {
     //   throw new Error('Usuário não autenticado!')
 
     // } else
     //   return this.http.get(`${this.host}/api/oemp/total-counter`, options)
-    return this.http.post(`${this.host}/api/oemp/exportBase`, filter, dates)
+    return this.http.post(`${this.host}/api/oemp/exportBase`, filter)
   }
 
   getCounters(): Observable<any> {

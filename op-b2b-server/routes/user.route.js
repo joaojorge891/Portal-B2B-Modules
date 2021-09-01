@@ -40,14 +40,7 @@ module.exports = {
 
     resetPwd: function (req, res) {
         var document = controller.findByMail(req.body.email)
-        document.then(result => {
-            if (result.status === 'ok') {
-                res.sendStatus(204)
-            } else {
-                res.sendStatus(400)
-            }
-
-        })
+        document.then(result => res.send(result))
     },
 
     changePwd: function (req, res) {

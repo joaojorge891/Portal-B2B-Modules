@@ -1,0 +1,54 @@
+<po-modal
+[p-primary-action]="submit"
+[p-secondary-action]="cancel"
+p-title="Esqueceu sua senha?">
+    <div class="po-modal-body">
+        <div class="po-modal-password-recovery-wrapper">
+            <div class="po-modal-password-recovery-content po-row">
+                <div class="po-modal-password-recovery-text po-md-12 po-mb-1">Para recuperar sua senha, vamos enviar um e-mail com instruções.</div>
+                    <div class="po-mb-2 po-md-12">
+                        <form 
+                            [formGroup]="pwdRecoveryForm"
+                            class="ng-pristine ng-invalid ng-touched">
+                            <div class="po-mt-1">
+                                <po-email
+                                    p-required="true"
+                                    p-label="Insira seu e-mail"
+                                    (p-change-model)="onChangeModel()"
+                                    formControlName="email">
+                                </po-email>
+                            </div>
+                            <div class="po-field-container-bottom po-field-container-error-container"></div>
+                        </form>
+                    </div>
+                <div class="po-modal-password-recovery-text po-md-12">
+                    Se não tiver acesso ao e-mail contacte o suporte 
+                    <span>
+                        em
+                        <a target="_self" class="po-modal-password-recovery-link" href="mailto:LD-PORTALB2BBR@oi.net.br"> LD-PORTALB2BBR@oi.net.br </a>
+                    </span>
+                    .
+                </div>
+            </div>
+        </div>
+    </div>
+
+</po-modal>
+
+
+<po-modal #emailSent
+    [p-primary-action]="closeResend"
+    [p-secondary-action]="resend"
+    p-title="Email enviado">
+        <div class="po-modal-body">
+            <div class="po-modal-password-recovery-wrapper">
+                <div class="po-modal-password-recovery-content po-row">
+                    <img src="./assets/email-sent.svg" class="po-modal-password-recovery-user-image po-mb-2">
+                    <div class="po-modal-password-recovery-text"> Enviamos as instruções e link de criação de nova senha para o seu e-mail.
+                        Caso não tenha recebido após alguns minutos, verifique sua caixa de spam ou clique em Reenviar. 
+                    </div>
+                </div>
+            </div>
+        </div>
+</po-modal>
+

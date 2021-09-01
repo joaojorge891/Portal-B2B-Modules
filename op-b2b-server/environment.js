@@ -1,6 +1,6 @@
 module.exports = {
     mailHost: 'smtp.gmail.com',
-    mailUser: 'PortalOperacoesB2B@gmail.com',
+    mailUser: 'portaloperacoesb2b@gmail.com',
     mailPwd: '89118642',
     mailPort: 587,
     secretToken:'op-b2b_token',

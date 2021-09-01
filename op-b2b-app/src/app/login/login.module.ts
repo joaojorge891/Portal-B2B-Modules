@@ -1,4 +1,4 @@
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -6,19 +6,25 @@ import { PoPageLoginModule, PoPageChangePasswordModule } from '@po-ui/ng-templat
 
 import { LoginComponent } from './components/login.component';
 import { ResetPwdComponent } from './components/reset-pwd/reset-pwd.component';
+import { PwdRecoveryComponent } from './components/pwd-recovery/pwd-recovery.component';
+import { PoFieldModule, PoModalModule } from '@po-ui/ng-components';
 
 
 
 @NgModule({
   declarations: [
     LoginComponent,
-    ResetPwdComponent
+    ResetPwdComponent,
+    PwdRecoveryComponent,
   ],
   imports: [
     CommonModule,
     PoPageLoginModule,
     PoPageChangePasswordModule,
-    FormsModule
+    FormsModule,
+    PoModalModule,
+    PoFieldModule,
+    ReactiveFormsModule
   ]
 })
 export class LoginModule { }
