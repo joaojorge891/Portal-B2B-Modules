@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 import { PoPageDynamicSearchModule } from '@po-ui/ng-templates';
-import { PoButtonModule, PoFieldModule, PoPageModule, PoTableModule } from '@po-ui/ng-components';
+import { PoButtonModule, PoDisclaimerGroupModule, PoFieldModule, PoPageModule, PoTableModule } from '@po-ui/ng-components';
 
 
 import { NewUserComponent } from './components/dashboard/new-user/new-user.component';
@@ -29,7 +30,9 @@ import { UserDashboardComponent } from './components/dashboard/dashboard.compone
     PoPageModule,
     FormsModule,
     PoTableModule,
-    PoPageDynamicSearchModule
+    PoPageDynamicSearchModule,
+    ReactiveFormsModule,
+    PoDisclaimerGroupModule
     
   ]
 })

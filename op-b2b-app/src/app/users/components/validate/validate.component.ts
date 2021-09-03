@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { PoNotificationService, PoPageAction } from '@po-ui/ng-components';
+import { PoNotificationService, PoPageAction, PoDialogService } from '@po-ui/ng-components';
 
 import { UsersService } from 'src/app/users/services/users.service';
 
@@ -25,24 +25,38 @@ export class ValidateComponent implements OnInit {
     { label: 'Cancelar', action: this.onCancel.bind(this) }
   ]
 
+
   constructor(
     private router: Router,
     private service: UsersService,
     private notification: PoNotificationService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private poDialog: PoDialogService
   ) {
 
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id')
-
-    this.service.filterByIdNoValidate(id).subscribe(user => {
-      this.user = user
-    })
+    try {
+      this.service.filterByIdNoValidate(id).subscribe(user => {
+        this.user = user
+        if (this.user.status !== 'pending'){
+          this.poDialog.alert({
+            title:'Aviso',
+            message:'Usuário já foi avaliado!',
+            ok: () => this.router.navigate(['portal'])
+          })
+          return
+        }
+      }), (error: any) => this.notification.error(error)
+    } catch (error) {
+      throw new Error(error)
+    }
+    
   }
 
-  onChooseValidate() {
+  onChooseValidate(): void {
 
     if (this.user.validate === 'inactive') {
       this.isDisabled = false
@@ -93,7 +107,7 @@ export class ValidateComponent implements OnInit {
   }
 
   private onCancel() {
-    this.router.navigate([''])
+    this.router.navigate(['portal'])
   }
 
 

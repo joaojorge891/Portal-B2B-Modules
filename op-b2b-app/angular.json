@@ -26,8 +26,13 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
+              "src/assets",
               "src/favicon.ico",
-              "src/assets"
+              {
+                "glob": "**\/*",
+                "input": "node_modules/@po-ui/style/images",
+                "output": "assets/images"
+              }
             ],
             "styles": [
               "./node_modules/@po-ui/style/css/po-theme-default-variables.min.css",

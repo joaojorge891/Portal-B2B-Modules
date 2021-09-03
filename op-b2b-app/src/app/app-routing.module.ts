@@ -23,31 +23,19 @@ import { PwdRecoveryComponent } from './login/components/pwd-recovery/pwd-recove
 
 
 const routes: Routes = [
-  { path: 'pwdRecovery', component: PwdRecoveryComponent },
-  { path: 'login', component: LoginComponent },
-  
-  { path: 'users/reset-pwd/:id/:token', component: ResetPwdComponent },
-  { path: 'users/new-register', component: NewRegisterComponent },
-
-  {
-    path: 'portal',
-    canActivate: [RedirectGuard],
-    component: RedirectGuard,
-    data: {
-      externalUrl: 'http://10.61.81.95/op_b2b/index.php'
-    }
-},
   {
     path: 'oemp', loadChildren: () => import('./oemp/oemp.module').then(
       m => m.OempModule
-      )
-    },
-    
+    )
+  },
+
   {
     path: 'users', loadChildren: () => import('./users/users.module').then(
       m => m.UsersModule
     )
   },
+
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
 
   {
     path: 'home', component: HomeComponent, children: [
@@ -60,38 +48,28 @@ const routes: Routes = [
       { path: 'oemp/exports', component: ExportsComponent }
     ]
   },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
 
+  {
+    path: 'home-admin', component: HomeAdminComponent, children: [
+      { path: 'users', component: UserDashboardComponent },
+      { path: 'users/new', component: NewUserComponent },
+      { path: 'users/update/:id', component: UpdateUserComponent },
+      { path: 'users/no-validate/:id', component: ValidateComponent },
+    ]
+  },
   
+  { path: 'pwdRecovery', component: PwdRecoveryComponent },
+  { path: 'users/reset-pwd/:id/:token', component: ResetPwdComponent },
+  { path: 'users/new-register', component: NewRegisterComponent },
 
-
-
-
-
-
-
-
-
-
-
-  // {
-  //   path: 'home', component: HomeComponent, children: [
-  //     { path: 'oemp', component: DashboardComponent },
-  //     { path: 'oemp/new-orders', component: NewOrdersComponent },
-  //     { path: 'oemp/new-orders/:id', component: NewOrdersComponent },
-  //     { path: 'oemp/exec-orders', component: ExecOrdersComponent },
-  //     { path: 'oemp/exec-orders/:id', component: ExecOrdersComponent },
-  //     { path: 'oemp/completed-orders', component: CompletedOrdersComponent },
-  //   ]
-  // },
-  // {
-  //   path: 'home-admin', component: HomeAdminComponent, children: [
-  //     { path: 'users', component: UserDashboardComponent },
-  //     { path: 'users/new', component: NewUserComponent },
-  //     { path: 'users/update/:id', component: UpdateUserComponent },
-  //     { path: 'users/no-validate/:id', component: ValidateComponent },
-  //   ]
-  // }
+  {
+    path: 'portal',
+    canActivate: [RedirectGuard],
+    component: RedirectGuard,
+    data: {
+      externalUrl: 'http://10.61.81.95/op_b2b/index.php'
+    }
+  }
 ]
 
 @NgModule({

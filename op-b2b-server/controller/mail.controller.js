@@ -26,7 +26,7 @@ exports.sendMailPwdRecovery = async function (user) {
         to: userResetPwd[0].email, // list of receivers
         subject: `Portal de Operações B2B - Reset de Senha`, // Subject line
         html: `<p>Caro ${userResetPwd[0].name},</p><br/>
-               <p>Por favor, Clique neste <a href="${configurations.hostApplication}/reset-pwd/${userResetPwd[0]._id}/${token}">Link</a> para prosseguir com reset da sua senha.<p/>
+               <p>Por favor, Clique neste <a href="${configurations.hostApplication}/#/users/reset-pwd/${userResetPwd[0]._id}/${token}">Link</a> para prosseguir com reset da sua senha.<p/>
                <p>Link válido por 1 hora<p/><br/>
                <p>Att<p/>
                <p>Dev Team - Portal B2B<p/>`
@@ -58,11 +58,11 @@ exports.sendMailNewRegisterToAdmin = async function (user) {
 
     let mailOptions = {
         from: 'no-reply@', // sender address
-        to: 'joao.jorge@oi.net.br', // list of receivers
+        to: adminsList, // list of receivers
         subject: `Portal de Operações B2B - Solicitação de Novo Usuário`, // Subject line
         html: `<p>Caro administrador,</p><br />
                 <p>Por favor, avalie esta solicitação de novo usuário clicando neste <a
-                href="${configurations.hostApplication}/home-admin/users/no-validate/${user._id}">Link</a>. Abaixo o motivo da
+                href="${configurations.hostApplication}/#/home-admin/users/no-validate/${user._id}">Link</a>. Abaixo o motivo da
                 solicitação emitida pelo usuário:</p><br />
         <font color="black" face="Verdana" size="3px"><strong><i>${user.reason}</i></strong></font><br /><br />
         
@@ -116,7 +116,7 @@ exports.sendMailNewRegisterRejectToUser = async function (user) {
         html: `<p>Caro ${user.name},</p>
                <p>Sua solicitação de login não foi aceita. Abaixo o motivo:<p/><br/>
                <font color="black" face="Verdana" size="3px"><strong><i>${user.rejectReason}</i></strong></font><br /><br />
-               <p>Para esclarecimentos, favor enviar e-mail para ld-portalB2B@oi.net.br<p/><br/>
+               <p>Para esclarecimentos, favor enviar e-mail para LD-PORTALB2BBR@oi.net.br<p/><br/>
 
 
               <p>Dev Team - Portal B2B<p/>`

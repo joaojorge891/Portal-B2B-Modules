@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { PoNotificationService, PoPageAction } from '@po-ui/ng-components';
+import { PoEmailComponent, PoInputComponent, PoNotificationService } from '@po-ui/ng-components';
 import { Md5 } from 'ts-md5';
 
 import { UsersService } from 'src/app/users/services/users.service';
 import { AccessValidate } from 'src/utils/accessvalidate';
+import { customValidation } from 'src/app/users/passwordValidator';
 
 @Component({
   selector: 'app-new-user',
@@ -14,58 +16,71 @@ import { AccessValidate } from 'src/utils/accessvalidate';
 })
 export class NewUserComponent extends AccessValidate implements OnInit {
 
+  newUserValidateForm!: FormGroup
   model: any = {}
   isAutoFocus: boolean = true
   password = ''
   confirmPassword = ''
   requester: string = ''
   maxLengthInputMatricula = 8
-  inputUserPattern: string = '^oi|^tr|^bt|^cr|^pr|^mt|^tc|^ms|^df|^ro|^go|^sc|^rs|^ac[0-9]+'
   inputUserErrorPattern: string = 'Informe o login de rede com 8 dígitos em letra minúscula (Ex: oixxxxxx, trxxxxxx)'
   inputMailErrorPattern: string = 'Por favor informe um e-mail válido'
+  inputPwdErrorPattern: string = 'A senha deve conter oito caracteres'
+  inputConfirmPwdErrorPattern = 'As senhas não conferem'
 
-  @ViewChild('user') userField!: HTMLElement
-  @ViewChild('mail') mailField!: HTMLElement
-
-  actions: Array<PoPageAction> = [
-    { label: 'Salvar', icon: 'save', action: this.onSave.bind(this) },
-    { label: 'Voltar', action: this.onBack.bind(this) }
-  ]
+  @ViewChild('userId') userIdField!: PoInputComponent
+  @ViewChild('email') emailField!: PoEmailComponent
 
   constructor(
     private router: Router,
     private service: UsersService,
-    private notification: PoNotificationService
+    private notification: PoNotificationService,
+    private formBuilder: FormBuilder
   ) {
     super()
   }
 
-  private restore(){
-    this.model.email = ''
-    this.model.name === ''
-    this.model.userId === ''
-    this.model.typeUser === ''
-    this.model.company === ''
-    this.model.department === ''
-    this.model.uf === ''
-    this.model.status === ''
-    this.password === ''
-    this.confirmPassword === ''
+  ngOnInit() {
+    // if (this.validateUser() === 'user') {
+    //   this.router.navigateByUrl('')
+    // }
+    this.newUserValidateForm = this.formBuilder.group({
+      name: ['', [Validators.required]],
+      userId: ['', [Validators.required, Validators.pattern('^oi|^tr|^bt|^cr|^pr|^mt|^tc|^ms|^df|^ro|^go|^sc|^rs|^ac|^to[0-9]+')]],
+      company: ['', [Validators.required]],
+      department: ['', [Validators.required]],
+      uf: ['', [Validators.required]],
+      status: ['', [Validators.required]],
+      typeUser: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
+    },
+      {
+        validator: customValidation.passwordsMatch
+      }
+    )
+    this.newUserValidateForm.valueChanges.subscribe(data => this.onNewRegValidateFormValueChange(data))
   }
 
-  ngOnInit() {
-    if (this.validateUser() === 'user') {
-      this.router.navigateByUrl('')
-    }
-    this.restore()
+  private onNewRegValidateFormValueChange(data: any) {
+    this.model.name = data.name
+    this.model.userId = data.userId
+    this.model.company = data.company
+    this.model.department = data.department
+    this.model.uf = data.uf
+    this.model.email = data.email
+    this.model.typeUser = data.typeUser
+    this.model.status = data.status
+    this.model.password = data.password
   }
 
   userFocus() {
-    this.userField.focus();
+    this.userIdField.focus();
   }
 
   mailFocus() {
-    this.mailField.focus()
+    this.emailField.focus()
   }
 
   mailVerify() {
@@ -101,23 +116,7 @@ export class NewUserComponent extends AccessValidate implements OnInit {
   }
 
 
-  private onSave() {
-    if (this.model.email === '' || this.model.name === '' ||
-      this.model.userId === '' || this.model.company === '' ||
-      this.model.department === '' || this.model.uf === '' ||
-      this.model.status === '' || this.password === '' ||
-      this.confirmPassword === '') {
-
-      this.notification.error('Por favor, preencha todos os campos.')
-      return
-    }
-
-    if (this.password !== this.confirmPassword) {
-      this.notification.warning('As senhas não conferem.')
-      this.confirmPassword = ''
-      return
-    }
-
+  onSubmit(): void {
     if (this.model.status) {
       this.model.status = 'active'
     } else {
@@ -135,11 +134,15 @@ export class NewUserComponent extends AccessValidate implements OnInit {
           this.onBack()
         }
       },
-      (err: any) => err.status === 401 ? this.router.navigateByUrl('') : this.notification.error(err)
+      (err: any) => err.status === 401 ? this.router.navigateByUrl('/home-admin/users') : this.notification.error(err)
     )
   }
 
   private onBack() {
+    this.router.navigate(['/home-admin/users'])
+  }
+
+  cancel(): void {
     this.router.navigate(['/home-admin/users'])
   }
 

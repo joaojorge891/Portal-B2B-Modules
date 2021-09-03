@@ -26,23 +26,23 @@ exports.appRouter = function (app) {
         .post(userRoute.save)
 
     router.route('/users/search')
-        .get(jwtValidate, userRoute.findByUser)
+        .post(userRoute.quickSearch)
 
-    router.route('/users/mailverify')
+    router.route('/users/mailVerify')
         .post(userRoute.mailVerify)
 
-    router.route('/users/userverify')
-        .post(userRoute.userVerify)
+    router.route('/users/userIdVerify')
+        .get(userRoute.findByUser)
 
     router.route('/auth')
         .post(authRoute.auth)
 
     router.route('/users')
-        .get(jwtValidate, userRoute.find)
-        .post(jwtValidate, userRoute.save)
+        .get(userRoute.find)
+        .post(userRoute.save)
 
     router.route('/users/:id')
-        .delete(jwtValidate, userRoute.delete)
+        .delete(userRoute.delete)
         .get(userRoute.findById)
 
     router.route('/no-validate/:id')

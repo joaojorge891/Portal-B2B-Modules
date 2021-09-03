@@ -40,13 +40,12 @@ export class UpdateUserComponent extends AccessValidate implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.validateUser() === 'user') {
-      this.router.navigateByUrl('')
-    }
+    // if (this.validateUser() === 'user') {
+    //   this.router.navigateByUrl('')
+    // }
 
 
     const id = this.route.snapshot.paramMap.get('id')
-
     this.service.filterById(id).subscribe(user => {
       this.user = user
       this.currentPwd = this.user.password

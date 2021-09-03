@@ -2,9 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+
 import { PoButtonModule, PoDisclaimerGroupModule, PoDividerModule, PoDynamicModule, PoFieldModule, PoInfoModule, PoModalModule, PoPageModule, PoTableModule, PoTabsModule, PoWidgetModule } from '@po-ui/ng-components';
 import { PoPageDynamicSearchModule } from '@po-ui/ng-templates';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CompletedOrdersComponent } from './components/completed-orders/completed-orders.component';

@@ -1,8 +1,8 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { PoDialogService, PoMenuItem, PoToolbarAction, PoToolbarProfile } from '@po-ui/ng-components';
-import { faFileExcel} from '@fortawesome/free-solid-svg-icons';
+
 
 
 @Component({
@@ -11,9 +11,6 @@ import { faFileExcel} from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  excelIcon = faFileExcel
-
-  @ViewChild('iconTemplate', { static: true }) iconTemplate!: TemplateRef<void>;
 
   menuArr: Array<PoMenuItem> = [
     { label: 'OEMP', action: this.onOemp.bind(this), icon: 'po-icon po-icon-company', shortLabel: 'Controle' },

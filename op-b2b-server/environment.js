@@ -4,6 +4,7 @@ module.exports = {
     mailPwd: '89118642',
     mailPort: 587,
     secretToken:'op-b2b_token',
-    hostApplication: 'http://localhost:4200',
+    hostApplication: 'http://10.61.81.95:8081',
     
 }
+

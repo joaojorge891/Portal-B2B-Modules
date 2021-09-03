@@ -1,7 +1,8 @@
 <po-modal
 [p-primary-action]="submit"
 [p-secondary-action]="cancel"
-p-title="Esqueceu sua senha?">
+p-title="Esqueceu sua senha?"
+[p-hide-close]="true">
     <div class="po-modal-body">
         <div class="po-modal-password-recovery-wrapper">
             <div class="po-modal-password-recovery-content po-row">
@@ -39,7 +40,8 @@ p-title="Esqueceu sua senha?">
 <po-modal #emailSent
     [p-primary-action]="closeResend"
     [p-secondary-action]="resend"
-    p-title="Email enviado">
+    p-title="Email enviado"
+    [p-hide-close]="true">
         <div class="po-modal-body">
             <div class="po-modal-password-recovery-wrapper">
                 <div class="po-modal-password-recovery-content po-row">

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { PoNotificationService, PoPageAction, PoTableAction, PoTableColumn } from '@po-ui/ng-components';
+import { PoDisclaimer, PoNotificationService, PoPageAction, PoTableAction, PoTableColumn, PoDialogService } from '@po-ui/ng-components';
 import { PoPageDynamicSearchLiterals } from '@po-ui/ng-templates';
 
 import { UsersService } from 'src/app/users/services/users.service';
@@ -22,23 +22,21 @@ export class UserDashboardComponent extends AccessValidate implements OnInit {
 
   showMoreDisabled: boolean = false
 
+  loading: boolean = false
+
+  quickSearchValue: any
+
+  tableHeight: number = 370
+
+  filters: Array<PoDisclaimer> = []
+
   customLiterals: PoPageDynamicSearchLiterals = {
     searchPlaceholder: 'Pesquisa por matrícula'
   }
 
   private subscriptions$: Array<Subscription> = []
 
-  columns: Array<PoTableColumn> = [
-    { property: 'name', label: 'Nome' },
-    { property: 'user', label: 'Matrícula' },
-    { property: 'company', label: 'Empresa' },
-    { property: 'department', label: 'Área' },
-    { property: 'typeUser', label: 'Tipo de Usuário' },
-    { property: 'uf', label: 'UF' },
-    { property: 'creationDate', label: 'Data de Criação', type: 'date', format: 'dd/MM/yyyy' },
-    { property: 'lastAccess', label: 'Último Acesso', type: 'date', format: 'dd/MM/yyyy hh:mm' },
-    { property: 'status', label: 'Status' }
-  ]
+  columns: Array<PoTableColumn> = this.service.getColumns()
 
   actionsPage: Array<PoPageAction> = [
     { label: 'Novo', action: this.onFormPage.bind(this) }
@@ -53,25 +51,27 @@ export class UserDashboardComponent extends AccessValidate implements OnInit {
   constructor(
     private service: UsersService,
     private router: Router,
-    private notification: PoNotificationService
+    private notification: PoNotificationService,
+    private poDialog: PoDialogService
   ) {
     super()
   }
 
   ngOnInit() {
-    if (this.validateUser() === 'user') {
-      this.router.navigateByUrl('')
-    }
-
+    // if (this.validateUser() === 'user') {
+    //   this.router.navigateByUrl('')
+    // }
+    this.loading = !this.loading
     try {
       this.service.filter().subscribe(
         (result: any) => {
           this.items = result.items
+          this.loading = !this.loading
         }
       ), (error: any) => this.notification.error(error)
     } catch (error) {
       this.notification.error(error)
-      this.router.navigateByUrl('')
+      this.router.navigateByUrl('home-admin')
     }
   }
 
@@ -82,14 +82,24 @@ export class UserDashboardComponent extends AccessValidate implements OnInit {
   }
 
   private onForm(users: any) {
-
     this.router.navigateByUrl(`home-admin/users/update/${users._id}`)
   }
 
   private onDelete(item: any) {
+    this.poDialog.confirm({
+      title: 'Aviso',
+      message: 'Confirma remoção do usuário?',
+      confirm: () => this.removeUser(item),
+    })
+    
+  }
+
+  private removeUser(item: any): void{
     const index = this.items.findIndex(elem => elem._id === item._id)
+    this.loading = !this.loading
     this.service.delete(item._id).subscribe(result => {
       this.items.splice(index, 1)
+      this.loading = !this.loading
       this.notification.success('Usuário removido com sucesso.')
 
     },
@@ -103,27 +113,42 @@ export class UserDashboardComponent extends AccessValidate implements OnInit {
     this.showMoreDisabled = false
     setTimeout(() => {
       this.page++
-      this.loadUsers('', this.page)
+      this.loadUsers(this.page)
       this.isLoading = false
     }, 1000)
 
   }
 
-  private loadUsers(id: string, page: number) {
-    this.subscriptions$.push(this.service.find(page, id).subscribe(
+  private loadUsers(page: number) {
+    this.subscriptions$.push(this.service.find(page).subscribe(
       result => this.items = this.items.concat(result.items)
     ))
   }
 
-  onQuickSearch(filter: string) {
-    filter ? this.searchItems(filter) : this.resetFilters()
+  onQuickSearch(e: KeyboardEvent) {
+    if (e.key === 'Enter') {
+      if (this.quickSearchValue) {
+        this.filters = []
+        this.filters.push({ label: 'Pesquisa rápida: ' + this.quickSearchValue, value: this.quickSearchValue })
+      } else {
+        this.filters = []
+        this.tableHeight = 370
+      }
+    }
+  }
+
+  onChangeDisclaimers(disclaimers: []) {
+    disclaimers.length ? this.searchItems({ userId: this.quickSearchValue }) : this.resetFilters()
   }
 
   private searchItems(filter: any) {
+    this.tableHeight = 300
+    this.loading = !this.loading
     try {
-      this.service.filterSearch(filter).subscribe(
+      this.service.quickSearchFilter(filter).subscribe(
         (result: any) => {
           this.items = result
+          this.loading = !this.loading
         }), (error: any) => this.notification.error(error)
     } catch (error) {
       this.notification.error(error)
@@ -131,9 +156,13 @@ export class UserDashboardComponent extends AccessValidate implements OnInit {
   }
 
   private resetFilters() {
+    this.quickSearchValue = undefined
+    this.tableHeight = 370
+    this.loading = !this.loading
     this.service.resetFilterSearch().subscribe(
       (result: any) => {
         this.items = result.items
+        this.loading = !this.loading
       }), (error: any) => this.notification.error(error)
   }
 }

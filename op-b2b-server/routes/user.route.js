@@ -29,12 +29,17 @@ module.exports = {
     },
 
     findByUser: function (req, res) {
-        let document = controller.findByUser(req.query.user)
+        let document = controller.findByUser(req.query.userId)
+        document.then(result => res.send(result))
+    },
+
+    quickSearch: function (req, res) {
+        let document = controller.quickSearch(req.body)
         document.then(result => res.send(result))
     },
 
     find: function (req, res) {
-        var document = controller.find(req)
+        var document = controller.find(req.query)
         document.then(result => res.send(result))
     },
 
@@ -51,23 +56,20 @@ module.exports = {
 
     mailVerify: function (req, res) {
         var document = controller.findMail(req.body.email)
-
         document.then(result => {
             res.send(result)
-
-
         });
     },
 
-    userVerify: function (req, res) {
-        var document = controller.findByUser(req.body.user)
+    // userIdVerify: function (req, res) {
+    //     var document = controller.findByUser(req.body.user)
 
-        document.then(result => {
-            res.send(result)
+    //     document.then(result => {
+    //         res.send(result)
 
 
-        });
-    },
+    //     });
+    // },
 
 }
 

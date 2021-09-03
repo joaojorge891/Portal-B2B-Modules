@@ -24,7 +24,7 @@ export class HomeAdminComponent extends AccessValidate implements OnInit {
 
   profileActions: Array<PoToolbarAction> = [
     { icon: 'po-icon-settings', label: 'Configurações' },
-    { icon: 'po-icon-exit', label: 'Sair', type: 'danger', separator: true, action: () => this.router.navigate(['']) }
+    { icon: 'po-icon-exit', label: 'Sair', type: 'danger', separator: true, action: () => this.router.navigate(['portal']) }
   ];
 
   constructor(

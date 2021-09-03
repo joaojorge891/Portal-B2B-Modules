@@ -153,30 +153,58 @@ exports.delete = async function (req, res) {
 }
 
 exports.findById = async function (id) {
-
     let object = null
     let doc = await userSchema.findById(id)
+    console.log(doc)
     if (doc != null) {
         object = doc
     } else {
         object = { status: 'not_found' }
-
-
     }
     return object
 
 
 }
 
-exports.findByUser = async function (user) {
+exports.findByUser = async function (login) {
     try {
         let filter = {}
-        filter['userId'] = { '$eq': user }
+        filter['userId'] = { '$eq': login }
         var user = await userSchema.find(filter)
     } catch (error) {
         throw new Error(error)
     }
     return (user)
+
+}
+
+exports.quickSearch = async function (login) {
+    try {
+        const doc = await userSchema.find({ userId: { $ne: null } }).select({
+            '_id': 1,
+            'name': 1,
+            'userId': 1,
+            'company': 1,
+            'department': 1,
+            'typeUser': 1,
+            'uf': 1,
+            'creationDate': 1,
+            'status': 1
+        })
+        if (doc) {
+            let filteredItems = [...doc]
+            Object.keys(login).forEach(filter => {
+                object = filteredItems.filter((register) =>
+                    register[filter].toLocaleLowerCase().includes(login[filter].toLocaleLowerCase())
+                )
+            })
+        } else {
+            object = { status: 'fail', error: 'Erro: ' + err.message }
+        }
+    } catch (error) {
+        throw new Error('Erro na filtragem rápida:' + error)
+    }
+    return object
 
 }
 
@@ -206,7 +234,7 @@ exports.findByMail = async function (email) {
     } catch (error) {
         throw new Error(error)
     }
-    
+
     return object
 }
 
@@ -225,30 +253,20 @@ exports.findMail = async function (email) {
 
 exports.find = function (req) {
     let promise = new Promise(function (resolve, reject) {
-        let page = 0
-        let filter = {}
         let object = {
             items: [],
             hasNext: false
         }
-
-        if (req.params.id != null) {
-            filter['user'] = {
-                '$regex': req.params.id,
-                "$options": "i"
-            }
+        let page = 0
+        if (req.page != null) {
+            page = Number(req.page) || 0
         }
-
-        if (req.query.page != null) {
-            page = Number(req.query.page) || 0
-        }
-
-        userSchema.find(filter)
+        userSchema.find({})
             .select(
                 {
                     '_id': 1,
                     'name': 1,
-                    'user': 1,
+                    'userId': 1,
                     'company': 1,
                     'department': 1,
                     'typeUser': 1,

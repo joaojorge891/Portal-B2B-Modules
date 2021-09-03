@@ -1,44 +1,44 @@
 <po-page-default>
         
-    <div class="po-row">
-        <po-widget
-            class ="po-sm-12 po-md-3 po-lg-3 po-xl-4"
-            [p-primary]="false"
-            (p-click)="openNew()">
-            
-            <div class="newLabel po-text-center po-font-subtitle"><span class="po-icon po-icon-plus-circle"></span>Novas</div>
-            <div class="newCounter po-font-subtitle po-text-center">{{newCounter}}</div>
-            <div class="newUpdate po-font-text-small po-text-center">Atualizado em: {{lastUpdate}}</div>
-        </po-widget>
-    
-        <po-widget
-            class="po-sm-12 po-md-3 po-lg-3 po-xl-4"
-            [p-primary]="false"
-            (p-click)="openExec()">
-            <div class="executionLabel po-text-center po-font-subtitle"><span class="po-icon po-icon-change"></span>Em Execução</div>
-            <div class="executionCounter po-font-subtitle po-text-center"> {{executionCounter}}</div>
-            <div class="executionUpdate po-font-text-small po-text-center">Atualizado em: {{lastUpdate}}</div>
-        </po-widget>
+        <div class="po-row">
+                <po-widget
+                        class ="po-sm-12 po-md-3 po-lg-3 po-xl-4"
+                        [p-primary]="false"
+                        (p-click)="openNew()">
+                        
+                        <div class="newLabel po-text-center po-font-subtitle"><span class="po-icon po-icon-plus-circle"></span>Novas</div>
+                        <div class="newCounter po-font-subtitle po-text-center">{{newCounter}}</div>
+                        <div class="newUpdate po-font-text-small po-text-center">Atualizado em: {{lastUpdate}}</div>
+                </po-widget>
+        
+                <po-widget
+                        class="po-sm-12 po-md-3 po-lg-3 po-xl-4"
+                        [p-primary]="false"
+                        (p-click)="openExec()">
+                        <div class="executionLabel po-text-center po-font-subtitle"><span class="po-icon po-icon-change"></span>Em Execução</div>
+                        <div class="executionCounter po-font-subtitle po-text-center"> {{executionCounter}}</div>
+                        <div class="executionUpdate po-font-text-small po-text-center">Atualizado em: {{lastUpdate}}</div>
+                </po-widget>
 
-        <po-widget
-        class ="po-sm-12 po-md-3 po-lg-3 po-xl-4"
-        [p-primary]="false">
-        <div class="totalLabel po-text-center po-font-subtitle"><span class="po-icon po-icon-basket"></span>Total</div>
-        <div class="totalCounter po-font-subtitle po-text-center"> {{totalCounter}}</div>
-        <div class="totalUpdate po-font-text-small po-text-center">Atualizado em: {{lastUpdate}}</div>
-        </po-widget>
+                <po-widget
+                        class ="po-sm-12 po-md-3 po-lg-3 po-xl-4"
+                        [p-primary]="false">
+                        <div class="totalLabel po-text-center po-font-subtitle"><span class="po-icon po-icon-basket"></span>Total</div>
+                        <div class="totalCounter po-font-subtitle po-text-center"> {{totalCounter}}</div>
+                        <div class="totalUpdate po-font-text-small po-text-center">Atualizado em: {{lastUpdate}}</div>
+                </po-widget>
 
-        <po-widget
-        class ="po-sm-12 po-md-3 po-lg-3 po-xl-4"
-        [p-primary]="false"
-        (p-click)="openCompleted()">
-        <div class="completedLabel po-text-center po-font-subtitle"><span class="po-icon po-icon-ok"></span>Concluídas</div>
-        <div class="completedCounter po-font-subtitle po-text-center"> {{completedCounter}}</div>
-        <div class="completedUpdate po-font-text-small po-text-center">Atualizado em: {{lastUpdateCompleted}}</div>
-        </po-widget>
+                <po-widget
+                        class ="po-sm-12 po-md-3 po-lg-3 po-xl-4"
+                        [p-primary]="false"
+                        (p-click)="openCompleted()">
+                        <div class="completedLabel po-text-center po-font-subtitle"><span class="po-icon po-icon-ok"></span>Concluídas</div>
+                        <div class="completedCounter po-font-subtitle po-text-center"> {{completedCounter}}</div>
+                        <div class="completedUpdate po-font-text-small po-text-center">Atualizado em: {{lastUpdateCompleted}}</div>
+                </po-widget>
         </div>
-        <div class="po-row searchRow">
-           
+        <div class="po-row">
+                <div class="searchRow">
                 <po-input #input 
                         name="quickSearch"
                         (keydown)="onQuickSearch($event)"
@@ -54,6 +54,7 @@
                         Busca avançada
                 </span>
                 
+        </div>
                 <po-disclaimer-group
                         class="searchDisclaimer"
                         [p-disclaimers]="filters"
@@ -61,7 +62,6 @@
                         p-title="Apresentando resultados filtrados por:"
                        >
                 </po-disclaimer-group>
-
         </div>
                 <div class="po-row">
                         <po-table class="table"
@@ -90,6 +90,7 @@
                               </ng-template> -->
                         </po-table>
                 </div>
+        
         
 </po-page-default>
     
@@ -268,8 +269,7 @@
             <po-modal #searchModal
             [p-primary-action]="advSearchApply"
             [p-secondary-action]="advSearchCancel"
-            p-size="lg"
-            >
+            p-size="lg">
                 <po-dynamic-form (p-form)="getForm($event)"
                 [p-fields]="advSearchFields"
                 [p-value]="fieldsInitValues"

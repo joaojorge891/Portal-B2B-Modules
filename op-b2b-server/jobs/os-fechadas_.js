@@ -9,14 +9,33 @@ function handleClosedOrders() {
   function removeCompletedInsertClosed(mysqlConnection, tableName, openMongoCollection, closedMongoCollection) {
     const promises = []
     const mainPromise = new Promise((resolve, reject) => {
-      openMongoCollection.find({status:'concluído'}).forEach(function (item) {
+      openMongoCollection.find({ status: 'concluído' }).forEach(function (item) {
         const secondaryPromise = new Promise((resolve, reject) => {
           let sql = 'select * from ' + tableName + ' where protocolo = ' + item.protocolo
-          mysqlConnection.query(sql, async function (error, data) {
-            if (error) throw new Error('Erro na coleta de OS fechadas no Mysql...')
-            if (data !== undefined && data !== null && data.length > 0) {
-              await openMongoCollection.deleteOne({ protocolo: item.protocolo })
-              await closedMongoCollection.insertOne(data)
+
+          mysqlConnection.query(sql, async function (error, rows, fields) {
+            if (error) {
+              throw new Error(`Erro na coleta de OS fechadas do mysql: ${error}`)
+            } else {
+              if (rows !== undefined && rows !== null && rows.length > 0) {
+                let result = JSON.parse(JSON.stringify(rows))
+                result[0].operadora_Oemp = item.operadora_Oemp,
+                  result[0].observacao_Oemp = item.observacao_Status,
+                  result[0].data_Contratacao = item.data_Contratacao,
+                  result[0].prazo_Operadora = item.prazo_Operadora,
+                  result[0].previsao_Entrega = item.previsao_Entrega,
+                  result[0].previsao_Atual = item.previsao_Atual,
+                  result[0].data_Instalacao = item.data_Instalacao,
+                  result[0].taxa_Instalacao = item.taxa_Instalacao,
+                  result[0].taxa_Mensal = item.taxa_Mensal,
+                  result[0].tempo_Contrato = item.tempo_Contrato,
+                  result[0].codigo_Viabilidade = item.codigo_Viabilidade,
+                  result[0].designacao_Oemp = item.designacao_Oemp,
+                  result[0].responsavel = item.responsavel,
+                  result[0].gestao = item.gestao
+                await closedMongoCollection.insertMany(result)
+                await openMongoCollection.deleteOne({ protocolo: item.protocolo })
+              }
             }
             resolve(true)
           })
@@ -30,7 +49,6 @@ function handleClosedOrders() {
     })
     return mainPromise
   }
-
 
   mongoose.connect("mongodb://localhost/op-b2b-db", { useNewUrlParser: true, useUnifiedTopology: true })
   const db = mongoose.connection

@@ -1,21 +1,20 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { NgForm } from '@angular/forms';
+
 
 import {
+  PoDatepickerComponent,
   PoDialogService, PoDisclaimer, PoDynamicFormField, PoModalAction,
   PoModalComponent, PoMultiselectOption, PoNotificationService, PoRadioGroupOption,
+  PoSelectComponent,
   PoTableAction, PoTableComponent, PoTableRowTemplateArrowDirection
 } from '@po-ui/ng-components';
-import { PoPageDynamicSearchLiterals } from '@po-ui/ng-templates';
 import * as moment from 'moment';
 
 
 import { OempService } from 'src/app/oemp/components/dashboard/services/oemp.service';
-import { NgForm } from '@angular/forms';
-
-
-
 
 @Component({
   selector: 'app-dashboard',
@@ -114,11 +113,6 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  customLiterals: PoPageDynamicSearchLiterals = {
-    searchPlaceholder: 'Pesquisa por circuito'
-  }
-
-
   private statusFilterOptions: Array<PoMultiselectOption> = this.service.getStatusOptions()
 
   private respOptions: Array<PoMultiselectOption> = this.service.getAccountableOptions()
@@ -161,8 +155,8 @@ export class DashboardComponent implements OnInit {
   @ViewChild(PoModalComponent, { static: true }) poModal!: PoModalComponent
   @ViewChild('searchModal') poAdvSearchModal!: PoModalComponent
   @ViewChild(PoTableComponent, { static: true }) poTable!: PoTableComponent
-  @ViewChild('date') dateFocus!: HTMLElement
-  @ViewChild('status') statusFocus!: HTMLElement
+  @ViewChild('date') dateFocus!: PoDatepickerComponent
+  @ViewChild('status') statusFocus!: PoSelectComponent
 
   constructor(
     private service: OempService,
@@ -177,17 +171,14 @@ export class DashboardComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
 
-  onResize(event: any) {
+  public onResize(event: any): void {
     this.innerWidth = event.target.innerWidth
     this.responsiveTable()
 
   }
 
-  public responsiveTable() {
+  public responsiveTable(): void {
     if (this.innerWidth <= 1366 && this.innerWidth >= 1260) {
-      for (let property in this.columns) {
-
-      }
       this.columns[0].width = '70px'
       this.columns[1].width = '80px'
       this.columns[2].width = '80px'
@@ -232,7 +223,7 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     // if (this.validateUser() === 'user') {
     //   this.router.navigateByUrl('')
     // }
@@ -266,10 +257,9 @@ export class DashboardComponent implements OnInit {
 
     }
 
-
   }
 
-  updateCounters() {
+  private updateCounters(): void {
     //this.temporaryCounter = 0
     this.service.getCounters().subscribe(
       (result: Array<any>) => {
@@ -293,7 +283,7 @@ export class DashboardComponent implements OnInit {
     ), (error: any) => this.notification.error(error)
   }
 
-  onShowMore() {
+  onShowMore(): void {
     if (this.AdvSearchMark) {
       this.isLoading = true
       this.showMoreDisabled = false
@@ -314,24 +304,24 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  private loadAdvSearchOrders(filters: any) {
+  private loadAdvSearchOrders(filters: any): void {
     this.subscriptions$.push(this.service.advancedSearchFilter(filters).subscribe(
       result => this.items = this.items.concat(result.items)
     ))
   }
 
-  private loadServiceOrders(page: number) {
+  private loadServiceOrders(page: number): void {
     this.subscriptions$.push(this.service.loadAllByPage(page).subscribe(
       result => this.items = this.items.concat(result.items)
     ))
   }
 
-  onAdvancedSearch(filter: any) {
+  onAdvancedSearch(filter: any): void {
     filter ? this.advancedSearchItems(filter) : this.resetFilters(this.page++)
   }
 
 
-  private advancedSearchItems(filters: any) {
+  private advancedSearchItems(filters: any): void {
     this.page = 0
     filters.page = this.page
     this.AdvSearchMark = true
@@ -351,7 +341,7 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  onQuickSearch(e: KeyboardEvent) {
+  onQuickSearch(e: KeyboardEvent): void {
     if (e.key === 'Enter') {
       if (this.quickSearchValue) {
         this.filters = []
@@ -363,7 +353,7 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  onChangeDisclaimers(disclaimers: []) {
+  onChangeDisclaimers(disclaimers: []): void {
     if (disclaimers.length) {
       this.tableHeight = 220
       if (this.filters[0].label?.charAt(0) == 'P' && this.filters[0].label.charAt(1) == 'e' &&
@@ -378,11 +368,11 @@ export class DashboardComponent implements OnInit {
       }
     } else {
       this.tableHeight = 320
-      this.resetFilters(this.page)
+      this.resetFilters(this.page++)
     }
   }
 
-  openModalAdvSearch() {
+  openModalAdvSearch(): void {
     this.fieldsInitValues = {
       conglomerado: undefined,
       protocolo: undefined,
@@ -398,12 +388,12 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  getForm(form: NgForm) {
+  getForm(form: NgForm): void {
     this.AdvSearchDynamicForm = form
-    this.AdvSearchDynamicForm.control.valueChanges.subscribe(values => this.getAdvFilters = values)
+    this.AdvSearchDynamicForm.control.valueChanges.subscribe((values: any) => this.getAdvFilters = values)
   }
 
-  applyFilters() {
+  private applyFilters(): void {
     this.filters = []
     let values = this.getAdvFilters
     for (let key in values) {
@@ -414,12 +404,12 @@ export class DashboardComponent implements OnInit {
     this.closeSearchModal()
   }
 
-  closeSearchModal() {
+  private closeSearchModal(): void {
     this.poAdvSearchModal.close()
 
   }
 
-  private quickSearchItems(filters: any) {
+  private quickSearchItems(filters: any): void {
     this.loading = !this.loading
     try {
       this.service.quickSearchFilter(filters).subscribe(
@@ -435,7 +425,7 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  private resetFilters(page: number) {
+  private resetFilters(page: number): void {
     this.AdvSearchMark = false
     this.loading = !this.loading
     this.service.loadAllByPage(page).subscribe(
@@ -447,7 +437,7 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  delivPredCalc() {
+  delivPredCalc(): void {
     if (this.editItems.data_Contratacao !== null && this.editItems.data_Contratacao !== undefined &&
       this.editItems.prazo_Operadora !== null && this.editItems.prazo_Operadora !== undefined) {
       let dateConvert = moment(this.editItems.data_Contratacao).add(this.editItems.prazo_Operadora, 'days').toDate()
@@ -457,16 +447,16 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  dateFoco() {
+  private dateFoco(): void {
     this.dateFocus.focus()
   }
 
-  statusFoco() {
+  private statusFoco(): void {
     this.statusFocus.focus()
   }
 
 
-  confirmOrderWithoutActing() {
+  private confirmOrderWithoutActing(): void {
     this.service.save(this.editItems).subscribe(
       (result: any) => {
         if (result.status === 'ok') {
@@ -486,7 +476,7 @@ export class DashboardComponent implements OnInit {
     )
   }
 
-  private onUpdate(item: any) {
+  private onUpdate(item: any): void {
     const index = this.items.findIndex((elem: any) => elem._id === item._id)
     this.service.save(item).subscribe(result => {
       if (result.status === 'ok') {
@@ -508,7 +498,7 @@ export class DashboardComponent implements OnInit {
       })
   }
 
-  private proccessOrder() {
+  private proccessOrder(): void {
 
     switch (this.editItems.status) {
       case undefined:
@@ -598,7 +588,7 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  private onForm(order: any) {
+  private onForm(order: any): void {
     this.service.filterById(order._id).subscribe(
       (result: any) => {
         this.editItems = result
@@ -616,11 +606,11 @@ export class DashboardComponent implements OnInit {
     ), (error: any) => this.notification.error(error)
   }
 
-  openModal() {
+  private openModal(): void {
     this.poModal.open()
   }
 
-  private getCounters() {
+  private getCounters(): void {
     this.temporaryCounter = 0
     this.service.getCounters().subscribe(
       (result: Array<any>) => {
@@ -644,13 +634,13 @@ export class DashboardComponent implements OnInit {
     ), (error: any) => this.notification.error(error)
   }
 
-  closeModal() {
+  private closeModal(): void {
     this.poModal.close()
     this.editItems = []
   }
 
 
-  isDisable() {
+  isDisable(): void {
     if (this.editItems.status === 'execução') {
       while ((this.editItems.taxa_Instalacao === '' || this.editItems.taxa_Instalacao === undefined) ||
         (this.editItems.taxa_Mensal === '' || this.editItems.taxa_Mensal === undefined) ||
@@ -664,19 +654,19 @@ export class DashboardComponent implements OnInit {
 
 
 
-  openNew() {
+  openNew(): void {
     this.router.navigate(['home/oemp/new-orders'])
   }
 
-  openExec() {
+  openExec(): void {
     this.router.navigate(['home/oemp/exec-orders'])
   }
 
-  openCompleted() {
+  openCompleted(): void {
     this.router.navigate(['home/oemp/completed-orders'])
   }
 
-  installationFeeMask() {
+  installationFeeMask(): void {
     let value = this.editItems.taxa_Instalacao
     value = value + ''
     value = parseInt(value.replace(/[\D]+/g, ''))
@@ -691,7 +681,7 @@ export class DashboardComponent implements OnInit {
     if (value == 'NaN') this.editItems.taxa_Instalacao = ''
   }
 
-  monthlyPaymentMask() {
+  monthlyPaymentMask(): void {
     let value = this.editItems.taxa_Mensal
     value = value + ''
     value = parseInt(value.replace(/[\D]+/g, ''))
@@ -706,7 +696,7 @@ export class DashboardComponent implements OnInit {
     if (value == 'NaN') this.editItems.taxa_Mensal = ''
   }
 
-  onChangeOempCompany(event: any) {
+  onChangeOempCompany(event: any): void {
     const searchOemp = this.service.getOempOempCompanyOptions().find((companyName, index, array) => companyName.value == event)
     const searchInter = this.service.getIntercompanyOempCompanyOptions().find((companyName, index, array) => companyName.value == event)
     const searchUN = this.service.getUNOempCompanyOptions().find((companyName, index, array) => companyName.value == event)
@@ -733,7 +723,7 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  onChangeManagement(e: any) {
+  onChangeManagement(e: any): void {
     if (e == 'OEMP') {
       this.accountableOptions = this.service.getOempAccountableOptions()
       this.oempCompanyOptions = this.service.getOempOempCompanyOptions()

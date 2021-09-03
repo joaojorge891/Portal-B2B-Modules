@@ -10,8 +10,9 @@ export abstract class AccessValidate extends Service {
     }
 
     protected validateUser() {
-        const typeUser = this.getCurrentUser().typeUser
-        if (typeUser === 'user' || typeUser === 'null' || typeUser === undefined || typeUser === '') {
+        const userData = {}
+        this.getCurrentUser().typeUser
+        if (this.getCurrentUser().typeUser === 'user' || this.getCurrentUser().typeUser === 'null' || this.getCurrentUser().typeUser === undefined || this.getCurrentUser().typeUser === '') {
             return 'user'
         } else return 'admin'
 

@@ -1,0 +1,20 @@
+.searchDisclaimer{
+
+    padding-bottom: 10px;
+}
+
+.searchRow {
+    margin-top: 6px;
+    padding-right: 0px;
+}
+
+.inputSearch{
+    position: relative;
+    margin-right: 0px;
+    padding-bottom: 20px;
+}
+
+.divSearch {
+    margin-top: 3px;
+    /* padding-left: 30px; */
+}

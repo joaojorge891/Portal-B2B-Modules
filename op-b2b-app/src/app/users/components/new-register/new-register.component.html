@@ -1,34 +1,30 @@
 <po-page-default 
-    p-title="Solicitação de Novo Usuário" 
-    [p-actions]="actions">
-
+    p-title="Solicitação de Novo Usuário">
+<form [formGroup]="newRegValidateForm">
     <div class="po-row">
         <po-input
             class="po-sm-12 po-md-6 po-lg-4 po-xl-4" 
             name="field_name"
-            [p-auto-focus]="autoFocus"
-            p-icon="po-icon-user" 
             p-label="* Nome Completo"
+            [p-auto-focus]="true"
+            p-icon="po-icon-user" 
             p-clean="true"
             p-required="true"
-            [(ngModel)]="model.name"
-            (p-change-model)="onDisable()">
+            formControlName="name">
         </po-input>
         
         <po-input 
             p-label="* Matrícula"
             name="field_user"
             p-icon="po-icon-image-align-left"
-            [p-pattern]="inputUserPattern"
             [p-error-pattern]="inputUserErrorPattern"
             (p-blur)="userVerify()"
             #user
             p-clean="true" 
             p-required="true"
+            formControlName="userId"
             [p-maxlength]="maxLengthInputMatricula"
             [p-minlength]="maxLengthInputMatricula" 
-            [(ngModel)]="model.userId"
-            (p-change-model)="onDisable()" 
             class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
         </po-input>
     </div>
@@ -45,8 +41,7 @@
                 {label: 'Stein', value: 'Stein'},
                 {label: 'Telemont', value: 'Telemont'}
             ]"
-            [(ngModel)]="model.company"
-            (p-change)="onDisable()" 
+            formControlName="company"
             class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
         </po-select>
         
@@ -67,10 +62,8 @@
             {label: 'Unidade de Negócios', value: 'Comercial'},
             {label: 'Outras', value: 'Outras'},
             ]"
-            [(ngModel)]="model.department"
-            (p-change)="onDisable()"
+            formControlName="department"
             class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
-
         </po-select>
 
     </div>
@@ -110,8 +103,7 @@
                 {label: 'Sergipe', value: 'SE'},
                 {label: 'Tocantins', value: 'TO'}
             ]"
-            [(ngModel)]="model.uf"
-            (p-change)="onDisable()"
+            formControlName="uf"
             class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
 
         </po-select>
@@ -122,10 +114,8 @@
             p-clean="true"
             #mail
             p-required="true" 
-            p-pattern="^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"
             [p-error-pattern]="inputMailErrorPattern"
-            [(ngModel)]="model.email"
-            (p-change-model)="onDisable()"
+            formControlName="email"
             (p-blur)="verifyEmail()"
             class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
         </po-email>
@@ -134,25 +124,26 @@
 
     <div class="po-row">
         
-        <po-password 
+        <po-password
             p-label="* Senha"
-            p-pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,8}$"
             [p-error-pattern]="inputPwdErrorPattern"
             [p-maxlength]="maxLengthInputMatricula"
             [p-minlength]="maxLengthInputMatricula" 
             p-clean="true" 
             p-required="true" 
-            [(ngModel)]="model.password"
-            (p-change-model)="onDisable()"
+            formControlName="password"
             class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
         </po-password>
 
         
-        <po-password 
+        <po-password
             p-label="* Confirmar Senha" 
-            p-clean="true" 
-            [(ngModel)]="model.confirmPassword"
-            (p-change-model)="onDisable()"
+            p-clean="true"
+            [p-maxlength]="maxLengthInputMatricula"
+            [p-minlength]="maxLengthInputMatricula"  
+            formControlName="confirmPassword"
+            [p-error-pattern]="inputConfirmPwdErrorPattern"
+            p-required="true"
             class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
         </po-password>
     </div>
@@ -162,13 +153,13 @@
         <po-textarea 
             name="textarea"
             [p-maxlength]="maxLengthTextArea"
+            [p-required]="true"
             p-label="* Justificativa"
             class="po-sm-12 po-md-12 po-lg-8 po-xl-8"
-            [(ngModel)]="model.reason"
-            (p-change-model)="onDisable()">
+            formControlName="reason">
         </po-textarea>
-        <div class="po-row">
-            (*) Preenchimento Obrigatório
+        <div class="po-field-title">
+            <span class="asterisco">(*)</span>Preenchimento Obrigatório
         </div>
     </div>
     <div class="po-row">
@@ -176,15 +167,15 @@
         <po-button 
             p-label="Cancelar"
             class="po-sm-12 po-md-4 po-lg-2 po-xl-2 po-offset-lg-4"
-            (p-click)="cancelar()">
+            (p-click)="cancel()">
         </po-button>
     
         <po-button  
             p-label="Enviar"
-            [p-disabled]="isDisabled"
-            class="po-sm-12 po-md-4 po-lg-2 po-xl-2 po-offset-lg-0" (p-click)="enviar()">
+            [p-disabled]="newRegValidateForm.invalid"
+            class="po-sm-12 po-md-4 po-lg-2 po-xl-2 po-offset-lg-0" (p-click)="onSubmit()">
         </po-button>
 
     </div>
-
+</form>
 </po-page-default>

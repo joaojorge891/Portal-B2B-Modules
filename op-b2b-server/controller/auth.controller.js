@@ -26,9 +26,9 @@ exports.auth = async function (parameters) {
             email: user[0].email,
             uf: user[0].uf,
             nickName: user[0].nickName,
-            avatar: user[0].avatar,
             department: user[0].department,
             lastLogin: user[0].lastLogin,
+            
         }
     } else {
         return { status: 'error', error: 'Usuário ou senha inválido!' }
