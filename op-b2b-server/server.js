@@ -12,14 +12,16 @@ const db = mongoose.connection
 
 db.on('error', console.error.bind(console, 'Mongo DB Connection error:'))
 
+
+
 app.use((req, res, next) => {
-  res.set('X-Powered-By', 'Oi-B2B')
-  next()
-})
-
-app.use(cors())
-
-appRouter.appRouter(app)
+    res.header('X-Powered-By', 'Oi-B2B')
+    next()
+  })
+  
+  app.use(cors())
+  
+  appRouter.appRouter(app)
 
 app.use(express.static('static'))
 

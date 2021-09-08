@@ -13,8 +13,9 @@ exports.auth = async function (parameters) {
             },
             'SECRET-OP-B2B-TOKEN'
         )
+        await userController.updateLastLogin(parameters)
         return {
-            status: 'ok',
+            statusResult: 'ok',
             typeUser: user[0].typeUser,
             token: token,
             expires: expires,

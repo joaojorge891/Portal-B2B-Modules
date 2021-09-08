@@ -1,0 +1,45 @@
+<po-page-default 
+    [p-actions]="actionsPage" 
+    class="po-sm-12 po-md-12 po-lg-12 po-xl-4">
+
+    <div class="po-row searchRow">
+           
+        <po-input #input 
+                name="quickSearch"
+                (keydown)="onQuickSearch($event)"
+                [(ngModel)]="quickSearchValue"
+                p-clean="true"
+                p-icon="po-icon po-icon-search"
+                p-placeholder="Pesquisa por Matrícula"
+                class="inputSearch po-offset-lg-9 po-offset-xl-9 po-xl-3 po-lg-3 po-offset-md-7 po-md-4 po-sm-12"
+                >
+        </po-input>
+       
+        <po-disclaimer-group
+                class="searchDisclaimer"
+                [p-disclaimers]="filters"
+                (p-change)="onChangeDisclaimers($event)"
+                p-title="Apresentando resultados filtrados por:"
+               >
+        </po-disclaimer-group>
+
+    </div>
+    <po-table 
+        [p-items]="items" 
+        [p-columns]="columns" 
+        [p-actions]="actions"
+        [p-height]="tableHeight"
+        [p-sort]="true"
+        [p-striped]="true"
+        [p-auto-collapse]="true"
+        [p-hide-detail]="true"
+        p-container="shadow"
+        [p-loading]="loading"
+        [p-hide-text-overflow]="true"
+        [p-infinite-scroll]="true"
+        [p-show-more-disabled]="showMoreDisabled" 
+        [p-loading-show-more]="isLoading" 
+        (p-show-more)="onShowMore()">
+    </po-table>
+
+</po-page-default>

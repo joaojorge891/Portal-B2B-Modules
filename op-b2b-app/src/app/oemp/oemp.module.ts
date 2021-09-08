@@ -1,9 +1,10 @@
+import { OempRoutingModule } from './oemp-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
-import { PoButtonModule, PoDisclaimerGroupModule, PoDividerModule, PoDynamicModule, PoFieldModule, PoInfoModule, PoModalModule, PoPageModule, PoTableModule, PoTabsModule, PoWidgetModule } from '@po-ui/ng-components';
+import { PoButtonModule, PoDisclaimerGroupModule, PoDividerModule, PoDynamicModule, PoFieldModule, PoInfoModule, PoMenuModule, PoModalModule, PoPageModule, PoTableModule, PoTabsModule, PoToolbarModule, PoWidgetModule } from '@po-ui/ng-components';
 import { PoPageDynamicSearchModule } from '@po-ui/ng-templates';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -13,6 +14,7 @@ import { CompletedOrdersComponent } from './components/completed-orders/complete
 import { ExecOrdersComponent } from './components/exec-orders/exec-orders.component';
 import { NewOrdersComponent } from './components/new-orders/new-orders.component';
 import { ExportsComponent } from './components/exports/exports.component';
+import { HomeComponent } from './components/home/home.component';
 
 
 
@@ -22,7 +24,8 @@ import { ExportsComponent } from './components/exports/exports.component';
     CompletedOrdersComponent,
     ExecOrdersComponent,
     NewOrdersComponent,
-    ExportsComponent
+    ExportsComponent,
+    HomeComponent
   ],
   imports: [
     CommonModule,
@@ -38,10 +41,13 @@ import { ExportsComponent } from './components/exports/exports.component';
     ReactiveFormsModule,
     PoDividerModule,
     PoInfoModule,
+    PoToolbarModule,
+    PoMenuModule,
     PoDisclaimerGroupModule,
     PoDynamicModule,
     FontAwesomeModule,
-    PoTabsModule
+    PoTabsModule,
+    OempRoutingModule
   ]
 })
 export class OempModule { }

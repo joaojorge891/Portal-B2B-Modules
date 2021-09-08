@@ -1,0 +1,14 @@
+<div class="po-wrapper">
+    <po-menu 
+    [p-menus]="menuArr"
+    p-logo="./assets/oi-logo-a3.png"
+    [p-collapsed]="true">
+    </po-menu>
+
+    <po-toolbar [p-title]="toolBarTitle"
+        [p-profile]="profile" 
+        [p-profile-actions]="profileActions">
+    </po-toolbar>
+
+    <router-outlet #routerOutlet="outlet"></router-outlet>
+</div>

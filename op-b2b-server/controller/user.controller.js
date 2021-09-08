@@ -97,14 +97,10 @@ exports.updateLastLogin = async function (user) {
 
         let result = await userSchema.findOneAndUpdate({ userId: user.userId }, { lastLogin: user.lastLogin })
         console.log(`[LOG] [ULTIMO ACESSO DO USUARIO ${result.userId} ATUALIZADO COM SUCESSO!]`)
-        object = { status: 'ok' }
-
     }
-
     catch (err) {
-        object = { status: 'fail', error: 'Erro: ' + err.message }
+        throw new Error(err)
     }
-    return object
 }
 
 
@@ -189,6 +185,7 @@ exports.quickSearch = async function (login) {
             'typeUser': 1,
             'uf': 1,
             'creationDate': 1,
+            'lastLogin': 1,
             'status': 1
         })
         if (doc) {
@@ -272,6 +269,7 @@ exports.find = function (req) {
                     'typeUser': 1,
                     'uf': 1,
                     'creationDate': 1,
+                    'lastLogin': 1,
                     'status': 1
                 }
             )

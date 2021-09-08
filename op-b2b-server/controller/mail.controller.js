@@ -26,7 +26,7 @@ exports.sendMailPwdRecovery = async function (user) {
         to: userResetPwd[0].email, // list of receivers
         subject: `Portal de Operações B2B - Reset de Senha`, // Subject line
         html: `<p>Caro ${userResetPwd[0].name},</p><br/>
-               <p>Por favor, Clique neste <a href="${configurations.hostApplication}/#/users/reset-pwd/${userResetPwd[0]._id}/${token}">Link</a> para prosseguir com reset da sua senha.<p/>
+               <p>Por favor, Clique neste <a href="${configurations.hostApplication}/#/unauthenticated/reset-pwd/${userResetPwd[0]._id}/${token}">Link</a> para prosseguir com reset da sua senha.<p/>
                <p>Link válido por 1 hora<p/><br/>
                <p>Att<p/>
                <p>Dev Team - Portal B2B<p/>`

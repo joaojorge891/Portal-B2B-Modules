@@ -1,0 +1,184 @@
+<po-page-default
+    p-title="Cadastro de Usuários">
+    <form [formGroup]="newUserValidateForm">
+        <div class="po-row">
+            <po-input 
+                name="field_name"
+                p-label="Nome"
+                [p-auto-focus]="isAutoFocus"
+                p-clean="true"
+                p-required
+                formControlName="name"
+                class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+            </po-input>
+
+            <po-input 
+                p-label="Matrícula"
+                p-clean="true"
+                p-required
+                [p-maxlength]="maxLengthInputMatricula"
+                [p-minlength]="maxLengthInputMatricula" 
+                [p-error-pattern]="inputUserErrorPattern"
+                formControlName="userId"
+                #userId
+                p-required="true"
+                (p-blur)="userVerify()"
+                class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+            </po-input>
+
+        </div>
+
+        <div class="po-row">
+            <po-select 
+                p-label="Empresa"
+                [p-options]="[
+                {label: 'Oi', value: 'Oi'},
+                {label: 'MamInfo', value: 'MamInfo'},
+                {label: 'Serede', value: 'Serede'},
+                {label: 'Stein', value: 'Stein'},
+                {label: 'Telemont', value: 'Telemont'}
+                ]"
+                formControlName="company"
+                p-required
+                class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+            </po-select>
+            
+            <po-select 
+                p-label="Área" 
+                p-placeholder="Selecione" 
+                p-required="true"
+                [p-options]="[
+                    {label: 'CGS', value: 'CGS'},
+                    {label: 'COR', value: 'COR'},
+                    {label: 'Engenharia', value: 'Engenharia'},
+                    {label: 'GAS', value: 'GAS'},
+                    {label: 'Logística', value: 'Logística'},
+                    {label: 'NATA', value: 'NATA'},
+                    {label: 'Operações de Campo ', value: 'Campo'},
+                    {label: 'Rede Básica', value: 'RedeBasica'},
+                    {label: 'Rede de Acesso', value: 'RedeAcesso'},
+                    {label: 'Unidade de Negócios', value: 'Comercial'},
+                    {label: 'Outras', value: 'Outras'},
+                    ]"
+                    formControlName="department"
+                    class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+
+            </po-select>
+        </div>
+
+        <div class="po-row">
+
+            <po-select 
+                p-label="Filial" 
+                p-placeholder="Selecione" 
+                p-required="true"
+                [p-options]="[
+                    {label: 'Acre', value: 'AC'},
+                    {label: 'Alagoas', value: 'AL'},
+                    {label: 'Amapá', value: 'AP'},
+                    {label: 'Amazonas', value: 'AM'},
+                    {label: 'Bahia', value: 'BA'},
+                    {label: 'Ceará', value: 'CE'},
+                    {label: 'Distrito Federal', value: 'DF'},
+                    {label: 'Espirito Santo', value: 'ES'},
+                    {label: 'Goiás', value: 'GO'},
+                    {label: 'Maranhão', value: 'MA'},
+                    {label: 'Mato Grosso', value: 'MT'},
+                    {label: 'Mato Grosso do Sul', value: 'MS'},
+                    {label: 'Minas Gerais', value: 'MG'},
+                    {label: 'Pará', value: 'PA'},
+                    {label: 'Paraíba', value: 'PB'},
+                    {label: 'Pernambuco', value: 'PE'},
+                    {label: 'Piauí', value: 'PI'},
+                    {label: 'Paraná', value: 'PR'},
+                    {label: 'Rio de Janeiro', value: 'RJ'},
+                    {label: 'Rio Grande do Norte', value: 'RN'},
+                    {label: 'Rio Grande do Sul', value: 'RS'},
+                    {label: 'Rondônia', value: 'RO'},
+                    {label: 'Roraima', value: 'RR'},
+                    {label: 'Santa Catarina', value: 'SC'},
+                    {label: 'São Paulo', value: 'SP'},
+                    {label: 'Sergipe', value: 'SE'},
+                    {label: 'Tocantins', value: 'TO'}
+                    ]"
+                    formControlName="uf"
+                    class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+            </po-select>
+
+            <po-email 
+                name="field_mail" 
+                p-label="Email"
+                #email
+                [p-error-pattern]="inputMailErrorPattern"
+                p-clean="true" 
+                p-required="true"
+                formControlName="email" 
+                (p-blur)="mailVerify()"
+                class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+            </po-email>
+
+        </div>
+        <div class="po-row">
+
+            <po-select
+                p-label="Tipo de Usuário"
+                [p-options]="[{label: 'Admin', value: 'admin'}, {label: 'Usuário', value: 'user'}]"
+                formControlName="typeUser"
+                p-required
+                class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+            </po-select>
+
+            <po-switch
+                p-label="Ativo"
+                formControlName="status"
+                p-required
+                p-label-off="Não"
+                p-label-on="Sim"
+                class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+            </po-switch>
+        </div>
+
+        <div class="po-row">
+
+            <po-password 
+                p-label="Senha"
+                p-clean="true"
+                p-required
+                formControlName="password"
+                [p-maxlength]="maxLengthInputMatricula"
+                [p-minlength]="maxLengthInputMatricula" 
+                [p-error-pattern]="inputPwdErrorPattern"
+                class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+            </po-password>
+
+            <po-password 
+                p-label="Confirmar Senha"
+                p-clean="true"
+                p-required
+                formControlName="confirmPassword"
+                [p-maxlength]="maxLengthInputMatricula"
+                [p-minlength]="maxLengthInputMatricula" 
+                [p-error-pattern]="inputConfirmPwdErrorPattern"
+                class="po-sm-12 po-md-6 po-lg-4 po-xl-4">
+            </po-password>
+        </div>
+        <div class="po-row actions">
+
+            <po-button 
+                p-label="Cancelar"
+                class="po-sm-12 po-md-4 po-lg-2 po-xl-2 po-offset-lg-4"
+                (p-click)="cancel()">
+            </po-button>
+        
+            <po-button  
+                p-label="Enviar"
+                [p-disabled]="newUserValidateForm.invalid"
+                class="po-sm-12 po-md-4 po-lg-2 po-xl-2 po-offset-lg-0" (p-click)="onSubmit()">
+            </po-button>
+            
+    
+        </div>
+    </form>
+</po-page-default>
+
+

@@ -1,0 +1,283 @@
+<po-page-default>
+        
+        <div class="po-row">
+                <po-widget
+                        class ="po-sm-12 po-md-3 po-lg-3 po-xl-4"
+                        [p-primary]="false"
+                        (p-click)="openNew()">
+                        
+                        <div class="newLabel po-text-center po-font-subtitle"><span class="po-icon po-icon-plus-circle"></span>Novas</div>
+                        <div class="newCounter po-font-subtitle po-text-center">{{newCounter}}</div>
+                        <div class="newUpdate po-font-text-small po-text-center">Atualizado em: {{lastUpdate}}</div>
+                </po-widget>
+        
+                <po-widget
+                        class="po-sm-12 po-md-3 po-lg-3 po-xl-4"
+                        [p-primary]="false"
+                        (p-click)="openExec()">
+                        <div class="executionLabel po-text-center po-font-subtitle"><span class="po-icon po-icon-change"></span>Em Execução</div>
+                        <div class="executionCounter po-font-subtitle po-text-center"> {{executionCounter}}</div>
+                        <div class="executionUpdate po-font-text-small po-text-center">Atualizado em: {{lastUpdate}}</div>
+                </po-widget>
+
+                <po-widget
+                        class ="po-sm-12 po-md-3 po-lg-3 po-xl-4"
+                        [p-primary]="false">
+                        <div class="totalLabel po-text-center po-font-subtitle"><span class="po-icon po-icon-basket"></span>Total</div>
+                        <div class="totalCounter po-font-subtitle po-text-center"> {{totalCounter}}</div>
+                        <div class="totalUpdate po-font-text-small po-text-center">Atualizado em: {{lastUpdate}}</div>
+                </po-widget>
+
+                <po-widget
+                        class ="po-sm-12 po-md-3 po-lg-3 po-xl-4"
+                        [p-primary]="false"
+                        (p-click)="openCompleted()">
+                        <div class="completedLabel po-text-center po-font-subtitle"><span class="po-icon po-icon-ok"></span>Concluídas</div>
+                        <div class="completedCounter po-font-subtitle po-text-center"> {{completedCounter}}</div>
+                        <div class="completedUpdate po-font-text-small po-text-center">Atualizado em: {{lastUpdateCompleted}}</div>
+                </po-widget>
+        </div>
+        <div class="po-row">
+                <div class="searchRow">
+                <po-input #input 
+                        name="quickSearch"
+                        (keydown)="onQuickSearch($event)"
+                        [(ngModel)]="quickSearchValue"
+                        p-clean="true"
+                        p-icon="po-icon po-icon-search"
+                        p-placeholder="Pesquisa por Circuito"
+                        class="inputSearch po-offset-lg-8 po-offset-xl-8 po-xl-3 po-lg-3 po-offset-md-7 po-md-4 po-sm-12"
+                        >
+                </po-input>
+               
+                <span class="spanSearch po-offset-md-12 po-md-1 po-offset-lg-12 po-lg-1" (click)="openModalAdvSearch()">
+                        Busca avançada
+                </span>
+                
+        </div>
+                <po-disclaimer-group
+                        class="searchDisclaimer"
+                        [p-disclaimers]="filters"
+                        (p-change)="onChangeDisclaimers($event)"
+                        p-title="Apresentando resultados filtrados por:"
+                       >
+                </po-disclaimer-group>
+        </div>
+                <div class="po-row">
+                        <po-table class="table"
+                                [p-height]="tableHeight"
+                                [p-actions]="actions"
+                                [p-items]="items" 
+                                [p-columns]="columns" 
+                                [p-striped]="true"
+                                [p-sort]="true"
+                                [p-auto-collapse]="true"
+                                [p-hide-detail]="true"
+                                p-container="shadow"
+                                [p-loading]="loading"
+                                [p-infinite-scroll]="true"
+                                (p-show-more)="onShowMore()"
+                                [p-hide-text-overflow]="true"
+                                [p-show-more-disabled]="showMoreDisabled" 
+                                [p-loading-show-more]="isLoading">
+                                <!-- <ng-template
+                                p-table-row-template
+                                let-rowItem
+                                let-i="rowIndex"
+                                [p-table-row-template-arrow-direction]="rowDirection"
+                                
+                              >
+                              </ng-template> -->
+                        </po-table>
+                </div>
+        
+        
+</po-page-default>
+    
+    
+            <po-modal
+              
+                    p-title="Editar Solicitação"
+                    [p-primary-action]="confirm"
+                    [p-secondary-action]="close"
+                    p-size="auto">
+                    <div class="po-row">
+                            <po-input 
+                                    name="circuito"
+                                    p-label="Circuito" 
+                                    p-clean="true"
+                                    p-readonly="true"
+                                    [(ngModel)]="editItems.circuito"
+                                    class="po-sm-12 po-md-6 po-lg-3 po-xlg-3">
+                            </po-input>
+    
+                            <po-select #status
+                                    name="status"
+                                    p-label="Status"
+                                    [p-readonly]="isReadOnly"
+                                    [p-options]="statusOptions"
+                                    [(ngModel)]="editItems.status"
+                                    class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                            </po-select>
+    
+                            <po-input
+                                    name="obs" 
+                                    p-label="Observações"
+                                    [p-readonly]="isReadOnly"
+                                    p-clean="true"
+                                    [p-minlength]="1"
+                                    [(ngModel)]="editItems.observacao_Status"
+                                    class="po-sm-12 po-md-6 po-lg-5 po-xlg-5">
+                            </po-input>
+                    </div>
+    
+                    <div class="po-row">
+    
+                            <po-datepicker #date
+                                    name="contractDate" 
+                                    p-label="Data Contratação"
+                                    [p-readonly]="isReadOnly"
+                                    [(ngModel)]="editItems.data_Contratacao"
+                                    (p-change)="delivPredCalc()"
+                                    class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                            </po-datepicker>
+    
+                            <po-select
+                                    name="oempDeadLine"
+                                    p-label="Prazo Operadora"
+                                    [p-readonly]="isReadOnly"
+                                    [p-options]="oempDeadLineOptions"
+                                    (p-change)="delivPredCalc()"
+                                    [(ngModel)]="editItems.prazo_Operadora"
+                                    class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                            </po-select>
+            
+                            <po-datepicker
+                                    name="deliveryPrediction"
+                                    p-label="Previsão de Entrega"
+                                    [p-readonly]="isReadOnly"
+                                    [(ngModel)]="editItems.previsao_Entrega"
+                                    class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                            </po-datepicker>
+            
+            
+                    </div>
+    
+                    <div class="po-row">
+            
+                            <po-datepicker 
+                                    name="installationDate"
+                                    p-label="Data de Instalação"
+                                    [p-readonly]="isReadOnly"
+                                    [(ngModel)]="editItems.data_Instalacao"
+                                    class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                            </po-datepicker>
+            
+                            <po-input 
+                                    name="txInst"
+                                    p-label="Taxa de Instalação" 
+                                    [p-readonly]="isReadOnly"
+                                    p-clean="true"
+                                    p-icon="po-icon po-icon-finance"
+                                    (p-change-model)="installationFeeMask()"
+                                    [(ngModel)]="editItems.taxa_Instalacao"
+                                    class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                            </po-input>
+    
+                            <po-input 
+                                    name="mensalidade"
+                                    p-label="Taxa Mensal" 
+                                    [p-readonly]="isReadOnly"
+                                    p-clean="true"
+                                    p-icon="po-icon po-icon-finance"
+                                    (p-change-model)="monthlyPaymentMask()"
+                                    [(ngModel)]="editItems.taxa_Mensal"
+                                    class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                            </po-input>
+    
+                    </div>
+    
+                    <div class="po-row">
+            
+                            <po-select 
+                                    name="contractTime"
+                                    p-label="Tempo de Contrato"
+                                    [p-readonly]="isReadOnly"
+                                    [p-options]="contractTimeOptions"
+                                    [(ngModel)]="editItems.tempo_Contrato" 
+                                    class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                            </po-select>
+    
+                            <po-input 
+                                    name="feasibilityCode"
+                                    p-label="Código Viabilidade" 
+                                    [p-readonly]="isReadOnly"
+                                    p-clean="true"
+                                    [(ngModel)]="editItems.codigo_Viabilidade"
+                                    class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                            </po-input>
+    
+                            <po-combo
+                                    name="oempCompany"
+                                    p-label="Operadora"
+                                    [p-disabled]="isReadOnly"
+                                    [p-clean]="true"
+                                    [p-options]="oempCompanyOptions"
+                                    (p-change)="onChangeOempCompany($event)"
+                                    [(ngModel)]="editItems.operadora_Oemp"
+                                    class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+    
+                            </po-combo>
+    
+                    </div>
+    
+                    <div class="po-row">
+                            <po-input 
+                                    name="oempDesignation"
+                                    p-label="Designação Operadora" 
+                                    [p-readonly]="isReadOnly"
+                                    p-clean="true"
+                                    [(ngModel)]="editItems.designacao_Oemp"
+                                    class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                            </po-input>
+                            <po-combo 
+                                    name="gestao"
+                                    p-label="Gestão"
+                                    [p-clean]="true"
+                                    [p-disabled]="isReadOnly"
+                                    [p-options]="managementOptions"
+                                    (p-change)="onChangeManagement($event)"
+                                    [(ngModel)]="editItems.gestao"
+                                    class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                            </po-combo>
+
+                            <po-combo 
+                                    name="responsavel"
+                                    p-label="Responsável"
+                                    [p-disabled]="isReadOnly"
+                                    [p-clean]="true"
+                                    [p-options]="accountableOptions"
+                                    [(ngModel)]="editItems.responsavel"
+                                    class="po-sm-12 po-md-6 po-lg-4 po-xlg-4">
+                            </po-combo>
+    
+    
+                    </div>
+            
+            </po-modal>
+
+            <po-modal #searchModal
+            [p-primary-action]="advSearchApply"
+            [p-secondary-action]="advSearchCancel"
+            p-size="lg">
+                <po-dynamic-form (p-form)="getForm($event)"
+                [p-fields]="advSearchFields"
+                [p-value]="fieldsInitValues"
+                >
+                </po-dynamic-form>
+            </po-modal>
+    
+   
+    
+    
+    
