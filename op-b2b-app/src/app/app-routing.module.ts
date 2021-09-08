@@ -5,6 +5,9 @@ import { RedirectGuard } from 'src/utils/linkExternalRedirect';
 
 const routes: Routes = [
   {
+    path: '', redirectTo: 'home', pathMatch: 'full'
+  },
+  {
     path: 'home', loadChildren: () => import('./oemp/oemp.module').then(
       m => m.OempModule)
   },
