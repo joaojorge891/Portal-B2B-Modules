@@ -5,7 +5,6 @@ import { UserDashboardComponent } from './components/dashboard/dashboard.compone
 import { NewUserComponent } from './components/dashboard/new-user/new-user.component';
 import { UpdateUserComponent } from './components/dashboard/update-user/update-user.component';
 import { HomeAdminComponent } from './components/home-admin/home-admin.component';
-import { NewRegisterComponent } from './components/new-register/new-register.component';
 import { ValidateComponent } from './components/validate/validate.component';
 
 
@@ -15,7 +14,6 @@ const routes: Routes = [
     path: '', component: HomeAdminComponent, children: [
       {path: 'users', component: UserDashboardComponent},
       { path: 'users/new', component: NewUserComponent },
-      { path: 'users/new-register', component: NewRegisterComponent },
       { path: 'users/update/:id', component: UpdateUserComponent },
       { path: 'users/no-validate/:id', component: ValidateComponent },
     ]

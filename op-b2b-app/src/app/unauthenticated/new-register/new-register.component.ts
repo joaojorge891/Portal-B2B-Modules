@@ -7,7 +7,7 @@ import { PoEmailComponent, PoInputComponent, PoNotificationService } from '@po-u
 import { Md5 } from 'ts-md5';
 
 import { UsersService } from 'src/app/users/services/users.service';
-import { customValidation } from './../../passwordValidator';
+import { customValidation } from '../../users/passwordValidator';
 
 
 @Component({

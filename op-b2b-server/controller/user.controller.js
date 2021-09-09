@@ -151,7 +151,6 @@ exports.delete = async function (req, res) {
 exports.findById = async function (id) {
     let object = null
     let doc = await userSchema.findById(id)
-    console.log(doc)
     if (doc != null) {
         object = doc
     } else {

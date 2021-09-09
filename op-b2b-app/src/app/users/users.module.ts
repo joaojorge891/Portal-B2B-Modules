@@ -10,7 +10,6 @@ import { PoButtonModule, PoDisclaimerGroupModule, PoFieldModule, PoMenuModule, P
 import { UsersRoutingModule } from './users-routing.module';
 import { NewUserComponent } from './components/dashboard/new-user/new-user.component';
 import { UpdateUserComponent } from './components/dashboard/update-user/update-user.component';
-import { NewRegisterComponent } from './components/new-register/new-register.component';
 import { ValidateComponent } from './components/validate/validate.component';
 import { UserDashboardComponent } from './components/dashboard/dashboard.component';
 import { HomeAdminComponent } from './components/home-admin/home-admin.component';
@@ -21,7 +20,6 @@ import { HomeAdminComponent } from './components/home-admin/home-admin.component
   declarations: [
     NewUserComponent,
     UpdateUserComponent,
-    NewRegisterComponent,
     ValidateComponent,
     UserDashboardComponent,
     HomeAdminComponent

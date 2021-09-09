@@ -136,12 +136,14 @@ export class ExportsComponent implements OnInit {
   }
 
   private exportClosedToXlsx(): void {
+    this.confirm.loading = true
     try {
       this.service.getClosedByDate(this.selectedDates).subscribe(
         (result: any) => {
           if (result.length !== 0) {
             this.closedOrdersByPeriod = result
             this.exportBaseService.exportAsExcelFile(this.closedOrdersByPeriod, 'fechadas')
+            this.confirm.loading = false
           } else {
             this.focusDatePicker()
             this.poDialog.alert({

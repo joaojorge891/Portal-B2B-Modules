@@ -10,10 +10,14 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginModule } from './login/login.module';
+import { LinkExternalRedirectComponent } from './utils/link-external-redirect/link-external-redirect.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    LinkExternalRedirectComponent,
+    
+    
   ],
   imports: [
     BrowserModule,
@@ -22,7 +26,6 @@ import { LoginModule } from './login/login.module';
     PoTemplatesModule,
     LoginModule,
     FontAwesomeModule, 
-    
   ],
   providers: [],
   bootstrap: [AppComponent]

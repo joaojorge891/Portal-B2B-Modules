@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { RedirectGuard } from 'src/utils/linkExternalRedirect';
+import { LinkExternalRedirectComponent } from './utils/link-external-redirect/link-external-redirect.component';
 
 const routes: Routes = [
   {
@@ -21,8 +21,8 @@ const routes: Routes = [
   },
   {
     path: 'portal',
-    canActivate: [RedirectGuard],
-    component: RedirectGuard,
+    canActivate: [LinkExternalRedirectComponent],
+    component: LinkExternalRedirectComponent,
     data: {
       externalUrl: 'http://10.61.81.95/op_b2b/index.php'
     }

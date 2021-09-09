@@ -339,7 +339,7 @@ export class OempService extends Service {
 
       { label: 'Alexandre Rodrigues Pereira', value: 'oi88813' },
       { label: 'Camilo Edison Fracetti Da Silveira', value: 'oi320541' },
-      { label: 'Cristiano Belisario', value: 'oixxxxxx' },
+      { label: 'Cristiano Belisario', value: 'bt028852' },
       { label: 'David Marques Pires', value: 'oi328091' },
       { label: 'Marcio Rodrigo Funatsu', value: 'oi309953' },
       { label: 'Thiago Barbosa Ferreira Kirschner', value: 'oi36129' },
@@ -356,7 +356,7 @@ export class OempService extends Service {
 
       { label: 'Alexandre Rodrigues Pereira', value: 'oi88813' },
       { label: 'Camilo Edison Fracetti Da Silveira', value: 'oi320541' },
-      { label: 'Cristiano Belisario', value: 'oixxxxxx' },
+      { label: 'Cristiano Belisario', value: 'bt028852' },
       { label: 'David Marques Pires', value: 'oi328091' },
       { label: 'Marcio Rodrigo Funatsu', value: 'oi309953' }
 

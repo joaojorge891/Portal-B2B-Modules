@@ -1,0 +1,12 @@
+.redirect{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5%
+    
+}
+
+.content-redirect {
+    text-align: center;
+    width: 300px;
+  }

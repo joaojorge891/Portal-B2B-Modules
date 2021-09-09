@@ -5,7 +5,6 @@ module.exports = {
     auth: function (req, res) {
         let document = authController.auth(req.body)
         document.then(result => {
-            console.log(result)
             if (result.statusResult === 'ok') {
                 res.send(result)
             } else if (result.status === 'error') {
