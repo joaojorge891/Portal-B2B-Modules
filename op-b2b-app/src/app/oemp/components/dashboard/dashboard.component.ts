@@ -14,7 +14,7 @@ import {
 import * as moment from 'moment';
 
 
-import { OempService } from 'src/app/oemp/components/dashboard/services/oemp.service';
+import { OempService } from 'src/app/oemp/services/oemp.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -260,7 +260,6 @@ export class DashboardComponent implements OnInit {
   }
 
   private updateCounters(): void {
-    //this.temporaryCounter = 0
     this.service.getCounters().subscribe(
       (result: Array<any>) => {
         result.forEach(item => {
@@ -272,7 +271,7 @@ export class DashboardComponent implements OnInit {
             case 'execução':
               this.executionCounter = item.count
               break
-            case 'concluído':
+            case 'concluido':
               this.completedCounter = item.count
               break
           }
@@ -525,17 +524,6 @@ export class DashboardComponent implements OnInit {
           message: 'Para salvar a edição realizada, é necessário informar status atual.'
         })
         return
-      // case 'novo':
-      //   if (this.editItems.operadora_Oemp !== 'Sem Atuação OEMP') {
-      //     this.statusFoco()
-      //     this.poDialog.alert({
-      //       literals: { ok: 'Ok' },
-      //       title: 'Aviso de Campos Obrigatórios',
-      //       message: 'Para salvar a edição realizada, é necessário informar status atual.'
-      //     })
-      //     return
-      //   }
-      //   break
       case 'execução':
         if ((this.editItems.taxa_Instalacao === '' || this.editItems.taxa_Instalacao === undefined || this.editItems.taxa_Instalacao === null) ||
           (this.editItems.taxa_Mensal === '' || this.editItems.taxa_Mensal === undefined || this.editItems.taxa_Mensal === null) ||
@@ -552,7 +540,7 @@ export class DashboardComponent implements OnInit {
           return
         }
         break
-      case 'concluído':
+      case 'concluido':
         if (this.editItems.operadora_Oemp !== 'Sem Atuação OEMP') {
           if ((this.editItems.designacao_Oemp === '' || this.editItems.designacao_Oemp === undefined || this.editItems.designacao_Oemp === null) ||
             (this.editItems.taxa_Instalacao === '' || this.editItems.taxa_Instalacao === undefined || this.editItems.taxa_Instalacao === null) ||
@@ -574,7 +562,7 @@ export class DashboardComponent implements OnInit {
           this.poDialog.confirm({
             literals: { cancel: 'Cancelar', confirm: 'Confirmar' },
             title: 'Aviso',
-            message: 'Ao prosseguir com envio, a ordem será tramitada para status "concluído", sem possibilidade de reedição. Deseja confirmar?',
+            message: 'Ao prosseguir com envio, a ordem será tramitada para status "concluido", sem possibilidade de reedição. Deseja confirmar?',
             confirm: () => this.confirmOrderWithoutActing(),
 
           })
@@ -593,7 +581,7 @@ export class DashboardComponent implements OnInit {
       (result: any) => {
         this.editItems = result
         this.openModal()
-        if (this.editItems.status === 'concluído') {
+        if (this.editItems.status === 'concluido') {
           this.isReadOnly = true
           this.confirm.disabled = true
         } else {
@@ -623,7 +611,7 @@ export class DashboardComponent implements OnInit {
             case 'execução':
               this.executionCounter = item.count
               break
-            case 'concluído':
+            case 'concluido':
               this.completedCounter = item.count
               break
           }
@@ -712,7 +700,7 @@ export class DashboardComponent implements OnInit {
     }
     else if (event === 'Sem atuação OEMP') {
       this.editItems.operadora_Oemp = event
-      this.editItems.status = 'concluído'
+      this.editItems.status = 'concluido'
 
     } else {
       this.editItems.gestao = undefined

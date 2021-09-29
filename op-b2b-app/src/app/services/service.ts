@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Globals } from '../globals';
+
+import { Hosts } from '../globals/hosts';
 
 @Injectable()
 export class Service {
-    host: string = Globals.host;
+    host: string = Hosts.host;
 
     protected getParameters(parameters: Array<Parameters>): string {
         let urlParameters = '?';

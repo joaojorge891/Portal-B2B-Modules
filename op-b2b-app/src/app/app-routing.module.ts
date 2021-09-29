@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { LinkExternalRedirectComponent } from './utils/link-external-redirect/link-external-redirect.component';
+import { LinkExternalRedirectComponent } from './globals/link-external-redirect/link-external-redirect.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -9,7 +10,19 @@ const routes: Routes = [
   },
   {
     path: 'home', loadChildren: () => import('./oemp/oemp.module').then(
-      m => m.OempModule)
+      m => m.OempModule), canActivate: [AuthGuard]
+  },
+  {
+    path: 'home/oemp/new-orders', loadChildren: () => import('./oemp/components/new-orders/new-orders.module').then(
+      m => m.NewOrdersModule), canActivate: [AuthGuard]
+  },
+  {
+    path: 'home/oemp/exec-orders', loadChildren: () => import('./oemp/components/exec-orders/exec-orders.module').then(
+      m => m.ExecOrdersModule), canActivate: [AuthGuard]
+  },
+  {
+    path: 'home/oemp/completed-orders', loadChildren: () => import('./oemp/components/completed-orders/completed-orders.module').then(
+      m => m.CompletedOrdersModule), canActivate: [AuthGuard]
   },
   {
     path: 'home-admin', loadChildren: () => import('./users/users.module').then(
@@ -23,9 +36,6 @@ const routes: Routes = [
     path: 'portal',
     canActivate: [LinkExternalRedirectComponent],
     component: LinkExternalRedirectComponent,
-    data: {
-      externalUrl: 'http://10.61.81.95/op_b2b/index.php'
-    }
   }
 ]
 

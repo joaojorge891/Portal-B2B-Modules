@@ -1,4 +1,4 @@
-export class Globals {
+export class Hosts {
 
     // Desenvolvimento
     // public static host: string = 'http://localhost:8081';
@@ -6,5 +6,6 @@ export class Globals {
     //produção
 
     public static host: string = 'http://10.61.81.95:8081';
+
     
 }

@@ -41,10 +41,10 @@ export class ValidateComponent implements OnInit {
     try {
       this.service.filterByIdNoValidate(id).subscribe(user => {
         this.user = user
-        if (this.user.status !== 'pending'){
+        if (this.user.status !== 'pending') {
           this.poDialog.alert({
-            title:'Aviso',
-            message:'Usuário já foi avaliado!',
+            title: 'Aviso',
+            message: 'Usuário já foi avaliado!',
             ok: () => this.router.navigate(['portal'])
           })
           return
@@ -53,7 +53,7 @@ export class ValidateComponent implements OnInit {
     } catch (error: any) {
       this.notification.error(error)
     }
-    
+
   }
 
   onChooseValidate(): void {

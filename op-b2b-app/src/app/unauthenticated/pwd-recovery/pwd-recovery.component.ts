@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
 import { Router } from '@angular/router';
 
 import { PoModalComponent, PoModalAction, PoNotificationService, PoEmailComponent } from '@po-ui/ng-components';
@@ -123,7 +122,7 @@ export class PwdRecoveryComponent implements OnInit {
           this.resend.loading = false
           if (result.status === "ok") {
             this.poModalEmailSent.open()
-            
+
           } else {
             this.notification.error('Erro ao enviar e-mail de reset. Contate o administrador: LD-PORTALB2BBR@oi.net.br')
             return

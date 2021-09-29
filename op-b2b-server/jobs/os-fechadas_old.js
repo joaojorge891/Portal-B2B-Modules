@@ -1,6 +1,7 @@
 const cron = require('node-cron')
 const mysql = require('mysql')
 const mongoose = require('mongoose')
+const { MongoClient } = require('mongodb');
 const fs = require('fs')
 
 
@@ -9,10 +10,10 @@ function handleClosedOrders() {
   function removeCompletedInsertClosed(mysqlConnection, tableName, openMongoCollection, closedMongoCollection) {
     const promises = []
     const mainPromise = new Promise((resolve, reject) => {
-      openMongoCollection.find({ status: 'concluído' }).forEach(function (item) {
+      const status = ['concluido', 'NA']
+      openMongoCollection.find({ status: { $in: status } }).forEach(function (item) {
         const secondaryPromise = new Promise((resolve, reject) => {
           let sql = 'select * from ' + tableName + ' where protocolo = ' + item.protocolo
-
           mysqlConnection.query(sql, async function (error, rows, fields) {
             if (error) {
               throw new Error(`Erro na coleta de OS fechadas do mysql: ${error}`)
@@ -50,23 +51,42 @@ function handleClosedOrders() {
     return mainPromise
   }
 
-  mongoose.connect("mongodb://localhost/op-b2b-db", { useNewUrlParser: true, useUnifiedTopology: true })
-  const db = mongoose.connection
-  db.on('error', console.error.bind(console, 'Mongo DB Connection error:'))
+  // mongoose.connect("mongodb://localhost/op-b2b-db", { useNewUrlParser: true, useUnifiedTopology: true })
+  // const db = mongoose.connection
+  // db.on('error', console.error.bind(console, 'Mongo DB Connection error:'))
+
+
+  const url = 'mongodb://localhost:27017'
+  const client = new MongoClient(url, { useUnifiedTopology: true })
+  const dbName = 'op-b2b-db'
+  MongoConnection()
+
+  async function MongoConnection() {
+    try {
+      await client.connect()
+      //console.log('Connected successfully to server...')
+    } catch (error) {
+      throw new Error('falha na conexão com o banco: ' + error)
+    }
+  }
+  
+  const db = client.db(dbName)
+  
+
 
   const mysqlCon = mysql.createConnection({
 
-    // host: 'localhost',
-    // user: 'root',
-    // password: '89118642',
-    // port: 3306,
-    // database: 'os'
-
     host: 'localhost',
-    user: 'icduser',
-    password: '102030',
+    user: 'root',
+    password: '89118642',
     port: 3306,
-    database: 'opb2b'
+    database: 'os'
+
+    // host: 'localhost',
+    // user: 'icduser',
+    // password: '102030',
+    // port: 3306,
+    // database: 'opb2b'
   })
 
   mysqlCon.connect()
@@ -79,8 +99,8 @@ function handleClosedOrders() {
   removeCompletedInsertClosed(mysqlCon, closedTable, openCollection, closedCollection)
     .then(success => console.log(success)).catch(e => console.log(e))
 
-}
 
-module.exports = cron.schedule('0 10 8 * Jan-Dec 1-5', handleClosedOrders, {
+}
+module.exports = cron.schedule('0 45 6 * Jan-Dec 1-5', handleClosedOrders, {
   scheduled: false
 })

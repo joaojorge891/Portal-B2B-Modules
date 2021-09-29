@@ -6,7 +6,7 @@ import { PoPageChangePassword, PoPageChangePasswordComponent, PoPageChangePasswo
 import * as moment from 'moment';
 
 import { UsersService } from 'src/app/users/services/users.service';
-import { AccessValidate } from 'src/utils/accessvalidate';
+import { AccessValidate } from 'src/app/globals/accessvalidate';
 
 @Component({
   selector: 'app-reset-pwd',

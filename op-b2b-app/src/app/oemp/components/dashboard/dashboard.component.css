@@ -19,44 +19,19 @@
 
 .divSearch {
     margin-top: 3px;
-    /* padding-left: 30px; */
 }
 
 .spanSearch {
     color: rgb(153, 33, 232);
-    /* box-sizing: border-box; */
     cursor: pointer;
     font-family: Roboto-Bold, sans-serif;
     font-size: 13px;
-    /* width: 65px; */
     margin-top: 6px;
     padding-right: 0px;
-    /* margin-left: 30px; */
     width: 65px;
     
   
 }
-
-/* .divSearch {
-    box-sizing: border-box;
-    display: inline-block;
-    font-family: Roboto;
-    height: 32px;
-    line-height: 0px;
-    margin-bottom: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
-    margin-top: 0px;
-    max-width: 72px;
-    padding-bottom: 0px;
-    padding-left: 0px;
-    padding-right: 0px;
-    padding-top: 0px;
-    position: relative;
-    top: 6px;
-    white-space: normal;
-    width: 72px
-} */
 
 .executionLabel {
     color: rgb(158, 40, 32);

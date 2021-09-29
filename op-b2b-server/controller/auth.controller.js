@@ -29,7 +29,7 @@ exports.auth = async function (parameters) {
             nickName: user[0].nickName,
             department: user[0].department,
             lastLogin: user[0].lastLogin,
-            
+
         }
     } else {
         return { status: 'error', error: 'Usuário ou senha inválido!' }

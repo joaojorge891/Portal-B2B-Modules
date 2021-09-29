@@ -6,7 +6,7 @@ import { PoDisclaimer, PoPageAction, PoTableAction, PoTableColumn, PoDialogServi
 import { PoPageDynamicSearchLiterals } from '@po-ui/ng-templates';
 
 import { UsersService } from 'src/app/users/services/users.service';
-import { AccessValidate } from 'src/utils/accessvalidate';
+import { AccessValidate } from 'src/app/globals/accessvalidate';
 
 @Component({
   selector: 'app-dashboard',
@@ -151,7 +151,7 @@ export class UserDashboardComponent extends AccessValidate implements OnInit {
         }), (error: any) => this.notification.error(error)
     } catch (error: any) {
       this.notification.error(error)
-     }
+    }
 
   }
 

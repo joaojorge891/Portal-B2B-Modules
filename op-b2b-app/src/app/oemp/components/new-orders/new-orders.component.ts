@@ -1,9 +1,11 @@
 import { Component, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+
 import { PoDialogService, PoModalAction, PoModalComponent, PoNotificationService, PoPageAction, PoSelectComponent, PoTableAction, PoTableColumn } from '@po-ui/ng-components';
 import * as moment from 'moment';
-import { Subscription } from 'rxjs';
-import { OempService } from 'src/app/oemp/components/dashboard/services/oemp.service';
+
+import { OempService } from 'src/app/oemp/services/oemp.service';
 
 @Component({
   selector: 'app-new-orders',
@@ -12,7 +14,7 @@ import { OempService } from 'src/app/oemp/components/dashboard/services/oemp.ser
 })
 export class NewOrdersComponent implements OnInit {
 
-@Output() execCounter!: any
+  @Output() execCounter!: any
 
   items: Array<any> = []
 
@@ -182,7 +184,7 @@ export class NewOrdersComponent implements OnInit {
           return
         }
         break
-      case 'concluído':
+      case 'concluido':
         if ((this.editItems.designacao_Oemp === '' || this.editItems.designacao_Oemp === undefined || this.editItems.designacao_Oemp === null) ||
           (this.editItems.taxa_Instalacao === '' || this.editItems.taxa_Instalacao === undefined || this.editItems.taxa_Instalacao === null) ||
           (this.editItems.taxa_Mensal === '' || this.editItems.taxa_Mensal === undefined || this.editItems.taxa_Mensal === null) ||
@@ -350,7 +352,7 @@ export class NewOrdersComponent implements OnInit {
     }
     else if (e === 'Sem Atuação OEMP') {
       this.editItems.operadora_Oemp = e
-      this.editItems.status = 'concluído'
+      this.editItems.status = 'concluido'
 
     } else {
       this.editItems.gestao = undefined

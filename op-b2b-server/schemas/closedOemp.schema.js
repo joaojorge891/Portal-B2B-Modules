@@ -44,7 +44,20 @@ const closedOempSchema = new mongoose.Schema(
         GerentedeEntrega: String,
         GestordeEntrega: String,
         obsAbertura: String,
-        obsFechamento: String
+        obsFechamento: String,
+        observacao_Oemp: String,
+        data_Contratacao: String,
+        prazo_Operadora: Number,
+        previsao_Entrega: String,
+        previsao_Atual: String,
+        data_Instalacao: String,
+        taxa_Instalacao: String,
+        taxa_Mensal: String,
+        tempo_Contrato: String,
+        codigo_Viabilidade: String,
+        designacao_Oemp: String,
+        responsavel: String,
+        gestao: String
     },
     {
         collection: 'os_fechadas'

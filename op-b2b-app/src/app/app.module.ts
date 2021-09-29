@@ -5,12 +5,11 @@ import { PoModule } from '@po-ui/ng-components';
 import { PoTemplatesModule } from '@po-ui/ng-templates';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginModule } from './login/login.module';
-import { LinkExternalRedirectComponent } from './utils/link-external-redirect/link-external-redirect.component';
+import { LinkExternalRedirectComponent } from './globals/link-external-redirect/link-external-redirect.component';
+import { AuthGuard } from './guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -27,7 +26,7 @@ import { LinkExternalRedirectComponent } from './utils/link-external-redirect/li
     LoginModule,
     FontAwesomeModule, 
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

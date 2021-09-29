@@ -15,7 +15,7 @@
     "jwt-simple": "^0.5.6",
     "latest-version": "^5.1.0",
     "moment": "^2.29.1",
-    "mongodb": "^3.6.6",
+    "mongodb": "^3.7.1",
     "mongoose": "^5.12.5",
     "mysql": "^2.18.1",
     "node-cron": "^3.0.0",

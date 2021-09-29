@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { PoNotificationService } from '@po-ui/ng-components';
-import {Md5} from 'ts-md5/dist/md5'
+import { Md5 } from 'ts-md5/dist/md5'
 
 import { Service } from '../../services/service';
 
@@ -14,7 +14,6 @@ export class AuthService extends Service {
 
   constructor(
     private http: HttpClient,
-    private notification: PoNotificationService
   ) {
     super()
   }

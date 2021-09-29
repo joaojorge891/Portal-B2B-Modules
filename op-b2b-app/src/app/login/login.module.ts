@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { PoPageLoginModule, PoPageChangePasswordModule } from '@po-ui/ng-templates';
+import { PoFieldModule, PoModalModule } from '@po-ui/ng-components';
 
 import { LoginComponent } from './components/login.component';
-import { PoFieldModule, PoModalModule } from '@po-ui/ng-components';
 
 
 

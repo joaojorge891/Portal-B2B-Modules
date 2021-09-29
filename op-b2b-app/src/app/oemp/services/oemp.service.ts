@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PoNotificationService, PoTableColumn } from '@po-ui/ng-components';
 import { Observable } from 'rxjs';
 
+import { PoNotificationService, PoTableColumn } from '@po-ui/ng-components';
 
-import { Service } from '../../../../services/service';
+import { Service } from '../../services/service';
 
 @Injectable({
   providedIn: 'root'
@@ -155,6 +155,7 @@ export class OempService extends Service {
       { label: 'Telemar', value: 'Telemar' },
       { label: 'Telespazio', value: 'Telespazio' },
       { label: 'TIM', value: 'TIM' },
+      { label: 'Titania', value: 'Titania' },
       { label: 'TIVIT', value: 'TIVIT' },
       { label: 'TIWS', value: 'TIWS' },
       { label: 'TUDDO', value: 'TUDDO' },
@@ -214,6 +215,7 @@ export class OempService extends Service {
       { label: 'STIW', value: 'STIW' },
       { label: 'SumiCity', value: 'SumiCity' },
       { label: 'TIM', value: 'TIM' },
+      { label: 'Titania', value: 'Titania' },
       { label: 'TIVIT', value: 'TIVIT' },
       { label: 'TIWS', value: 'TIWS' },
       { label: 'TUDDO', value: 'TUDDO' },
@@ -264,7 +266,7 @@ export class OempService extends Service {
     return [
       { label: 'Aguardando Assinatura', value: 'aguardando assinatura' },
       { label: 'Aprovação de OPEX', value: 'aprovação opex' },
-      { label: 'Concluído', value: 'concluído' },
+      { label: 'Concluído', value: 'concluido' },
       { label: 'Em contratação', value: 'contratação' },
       { label: 'Em estudo viabilidade', value: 'viabilidade' },
       { label: 'Em execução', value: 'execução' },
@@ -277,12 +279,12 @@ export class OempService extends Service {
     ]
   }
 
-  getExportStatusOptions(){
+  getExportStatusOptions() {
     return [
       { label: 'Todos', value: 'todos' },
       { label: 'Aguardando Assinatura', value: 'aguardando assinatura' },
       { label: 'Aprovação de OPEX', value: 'aprovação opex' },
-      { label: 'Concluído', value: 'concluído' },
+      { label: 'Concluído', value: 'concluido' },
       { label: 'Em contratação', value: 'contratação' },
       { label: 'Em estudo viabilidade', value: 'viabilidade' },
       { label: 'Em execução', value: 'execução' },
@@ -405,7 +407,7 @@ export class OempService extends Service {
           { value: 'falha acesso terceiro', color: 'color-06', label: 'Ac Terceiro', content: 'TER' },
           { value: 'pendência cliente', color: 'color-07', label: 'Pendência Cliente', content: 'PCL' },
           { value: 'pendência U.N', color: 'color-08', label: 'Pendência U.N', content: 'PUN' },
-          { value: 'concluído', color: 'color-10', label: 'Concluído', content: 'OK' },
+          { value: 'concluido', color: 'color-10', label: 'Concluído', content: 'OK' },
         ]
       },
       { property: 'gestao', label: 'Gestão' },
@@ -473,5 +475,5 @@ export class OempService extends Service {
       { label: 'TO', value: 'TO' }
     ]
   }
- 
+
 }

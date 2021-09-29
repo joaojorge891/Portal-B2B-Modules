@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { PoCheckboxGroupOption, PoModalAction, PoModalComponent, PoNotificationService, PoDialogService, PoDatepickerComponent, PoDatepickerRangeComponent } from '@po-ui/ng-components';
 
-import { OempService } from '../dashboard/services/oemp.service';
+import { OempService } from '../../services/oemp.service';
 import { ExportBaseService } from 'src/app/services/exportBase.service';
 
 @Component({
@@ -63,9 +63,6 @@ export class ExportsComponent implements OnInit {
     for (let property in this.options) {
       this.options[property] = false
     }
-
-    // Object.assign(this.selectedDates, {start:"", end: new Date()} )
-    // moment(this.selectedDates).format('YYYY-MM-DD')
   }
 
   OnChangeOptions(e: any) {
@@ -103,6 +100,7 @@ export class ExportsComponent implements OnInit {
       this.validateDate = true
       this.showErrorDate = ""
       this.showErrorDate = "! Por favor Informe um intervalo inferior ou igual a 90 dias."
+      this.confirm.disabled = true
       return
     }
     if ((this.selectedDates.start === "" && this.selectedDates.end === "") ||
@@ -151,6 +149,7 @@ export class ExportsComponent implements OnInit {
               title: 'Resultado da Busca',
               message: 'Não há ordens encerradas entre as datas informadas!'
             })
+            this.confirm.loading = false
           }
         }
       ), (error: any) => this.notification.error(error)

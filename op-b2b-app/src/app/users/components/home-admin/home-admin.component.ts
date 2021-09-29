@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { PoToolbarAction, PoToolbarProfile } from '@po-ui/ng-components';
-import { AccessValidate } from 'src/utils/accessvalidate';
+
+import { AccessValidate } from 'src/app/globals/accessvalidate';
 
 @Component({
   selector: 'app-home-admin',
@@ -11,7 +13,6 @@ import { AccessValidate } from 'src/utils/accessvalidate';
 export class HomeAdminComponent extends AccessValidate implements OnInit {
 
   menuArr = [
-    // { label: 'Home', link: '/home' },
     { label: 'Usuários', link: '/home-admin/users', icon: 'po-icon-user', shortLabel: 'Usuários' },
     { label: 'Logout', action: this.logout.bind(this), icon: 'po-icon-exit', shortLabel: 'Logout' }
   ];

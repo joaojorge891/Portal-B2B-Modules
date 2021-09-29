@@ -5,6 +5,7 @@ const oempSchema = mongoose.model('os_abertas', model.OempSchema, 'os_abertas')
 const closedOempSchema = mongoose.model('os_fechadas', closedModel.closedOempSchema, 'os_fechadas')
 const fs = require('fs')
 const { error } = require('console')
+const moment = require('moment')
 
 
 exports.save = async function (order) {
@@ -211,7 +212,7 @@ exports.getBaseToExport = function (req) {
                     object = doc
                     resolve(object)
                 }
-                ).catch(error)
+                ).catch(e => console.error(e))
 
         } else {
             oempSchema.find({ status: req }).select(
@@ -260,7 +261,7 @@ exports.getBaseToExport = function (req) {
                     object = doc
                     resolve(object)
                 }
-                ).catch(error)
+                ).catch(e => console.error(e))
         }
     })
     return promise
@@ -288,58 +289,18 @@ exports.getCounters = async function () {
 
 exports.getClosedByDate = async function (req) {
     let promise = new Promise(function (resolve, reject) {
-        closedOempSchema.find({
-            DatadeFechamento: { $gte: req.start, $lte: req.end }
-        }).select(
-            {
-                'fonte': 1,
-                'status': 1,
-                'geo': 1,
-                'protocolo': 1,
-                'osCrm': 1,
-                'uf': 1,
-                'uf_b': 1,
-                'gra_b': 1,
-                'estacao_b': 1,
-                'loc_b': 1,
-                'localidade': 1,
-                'circuito': 1,
-                'acesso': 1,
-                'circuitoAssociado': 1,
-                'produto': 1,
-                'tipoOS': 1,
-                'tipoR1': 1,
-                'servico': 1,
-                'velocidade': 1,
-                'vel': 1,
-                'NomedoCliente': 1,
-                'Conglomerado': 1,
-                'endereco': 1,
-                'DatadeAbertura': 1,
-                'DatadeFechamento': 1,
-                'TMI_Exp': 1,
-                'TMI_Op': 1,
-                'TMI_Ger': 1,
-                'segm': 1,
-                'estacao': 1,
-                'linha': 1,
-                'atendimento': 1,
-                'TecnologiaAcesso': 1,
-                'ModelodoRoteador': 1,
-                'ItxIsento': 1,
-                'pove': 1,
-                'cnpj': 1,
-                'cnpjRaiz': 1,
-                'ExecutivoAtencao': 1,
-                'GerentedeEntrega': 1,
-                'GestordeEntrega': 1,
-                'obsAbertura': 1,
-                'obsFechamento': 1
-            }).sort({ DatadeFechamento: -1 })
+        let startDate = new Date(req.start)
+        let endDate = new Date(req.end)
+        // let startDate = moment(req.start).format('DD/MM/YYYY HH:mm:ss')
+        // let endDate = moment(req.end).format('DD/MM/YYYY HH:mm:ss')
+         closedOempSchema.find({
+            DatadeFechamento: { $gte: startDate, $lte: endDate }
+        }).sort({ DatadeFechamento: -1 })
             .then(doc => {
+                console.log(doc.length)
                 object = doc
                 resolve(object)
-            }).catch(error)
+            }).catch(e => console.error(e))
 
     })
     return promise
@@ -400,7 +361,7 @@ exports.filterAll = function (req) {
                 object.items = doc
                 resolve(object)
             }
-            ).catch(error)
+            ).catch(e => console.error(e))
     })
 
     return promise
@@ -443,7 +404,7 @@ exports.findAllbyPage = function (req) {
                 object.items = doc
                 resolve(object)
             }
-            ).catch(error)
+            ).catch(e => console.error(e))
     })
 
     return promise
@@ -487,7 +448,7 @@ exports.loadOrdersByStatus = function (req) {
                 object.items = doc
                 resolve(object)
             }
-            ).catch(error)
+            ).catch(e => console.error(e))
 
     })
 
@@ -539,7 +500,7 @@ exports.findByStatus = function (req) {
                     object.items = doc
                     resolve(object)
                 }
-                ).catch(error)
+                ).catch(e => console.error(e))
         }
 
     })

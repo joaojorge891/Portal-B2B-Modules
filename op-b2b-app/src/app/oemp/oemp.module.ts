@@ -10,10 +10,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { CompletedOrdersComponent } from './components/completed-orders/completed-orders.component';
-import { ExecOrdersComponent } from './components/exec-orders/exec-orders.component';
-import { NewOrdersComponent } from './components/new-orders/new-orders.component';
-import { ExportsComponent } from './components/exports/exports.component';
 import { HomeComponent } from './components/home/home.component';
 
 
@@ -21,14 +17,11 @@ import { HomeComponent } from './components/home/home.component';
 @NgModule({
   declarations: [
     DashboardComponent,
-    CompletedOrdersComponent,
-    ExecOrdersComponent,
-    NewOrdersComponent,
-    ExportsComponent,
     HomeComponent
   ],
   imports: [
     CommonModule,
+    OempRoutingModule,
     PoFieldModule,
     FormsModule,
     PoTableModule,

@@ -10,13 +10,14 @@ function MysqlImportOsAbertas() {
   function sqlQuery(mysqlConnection, tableName) {
     return new Promise((resolve, reject) => {
       let sql = 'SELECT * FROM ' + tableName + ' WHERE area = "OEMP" OR pend = "3902"'
+      openMysqlConnection(mysqlConnection)
       mysqlConnection.query(sql, function (error, results) {
         if (error) {
           console.log(error)
           reject(error)
         }
         resolve(results)
-        mysqlConnection.end()
+        closeMysqlConnection(mysqlConnection)
       })
     })
   }
@@ -79,8 +80,23 @@ function MysqlImportOsAbertas() {
     // database: 'os'
   })
 
-  mysqlCon.connect()
+  function openMysqlConnection(mysqlConnection) {
+    mysqlConnection.connect(function (err) {
+      if (err) {
+        return console.error('erro de conexão com o mysql: ' + err.message);
+      }
+    })
+  }
 
+  function closeMysqlConnection(mysqlConnection) {
+    mysqlConnection.end(function (err) {
+      if (err) {
+        return console.error('erro na desconexão com o mysql: ' + err.message);
+      }
+    })
+  }
+
+  
   const table = 'os_abertas'
   const collection = db.collection(table)
 

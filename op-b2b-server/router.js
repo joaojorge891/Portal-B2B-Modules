@@ -84,7 +84,7 @@ exports.appRouter = function (app) {
 
     router.route('/oemp/exportBase')
         .post(oempRoute.getBaseToExport)
-        
+
     router.route('/oemp/counters')
         .get(oempRoute.getCounters)
 }

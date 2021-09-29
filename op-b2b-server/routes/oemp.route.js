@@ -65,6 +65,7 @@ module.exports = {
         const clearBody = req.body
         delete clearBody.access_token
         delete clearBody.username
+        
         let document = controller.getClosedByDate(clearBody)
         document.then(result => res.send(result))
     },

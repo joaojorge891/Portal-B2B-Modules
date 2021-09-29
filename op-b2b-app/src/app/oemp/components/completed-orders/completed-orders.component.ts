@@ -1,13 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { PoDatepickerRange, PoDatepickerRangeComponent, PoNotificationService, PoPageAction, PoTableColumn, PoDialogService } from '@po-ui/ng-components';
 
 import { ExportBaseService } from 'src/app/services/exportBase.service';
-import { OempService } from 'src/app/oemp/components/dashboard/services/oemp.service';
+import { OempService } from 'src/app/oemp/services/oemp.service';
 
 @Component({
   selector: 'app-completed-orders',
@@ -88,7 +87,7 @@ export class CompletedOrdersComponent implements OnInit {
     this.loading = !this.loading
     try {
 
-      let status = 'concluído'
+      let status = 'concluido'
       this.service.filterByStatus(status, this.page).subscribe(
         (results: any) => {
           this.items = results.items
@@ -109,7 +108,7 @@ export class CompletedOrdersComponent implements OnInit {
     this.showMoreDisabled = false
     setTimeout(() => {
       this.page++
-      this.loadNewServiceOrders(this.page, 'concluído')
+      this.loadNewServiceOrders(this.page, 'concluido')
       this.isLoading = false
     }, 1000)
 
